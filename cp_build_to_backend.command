@@ -1,0 +1,1 @@
+cp -rf build/* ../Capstone-backend/public/

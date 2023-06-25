@@ -1,0 +1,30 @@
+:root {
+  --navbar-height: 52px;
+}
+
+.navbar-c{
+  background-color: #060644!important;
+  transition: all 0.5 ease-in-out;
+}
+.navbar-c > .navbar-brand > .navbar-logo{
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.navbar-c > .navbar-brand > .navbar-logo > span {
+  align-self: center;
+  font-size: x-large;
+  color: white;
+  font-family: math;
+}
+.navbar-c > .navbar-brand > .navbar-logo > img {
+  margin: auto;
+}
+
+.navbar-c > .navbar-menu > .navbar-end > .custom_text_shadow{
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+.navbar-c > .navbar-menu > .navbar-end > .custom_text_shadow:hover{
+  color: #060644;
+  font-weight: bolder;
+}
