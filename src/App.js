@@ -9,7 +9,7 @@ function App() {
   document.title = "Reading Comprehension - v0.02";
   return (
     <div className="App">
-      <link rel="stylesheet" href="bulma@0.9.4.min.css"></link>
+      <link rel="stylesheet" href="./bulma@0.9.4.min.css"></link>
       <Router>
         <NavBar />
 
