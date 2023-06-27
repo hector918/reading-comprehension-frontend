@@ -1,0 +1,14 @@
+
+.tab-h > .tab-item{
+  color: black;
+  font-size: 20px;
+  transition: all 0.5 ease-in-out;
+  cursor: pointer;
+}
+.tab-h > .active{
+  color: purple;
+  border-bottom: 2px solid violet;
+}
+.login-modal-justify-right{
+  justify-content: flex-end;  
+}
