@@ -12,9 +12,11 @@ html, body, main, #root {
 }
 main{
   height: calc(100% - var(--navbar-height));
+  
 }
 html{
   overflow-y: hidden!important;
+  overflow: hidden;
 }
 .App-logo {
   height: 40vmin;
@@ -52,6 +54,40 @@ html{
 }
 
 /* ////////////////////////////////////// */
-.custom_text_shadow{
-  
+.is-not-visable-h{
+  display: none!important;
+}
+.input-theme-border{
+  border: 2px solid purple!important;
+}
+.input-theme-border:hover{
+  border: 2px solid violet!important;
+}
+.btn-theme-border{
+  background-color: #060644!important;
+  border: 1px solid purple!important;
+  color: #fff!important;
+}
+.btn-theme-border:hover{
+  background-color: #060644;
+  border-color: violet!important;
+  box-shadow: -3px 2px 5px purple!important;
+}
+.unselectable {
+  user-select: none;
+}
+.text-color{
+  color: white!important;
+}
+.modal.active > .modal-overlay{
+  background-color: #66758ccc!important;
+}
+.btn-style-h{
+  background-color: #060644!important;
+  color: white!important;
+  border: 1px solid violet!important;
+  border-radius: 4px!important;
+}
+.btn-style-h:hover{
+  box-shadow: 5px 2px 5px purple;
 }

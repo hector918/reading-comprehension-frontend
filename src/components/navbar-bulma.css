@@ -1,0 +1,70 @@
+:root {
+  --navbar-height: 60px;
+}
+
+.navbar-c{
+  background-color: #060644!important;
+  transition: all 0.5 ease-in-out;
+  height: var(--navbar-height);
+}
+.navbar-c > .navbar-brand > .navbar-logo{
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.navbar-c > .navbar-brand > .navbar-logo > span {
+  align-self: center;
+  font-size: large;
+  color: white;
+  font-family: math;
+}
+.navbar-c > .navbar-brand > .navbar-logo > img {
+  /* border: 2px solid violet; */
+  box-shadow: 1px 1px 1px purple;
+  margin: 8px;
+  border-radius: 1px;
+}
+
+.navbar-c > .navbar-menu > .navbar-end > .custom_text_shadow{
+  color: white!important;
+  transition: all 0.2s ease-in-out;
+}
+.navbar-c > .navbar-menu > .navbar-end > .custom_text_shadow:hover{
+  color: #060644!important;
+  cursor: pointer;
+  font-weight: bolder;
+  background-color: white;
+}
+.navbar-c > modal{
+  transition: all 0.5 ease-in-out;
+}
+
+.navbar-c > .modal > .modal-content > .tabs > ul > li > span{
+  align-items: center;
+  border-bottom-color: #dbdbdb;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  color: #4a4a4a;
+  display: flex;
+  justify-content: center;
+  margin-bottom: -1px;
+  padding: 0.5em 1em;
+  vertical-align: top;
+  cursor: pointer;
+}
+.navbar-c > .modal > .modal-content > .tabs > ul > .is-active > span{
+  color: purple;
+  background-color: white;
+}
+.navbar-c > .modal > .modal-content > .tabs > ul > li > span{
+  color: violet;
+}
+
+.navbar-c > .modal > .modal-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.navbar-c > .modal > .modal-content > div{
+  width: 100%;
+  max-width: 520px;
+}
