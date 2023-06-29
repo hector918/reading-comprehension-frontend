@@ -82,12 +82,31 @@ html{
 .modal.active > .modal-overlay{
   background-color: #66758ccc!important;
 }
+/* button */
+.btn-style-h-lg{
+  background-color: #060644!important;
+  color: white!important;
+  border: 2px solid violet!important;
+  border-radius: 3px!important;
+  padding: 2% 15% ;
+  cursor: pointer;
+  font-size: xx-large;
+  transition: all 0.5s ease-out;
+}
+.btn-style-h-lg:hover{
+  box-shadow: -5px 2px 5px purple;
+}
 .btn-style-h{
   background-color: #060644!important;
   color: white!important;
   border: 1px solid violet!important;
   border-radius: 4px!important;
+  padding: 0 5% ;
+  cursor: pointer;
 }
 .btn-style-h:hover{
   box-shadow: 5px 2px 5px purple;
+}
+.btn-style-h > * , .btn-style-h-lg > *{
+  margin-bottom: 0;
 }

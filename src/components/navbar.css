@@ -4,12 +4,16 @@
 .navbar-h > .navbar-section > .navbar-logo {
   display: flex;
 }
+.navbar-h > .navbar-section > .navbar-logo:focus{
+  text-decoration: none;
+}
 .navbar-h > .navbar-section > .navbar-logo > img{
   margin: 8px;
 }
 .navbar-h > .navbar-section > .navbar-logo > span{
   margin: auto;
   font-family: math;
+  font-weight: bold;
 }
 .navbar-h > .navbar-section > .navbar-logo:hover, .navbar > .navbar-section > .navbar-logo:after{
   text-decoration: none;
