@@ -1,3 +1,31 @@
 main > .landing-container{
   height: 100%;
 }
+
+.landing-container > .moving-gallery-panel {
+  position: absolute;
+  height: calc(100% - var(--navbar-height));
+  width: 100%;
+  top: var(--navbar-height);
+  left: 0;
+}
+
+.landing-container > .columns {
+  height: 100%;
+  z-index: 50;
+  position: relative;
+  /* background-color: rgba(255,255,255,0.4); */
+}
+.landing-container > .columns > .column{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.landing-container > .columns > .column > .panel{
+  text-align: left;
+  width: 35%;
+  min-width: 400px;
+  height: 500px;
+  padding: 16px;
+  background-color: white;
+}

@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import './login-panel.css';
 
-export default function Login({sign_modal}){
+export default function Login({sign_modal, loginAvailable}){
   let [sign_up, sign_in] = [useRef(null), useRef(null)];
   /////////////////////////////////////////////
   const on_sign_modal_close_click = (evt) => {
@@ -40,6 +40,9 @@ export default function Login({sign_modal}){
         </div>
         <div className="modal-body">
           <div className="content">
+            {loginAvailable?
+            
+            <>
             <ul className="tab tab-block tab-h">
               <li className="tab-item active" onClick={on_sign_modal_tab_click} type="sign-up">
                 <span >Sign up</span>
@@ -113,6 +116,10 @@ export default function Login({sign_modal}){
                 </form>
               </div>
             </div>
+            </>
+            
+            :"Login currently not available"}
+            
           </div>
         </div>
         <div className="modal-footer">
