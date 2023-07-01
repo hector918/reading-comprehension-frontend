@@ -7,11 +7,10 @@
 @media screen and (min-width: 420px) {
   .moving-gallery-panel{
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5)), url(seamless-pattern-background-purple-vector-4822052-0.jpg);
-    
   }
-  .moving-gallery-div {
-    
-    
+  
+  .container-fluid, .container-fluid > .row , .container-fluid > .row > div, .container-fluid > .row > div > .carousel__wrapper{
+    overflow:visible;
   }
   /* carousel below */
   :root {
@@ -21,14 +20,13 @@
     --slide-width-gap: 40px;
     --slide-row-gap : 20px;
     --slide-height: 297px;
-    --iteration-time: 180s;
+    --iteration-time: 680s;
   }
 
   @keyframes scrollForward {
     0% {
       transform: translateX(0);
     }
-
     100% {
       transform: translateX(calc((var(--slide-width) + var(--slide-width-gap)) * var(--no-of-slides) * -1));
     }
@@ -37,11 +35,11 @@
     100% {
       transform: translateX(0);
     }
-
     0% {
       transform: translateX(calc((var(--slide-width) + var(--slide-width-gap)) * var(--no-of-slides) * -1));
     }
   }
+
   .carousel__wrapper {
     display: flex;
     /*justify-content: center;*/
@@ -58,25 +56,42 @@
   .carousel_backward > .carousel__slide{
     animation: scrollBackward var(--iteration-time) linear infinite;
   }
-
+  .carousel_backward:active > *, .carousel_forward:active > *{
+    animation-play-state: paused;
+  }
+  
   .carousel {
     padding: 100px 0;
     background: lightblue;
-
     overflow: hidden;
     width: calc(2 * var(--no-of-slides));
   }
+
   .carousel__slide{
     display: flex;
     flex-direction: column;
-
     flex: 0 0 auto;
-    /* margin: 0 calc(var(--slide-width) ; */
     margin-right: var(--slide-width-gap);
     box-sizing: border-box;
     width: var(--slide-width);
     height: var(--slide-height);
-    /*border: 1px dotted darkblue;*/
+    position: relative;
+    border: 0.1rem solid #888;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 3px;
+    opacity: 0.4;
+
+  }
+  .carousel__slide:hover{
+    opacity: 1;
+  }
+  .carousel__image:hover{
+    scale: 1.1;
+    /* border: 0.3rem solid purple; */
+    box-shadow: 0.2rem 4px 9px 0px violet;
+    border: 0.1rem solid purple;
   }
 
   .carousel__image {
@@ -84,33 +99,25 @@
     background-repeat: no-repeat;
     width: 100%; 
     height: 100%;
-
-  }
-
-  /* just for analysis remove this 3 rules later*/
-  .carousel__slide {
-    position: relative;
-    opacity: 0.6;
-    border: 1px solid purple;
+    transition: all 0.5s ease-in-out;
     border-radius: 3px;
-    transition: all 0.5 ease-in-out;
-  }
-  .carousel__slide:hover{
-    opacity: 1;
-  }
-  .carousel {
-    /* counter-reset: slideNo; */
   }
 
-  .carousel__slide::before {
-    /* counter-increment: slideNo;
+
+/*   
+  .carousel {
+    counter-reset: slideNo;
+  } */
+
+  /* .carousel__slide::before {
+    counter-increment: slideNo;
     content: counter(slideNo);
     position: absolute;
     top: 0%;
     left: 50%;
     font-size: 2rem;
-    color: lime; */
-  }
+    color: lime;
+  } */
   .moving-gallery-div > section{
     height: 100%;
   }
