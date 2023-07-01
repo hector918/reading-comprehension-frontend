@@ -1,5 +1,6 @@
 :root {
   --navbar-height: 60px;
+  --navbar-bg-color: #060644;
 }
 .navbar-h > .navbar-section > .navbar-logo {
   display: flex;
@@ -19,7 +20,7 @@
   text-decoration: none;
 }
 .navbar-h {
-  background-color: #060644;
+  background-color: var(--navbar-bg-color);
   transition: all 0.5 ease-in-out;
   height: var(--navbar-height);
   color: violet;
@@ -40,4 +41,8 @@
 }
 .form-label-h{
   text-align: left;
+}
+
+.modal-container{
+  border-radius: 0.2rem!important;
 }
