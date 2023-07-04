@@ -6,10 +6,12 @@ import fe from '../fetch_';
 export default function NavBar() {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
+  const [loginRegex, SetLoginRegex] = useState({});
   ///////////////////////////////////////////
   const on_sign_modal_show_click = (evt) => {
     sign_modal.current.classList.add("active");
     fe.checkLoginFunction((ret => {
+      if(ret !== false) SetLoginRegex(ret);
       SetLoginAvailable(ret !== false)
     }))
   }
@@ -35,7 +37,7 @@ export default function NavBar() {
         <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>Sign Up/ In</Link>
       </section>
     </header>
-    <Login sign_modal={sign_modal} loginAvailable={loginAvailable}/>
+    <Login sign_modal={sign_modal} loginAvailable={loginAvailable} loginRegex={loginRegex}/>
     
   </>
   )
