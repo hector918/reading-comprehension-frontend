@@ -46,3 +46,27 @@
 .modal-container{
   border-radius: 0.2rem!important;
 }
+.navbar-h > .navbar-section > .dropdown > .dropdown-toggle{
+  color: white!important;
+}
+.navbar-h > .navbar-section > .dropdown > .menu > li{
+  color: purple;
+  min-height: 50px;
+  display: grid;
+  align-content: center;
+  transition: all 0.3s ease-in-out;
+  border-radius: 3px;
+  &:hover{
+    background-color: var(--navbar-bg-color);
+    cursor: pointer;
+    color: white;
+    border: 2px solid purple;
+    box-shadow: -5px 2px 5px purple;
+  }
+}
+.navbar-h > .navbar-section > .dropdown > .menu > .current_language{
+  background-color: var(--navbar-bg-color);
+  cursor: pointer;
+  color: white;
+  border: 2px solid purple;
+}

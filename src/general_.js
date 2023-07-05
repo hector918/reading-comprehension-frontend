@@ -40,5 +40,9 @@ function createElement(json){
   }
   return root;
 }
-
-export {removeAllChild, createElement};
+///////////////////////////////////
+function trans(str, translation){
+  if(translation[str]) return translation[str];
+  return str;
+}
+export {removeAllChild, createElement, trans};

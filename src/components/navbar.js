@@ -2,20 +2,29 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import './navbar.css';
 import Login from "./login-panel";
-import fe from '../fetch_';
-export default function NavBar() {
+import fe_ from '../fetch_';
+import {trans} from '../general_';
+export default function NavBar({ language, setLanguage, translation, setTranslation }) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});
   ///////////////////////////////////////////
   const on_sign_modal_show_click = (evt) => {
     sign_modal.current.classList.add("active");
-    fe.checkLoginFunction((ret => {
+    fe_.checkLoginFunction((ret => {
       if(ret !== false) SetLoginRegex(ret);
       SetLoginAvailable(ret !== false)
     }))
   }
-  
+  const on_change_language = (evt) => {
+    const currentLanguage = evt.currentTarget.getAttribute("filename");
+    fe_.getLanguageFile(currentLanguage, (data) => {
+      if(data){
+        setLanguage(pv => ({...pv, currentLanguage}));
+        setTranslation(data);
+      } 
+    })
+  }
   //////////////////////////////////////////////
   return (<>
     <header className="navbar navbar-h">
@@ -33,8 +42,16 @@ export default function NavBar() {
         <input className="form-input" type="text" placeholder="search"/>
         <button className="btn btn-primary input-group-btn">Search</button>
       </div> */}
-        <Link to={"/about"} className="btn btn-link text-color nav-link-h">About</Link>
-        <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>Sign Up/ In</Link>
+        <div className="dropdown">
+          <span className="btn btn-link dropdown-toggle" tabIndex="0">
+            Language <i className="icon icon-caret"></i>
+          </span>
+          <ul className="menu">
+            {language.availableList.map(([key, val], idx)=> <li className={`menu-item ${language.currentLanguage === val ? "current_language" :""}`} filename={val} key={idx} onClick={on_change_language}>{key}</li>)}
+          </ul>
+        </div>
+        <Link to={"/about"} className="btn btn-link text-color nav-link-h">{trans("About", translation)}</Link>
+        <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
       </section>
     </header>
     <Login sign_modal={sign_modal} loginAvailable={loginAvailable} loginRegex={loginRegex}/>

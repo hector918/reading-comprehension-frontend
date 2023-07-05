@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 // import { Link } from "react-router-dom";
 import './login-panel.css';
-import {createElement, removeAllChild} from '../general_';
+import {createElement, trans} from '../general_';
 import fe_ from '../fetch_';
+
 export default function Login({sign_modal, loginAvailable, loginRegex}){
   let [sign_up, sign_in] = [useRef(null), useRef(null)];
   let [userIdRegex, setUserIDRegex] = useState([]);
