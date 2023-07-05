@@ -1,8 +1,9 @@
 import React from "react";
 import './landing.css';
 import MovingGallery from "../components/moving-gallery";
+import {trans} from '../general_';
 
-export default function Landing() {
+export default function Landing({translation}) {
   //////////////////////////////////////////
   const startButtonOnClick = (evt) => {
     console.log(evt)
@@ -16,8 +17,8 @@ export default function Landing() {
           <div className="panel-title"></div>
         </div>
         <div className="panel-nav">
-          <p>Uses AI read the document</p>
-          <p>and anwser questions</p>
+          <p>{trans("Uses AI read the document", translation)}</p>
+          <p>{trans("and anwser questions", translation)}</p>
         </div>
         <div className="panel-body">
           <p>Discover the full story - let AI guide you through every page.</p>
