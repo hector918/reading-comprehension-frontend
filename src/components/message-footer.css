@@ -1,0 +1,22 @@
+#root > .App > .message-footer-h{
+  bottom: 0;
+  right: 0;
+  z-index: 400;
+  display: inline-block;
+  /* flex-direction: row; */
+  overflow-x: hidden;
+}
+#root > .App > .message-footer-h > .toast{
+  float: left;
+  animation: toastIn 1s linear;
+  transition: all 0.5s ease-in-out;
+}
+@keyframes toastIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+
+  }
+}
