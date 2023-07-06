@@ -4,7 +4,7 @@ import './navbar.css';
 import Login from "./login-panel";
 import fe_ from '../fetch_';
 import {trans} from '../general_';
-export default function NavBar({ language, setLanguage, translation, setTranslation }) {
+export default function NavBar({ language, setLanguage, translation, setTranslation, addMessage }) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});
@@ -54,7 +54,13 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
         <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
       </section>
     </header>
-    <Login sign_modal={sign_modal} loginAvailable={loginAvailable} loginRegex={loginRegex}/>
+    <Login 
+      sign_modal={sign_modal} 
+      loginAvailable={loginAvailable} 
+      loginRegex={loginRegex} 
+      translation={translation}
+      addMessage={addMessage}
+    />
     
   </>
   )

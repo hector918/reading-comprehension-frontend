@@ -86,22 +86,10 @@ function getDocuments(type, callback){
     headers: {
       ...default_fetch_options,
     },
-    
   }
   fetch_post(`${API}/pda/list`, body, (data) => {
-    console.log(data);
     callback(data);
   });
-  // fetch(`${API}/pda/list`, body)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //     callback(data);
-  //   })
-  //   .catch(error => {
-  //     error_handle(error);
-  //     callback(false);
-  //   });
 }
 /////////////////////////////////////////////////
 const entry = { 

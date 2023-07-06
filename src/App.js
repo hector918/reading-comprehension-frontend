@@ -5,12 +5,13 @@ import Landing from './pages/landing';
 import NavBar from './components/navbar';
 import { useEffect, useState } from 'react';
 import fe_ from './fetch_';
+import {MessageFooter, addMessage} from './components/message-footer';
 /////////////////////
 
 function App() {
   let [translation, setTranslation] = useState({});
   let [language, setLanguage] = useState({availableList: [],currentLanguage: "english.json"});
-  document.title = "Reading Comprehension - v0.02";
+  // document.title = "Reading Comprehension - v0.02";
   //////////////////////////////////////////
   useEffect(()=>{
     fe_.getLanguages(({availableList, currentLanguage, translation}) => {
@@ -28,8 +29,14 @@ function App() {
       <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css"/>
       <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"></link>
       <Router>
-        <NavBar language={language} setLanguage={setLanguage} setTranslation={setTranslation} translation={translation}/>
-
+        <NavBar 
+          language={language} 
+          setLanguage={setLanguage} 
+          setTranslation={setTranslation} 
+          translation={translation}
+          addMessage={addMessage}
+        />
+        <MessageFooter translation={translation}/>
         <main>
           <Routes>
             {/* <Route path="/" element={<Home />} /> */}

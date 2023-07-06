@@ -4,15 +4,13 @@ import './login-panel.css';
 import {createElement, trans} from '../general_';
 import fe_ from '../fetch_';
 
-export default function Login({sign_modal, loginAvailable, loginRegex}){
-  let [sign_up, sign_in] = [useRef(null), useRef(null)];
+export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage}){
+  let [sign_up, sign_in, signUpIdInput, signUpPasswordInput1, signUpPasswordInput2, signInIdInput, signInPasswordInput] = [useRef(null),useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
   let [userIdRegex, setUserIDRegex] = useState([]);
   let [passwordRegex, setPasswordRegex] = useState([]);
   useEffect(()=>{
     setUserIDRegex(loginRegex.userIdRegex);
     setPasswordRegex(loginRegex.passwordRegex);
-    // console.log(userIdRegex, passwordRegex);
-
   }, [loginRegex]);
   /////////////////////////////////////////////
   const on_sign_modal_close_click = (evt) => {
@@ -34,25 +32,37 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
   }
   const sign_up_form_submit = (evt) => {
     evt.preventDefault();
-    const form = {};
-    evt.currentTarget.querySelectorAll('input').forEach(el => {
-      if(form[el.name] === el.name) if(el.value !== form[el.name]){
-        console.log(el.value, form[el.name])
-        const hintDiv = evt.currentTarget.querySelector('.password-hint-div');
-        hintDiv.replaceChildren(createElement({tagname_: "p", innerText: "- Two password should be same.", class: "form-input-hint"}))
-        return false;
-      }
-      form[el.name] = el.value;
+    const form = {userId: signUpIdInput.current.value};
+    const hintDiv = evt.currentTarget.querySelector('.password-hint-div');
+    if(signUpPasswordInput1.current.value !== signUpPasswordInput2.current.value){
       
-    });
+      hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("Two password should be same.", translation)}`, class: "form-input-hint"}));
+      return false;
+    }else form['password'] = signUpPasswordInput1.current.value;
+    
+
+    if(new RegExp(userIdRegex.regex).test(form.userId) === false){
+      console.log(trans("sign in user id regex test failed.",translation));
+      return;
+    };
+    if(new RegExp(passwordRegex.regex).test(form.password) === false) {
+      console.log(trans("sign in password regex test failed.",translation));
+      return;
+    };
+    //init register
     fe_.UserRegister(form, (res) => {
-      console.log(res);
+      if(res.userId){ //if successed
+        
+
+      }else{ // if failed
+        hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("Register failed, contact Admin.", translation)}`, class: "form-input-hint"}));
+      }
+      // console.log(res);
     })
   }
   const sign_in_form_submit = (evt) => {
     evt.preventDefault();
-    console.log(evt.currentTarget.querySelectorAll('input'))
-
+    addMessage("something", "some content");
   }
   const userId_input_change = (evt) => {
     const hintDiv = evt.target.form.querySelector('.userId-hint-div');
@@ -103,7 +113,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
     function test_value(value){
       const ret = [];
       if(allPasswordInput.length === 2) if(allPasswordInput[0].value !== allPasswordInput[1].value){
-        ret.push('- Two password should be same.');
+        ret.push(`- ${trans("Two password should be same.", translation)}`);
       }
       passwordRegex.forHint.forEach(el => {
         const regex = new RegExp(el[0]);
@@ -143,7 +153,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
                       <label className="form-label form-label-h" >User Id</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input" type="text" placeholder="User Id" onBlur={userId_input_change} name="userId"/>
+                      <input ref={signUpIdInput} className="form-input" type="text" placeholder="User Id" onBlur={userId_input_change} name="userId"/>
                     </div>
                   </div>
 
@@ -156,7 +166,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
                       <label className="form-label form-label-h" >Enter Password</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input" type="password" placeholder="Password" onBlur={password_input_change} name="password"/>
+                      <input className="form-input" type="password" ref={signUpPasswordInput1} placeholder="Password" onBlur={password_input_change} name="password"/>
                     </div>
                   </div>
                   <div className="form-group">
@@ -165,10 +175,10 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
                     </div>
                     <div className="col-9">
                       <input className="form-input"
-                        type="password" placeholder="re-Enter Password" onBlur={password_input_change} name="password"/>
+                        type="password" ref={signUpPasswordInput2} placeholder="re-Enter Password" onBlur={password_input_change} name="password"/>
                     </div>
                   </div>
-                  <div className="form-group has-success password-hint-div has-error">
+                  <div className="form-group password-hint-div has-error">
                     <p className="form-input-hint">The name is invalid.</p>
                   </div>
                   <div className="form-group login-modal-justify-right">
@@ -183,10 +193,10 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
                 <form className="form-horizontal" action="#forms" onSubmit={sign_in_form_submit}>
                   <div className="form-group">
                     <div className="col-3">
-                      <label className="form-label form-label-h" >Email</label>
+                      <label className="form-label form-label-h" >User Id</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input"  type="email" placeholder="Email" pattern="[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" />
+                      <input className="form-input" ref={signInIdInput}  type="text" placeholder="User Id" />
                     </div>
                   </div>
 
@@ -195,7 +205,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
                       <label className="form-label form-label-h" >Enter Password</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input" type="password" placeholder="Password" />
+                      <input className="form-input" type="password" ref={signInPasswordInput} placeholder="Password" />
                     </div>
                   </div>
                   <div className="form-group login-modal-justify-right">
@@ -206,7 +216,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex}){
             </div>
             </>
             
-            :"Login currently not available"}
+            :trans("Login currently not available.", translation)}
             
           </div>
         </div>
