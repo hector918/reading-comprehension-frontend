@@ -42,7 +42,12 @@ function createElement(json){
 }
 ///////////////////////////////////
 function trans(str, translation){
-  if(translation[str]) return translation[str];
+  try {
+    if(translation[str]) return translation[str];
+    
+  } catch (error) {
+    return str;
+  }
   return str;
 }
 export {removeAllChild, createElement, trans};

@@ -69,6 +69,16 @@ function UserRegister(form, callback){
   }
   fetch_post(`${API}/login/register`, body, callback);
 }
+function UserLogin(form, callback){
+  const body = {
+    method: "POST",
+    body: JSON.stringify(form),
+    headers: {
+      ...default_fetch_options,
+    },
+  }
+  fetch_post(`${API}/login/access`, body, callback);
+}
 ////language/////////////////////////////////////
 function getLanguages(callback){
   fetch_get(`${API}/languages/all_languages`, (data) => {
