@@ -5,7 +5,7 @@ import {createElement, trans} from '../general_';
 import fe_ from '../fetch_';
 
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage}){
-  let [sign_up, sign_in, signUpIdInput, signUpPasswordInput1, signUpPasswordInput2, signInIdInput, signInPasswordInput] = [useRef(null),useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
+  let [sign_up, sign_in, signUpIdInput, signUpPasswordInput1, signUpPasswordInput2, signInIdInput, signInPasswordInput, sign_in_tab_button] = [useRef(null),useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
   let [userIdRegex, setUserIDRegex] = useState([]);
   let [passwordRegex, setPasswordRegex] = useState([]);
   useEffect(()=>{
@@ -52,8 +52,12 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
     //init register
     fe_.UserRegister(form, (res) => {
       if(res.userId){ //if successed
-        
-
+          addMessage(
+            trans("Successfully registered"), 
+            trans("This message will automatically close."), 
+            "toast-success"
+          );
+          sign_in_tab_button.current.click();
       }else{ // if failed
         hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("Register failed, contact Admin.", translation)}`, class: "form-input-hint"}));
       }
@@ -62,7 +66,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   }
   const sign_in_form_submit = (evt) => {
     evt.preventDefault();
-    addMessage("something", "some content");
+    //
   }
   const userId_input_change = (evt) => {
     const hintDiv = evt.target.form.querySelector('.userId-hint-div');
@@ -94,7 +98,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
       userIdRegex.forHint.forEach(el => {
         const regex = new RegExp(el[0]);
         if(regex.test(value) === false) {
-          ret.push(createElement({tagname_: "p", innerText: el[1], class: "form-input-hint"}));
+          ret.push(createElement({tagname_: "p", innerText: `- ${trans(el[1], translation)}`, class: "form-input-hint"}));
         } 
       })
       return ret;
@@ -118,7 +122,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
       passwordRegex.forHint.forEach(el => {
         const regex = new RegExp(el[0]);
         if(regex.test(value) === false) {
-          ret.push(el[1]);
+          ret.push(`- ${trans(el[1], translation)}`);
         } 
       })
       return ret;
@@ -131,7 +135,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
       <div className="modal-container">
         <div className="modal-header">
           <span href="#close" className="btn btn-clear float-right" aria-label="Close" onClick={on_sign_modal_close_click}></span>
-          <div className="modal-title h5 text-left">Binary Mind - Login</div>
+          <div className="modal-title h5 text-left">Binary Mind - {trans("Sign Up/ In", translation)}</div>
         </div>
         <div className="modal-body">
           <div className="content modal-content-h">
@@ -139,10 +143,10 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
             <>
             <ul className="tab tab-block tab-h">
               <li className="tab-item" onClick={on_sign_modal_tab_click} type="sign-up">
-                <span >Sign up</span>
+                <span >{trans("Sign Up",translation)}</span>
               </li>
-              <li className="tab-item active" onClick={on_sign_modal_tab_click} type="sign-in">
-                <span >Sign In</span>
+              <li ref={sign_in_tab_button} className="tab-item active" onClick={on_sign_modal_tab_click} type="sign-in">
+                <span >{trans("Sign In",translation)}</span>
               </li>
             </ul>
             <div className="columns is-not-visable-h" ref={sign_up}>
@@ -150,39 +154,39 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
                 <form className="form-horizontal" action="#forms" onSubmit={sign_up_form_submit}>
                   <div className="form-group">
                     <div className="col-3">
-                      <label className="form-label form-label-h" >User Id</label>
+                      <label className="form-label form-label-h" >{trans("User Id", translation)}</label>
                     </div>
                     <div className="col-9">
-                      <input ref={signUpIdInput} className="form-input" type="text" placeholder="User Id" onBlur={userId_input_change} name="userId"/>
+                      <input ref={signUpIdInput} className="form-input" type="text" placeholder={trans("User Id", translation)} onBlur={userId_input_change} name="userId"/>
                     </div>
                   </div>
 
                   <div className="form-group has-error userId-hint-div">
-                    <p className="form-input-hint ">The name is invalid.</p>
+                    {/* <p className="form-input-hint ">{trans("The name is invalid.", translation)}</p> */}
                   </div>
 
                   <div className="form-group">
                     <div className="col-3">
-                      <label className="form-label form-label-h" >Enter Password</label>
+                      <label className="form-label form-label-h" >{trans("Enter password", translation)}</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input" type="password" ref={signUpPasswordInput1} placeholder="Password" onBlur={password_input_change} name="password"/>
+                      <input className="form-input" type="password" ref={signUpPasswordInput1} placeholder={trans("Password", translation)} onBlur={password_input_change} name="password"/>
                     </div>
                   </div>
                   <div className="form-group">
                     <div className="col-3">
-                      <label className="form-label form-label-h" >re-Enter Password</label>
+                      <label className="form-label form-label-h" >{trans("re-Enter password", translation)}</label>
                     </div>
                     <div className="col-9">
                       <input className="form-input"
-                        type="password" ref={signUpPasswordInput2} placeholder="re-Enter Password" onBlur={password_input_change} name="password"/>
+                        type="password" ref={signUpPasswordInput2} placeholder={trans("re-Enter password", translation)} onBlur={password_input_change} name="password"/>
                     </div>
                   </div>
                   <div className="form-group password-hint-div has-error">
-                    <p className="form-input-hint">The name is invalid.</p>
+                    {/* <p className="form-input-hint">{trans("The name is invalid.", translation)}</p> */}
                   </div>
                   <div className="form-group login-modal-justify-right">
-                    <button className="btn btn-style-h"> Sign Up </button>
+                    <button className="btn btn-style-h"> {trans("Sign Up", translation)} </button>
                   </div>
                 </form>
               </div>
@@ -193,23 +197,23 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
                 <form className="form-horizontal" action="#forms" onSubmit={sign_in_form_submit}>
                   <div className="form-group">
                     <div className="col-3">
-                      <label className="form-label form-label-h" >User Id</label>
+                      <label className="form-label form-label-h" >{trans("User Id", translation)}</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input" ref={signInIdInput}  type="text" placeholder="User Id" />
+                      <input className="form-input" ref={signInIdInput}  type="text" placeholder={trans("User Id", translation)} />
                     </div>
                   </div>
 
                   <div className="form-group">
                     <div className="col-3">
-                      <label className="form-label form-label-h" >Enter Password</label>
+                      <label className="form-label form-label-h" >{trans("Enter password", translation)}</label>
                     </div>
                     <div className="col-9">
-                      <input className="form-input" type="password" ref={signInPasswordInput} placeholder="Password" />
+                      <input className="form-input" type="password" ref={signInPasswordInput} placeholder={trans("Password", translation)} />
                     </div>
                   </div>
                   <div className="form-group login-modal-justify-right">
-                    <button className="btn btn-style-h"> Login </button>
+                    <button className="btn btn-style-h"> {trans("Login", translation)} </button>
                   </div>
                 </form>
               </div>

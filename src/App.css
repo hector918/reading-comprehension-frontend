@@ -8,10 +8,10 @@ html, body, main, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-size: 1.5vw;
+  font-size: 1vw;
 }
-h6{
-  font-size: 1.8vw!important;
+h6, .h6{
+  font-size: 1.2vw!important;
 }
 main{
   height: calc(100% - var(--navbar-height));

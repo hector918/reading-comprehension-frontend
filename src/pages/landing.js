@@ -21,10 +21,14 @@ export default function Landing({translation}) {
           <p>{trans("and anwser questions", translation)}</p>
         </div>
         <div className="panel-body">
-          <p>Discover the full story - let AI guide you through every page.</p>
+          <p>{trans("Discover the full story - let AI guide you through every page.", translation)}</p>
+          
+        </div>
+        <div className="panel-body">
+          <button className="btn-style-h-lg" onClick={startButtonOnClick}>Start</button>
         </div>
         <div className="panel-footer">
-          <button className="btn-style-h-lg" onClick={startButtonOnClick}>Start</button>
+          
         </div>
       </div>
     </div>

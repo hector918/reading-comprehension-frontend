@@ -2,14 +2,18 @@
   bottom: 0;
   right: 0;
   z-index: 400;
-  display: inline-block;
-  /* flex-direction: row; */
+  display: grid;
+  box-sizing: border-box;
+  grid-auto-flow: column;
   overflow-x: hidden;
 }
-#root > .App > .message-footer-h > .toast{
-  float: left;
+#root > .App > .message-footer-h > div{
+  min-width: calc(100vw / 6);
   animation: toastIn 1s linear;
   transition: all 0.5s ease-in-out;
+}
+#root > .App > .message-footer-h > .on-remove{
+  animation: toastOut 1s linear;
 }
 @keyframes toastIn {
   0% {
@@ -17,6 +21,15 @@
   }
   100% {
     transform: translateX(0%);
+
+  }
+}
+@keyframes toastOut {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
 
   }
 }

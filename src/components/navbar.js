@@ -31,7 +31,7 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
       <section className="navbar-section">
         <Link className="navbar-logo" to={"/"}>
           <img src="./logo.png" width="44" height="44" alt="Logo" />
-          <span className="unselectable text-color">Binary Mind</span>
+          <span className="unselectable text-color h6">Binary Mind</span>
         </Link>
 
         {/* <a href="..." className="btn btn-link">Docs</a>

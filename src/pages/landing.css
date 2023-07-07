@@ -64,6 +64,17 @@ main > .landing-container{
   color: #131313;
   /* text-shadow: 0 0 10px violet; */
 }
+.landing-container > .floating-panel > .panel > .panel-body{
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap-reverse;
+}
+.landing-container > .floating-panel > .panel > .panel-body > .btn-style-h-lg{
+  align-self: flex-end;
+  
+}
+
 .landing-container > .floating-panel > .panel > .panel-body > p{
+  margin: auto;
   font-size: 1.6vw;
 }
