@@ -1,3 +1,5 @@
+import sha256 from 'crypto-js/sha256';
+/////////////////////////////////////////////////
 function removeAllChild(node){
   if(!node || !node.childNodes) return false;
   for(let x of node.childNodes){
@@ -41,6 +43,12 @@ function createElement(json){
   return root;
 }
 ///////////////////////////////////
+function createHash(str){
+  
+  const hashDigest = sha256(str);
+  return hashDigest.toString();
+}
+///////////////////////////////////
 function trans(str, translation){
   try {
     if(translation[str]) return translation[str];
@@ -50,4 +58,4 @@ function trans(str, translation){
   }
   return str;
 }
-export {removeAllChild, createElement, trans};
+export {removeAllChild, createElement, trans, createHash};

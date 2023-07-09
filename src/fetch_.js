@@ -77,7 +77,12 @@ function UserLogin(form, callback){
       ...default_fetch_options,
     },
   }
-  fetch_post(`${API}/login/access`, body, callback);
+  fetch_post(`${API}/login/login`, body, callback);
+}
+function UserLogout(callback){
+  fetch_get(`${API}/login/logout`, (data) => {
+    callback(data);
+  })
 }
 ////language/////////////////////////////////////
 function getLanguages(callback){
@@ -103,7 +108,8 @@ function getDocuments(type, callback){
 }
 /////////////////////////////////////////////////
 const entry = { 
-  checkLoginFunction, checkUserID, UserRegister,
+  checkLoginFunction, checkUserID, 
+  UserRegister, UserLogin, UserLogout,
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,
