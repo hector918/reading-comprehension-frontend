@@ -11,6 +11,7 @@ import {MessageFooter, addMessage} from './components/message-footer';
 function App() {
   let [translation, setTranslation] = useState({});
   let [language, setLanguage] = useState({availableList: [],currentLanguage: "english.json"});
+  let [userInfo, setUserInfo] = useState({});
   // document.title = "Reading Comprehension - v0.02";
   //////////////////////////////////////////
   useEffect(()=>{
@@ -18,8 +19,14 @@ function App() {
       if(availableList && currentLanguage) setLanguage({availableList, currentLanguage});
       if(translation) setTranslation(translation);
     });
+    fe_.checkLoginStatus((data)=>{
+      setUserInfo(data.data);
+    });
   }, [])
-  
+  //////////////////////////////////////////
+  const isLogin = () => {
+    return userInfo.username ? true : false;
+  }
   //////////////////////////////////////////
   return (
     <div className="App">
@@ -30,11 +37,14 @@ function App() {
       <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"></link>
       <Router>
         <NavBar 
-          language={language} 
-          setLanguage={setLanguage} 
-          setTranslation={setTranslation} 
-          translation={translation}
-          addMessage={addMessage}
+          language = {language} 
+          setLanguage = {setLanguage} 
+          setTranslation = {setTranslation} 
+          translation = {translation}
+          addMessage = {addMessage}
+          userInfo = {userInfo}
+          setUserInfo = {setUserInfo}
+          isLogin = {isLogin}
         />
         <MessageFooter translation={translation}/>
         <main>

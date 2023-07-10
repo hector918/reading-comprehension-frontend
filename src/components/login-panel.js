@@ -4,7 +4,7 @@ import './login-panel.css';
 import {createElement, trans, createHash} from '../general_';
 import fe_ from '../fetch_';
 
-export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage}){
+export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
   let [sign_up, sign_in, signUpIdInput, signUpPasswordInput1, signUpPasswordInput2, signInIdInput, signInPasswordInput, sign_in_tab_button] = [useRef(null),useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
   let [userIdRegex, setUserIDRegex] = useState([]);
   let [passwordRegex, setPasswordRegex] = useState([]);
@@ -66,15 +66,32 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   }
   const sign_in_form_submit = (evt) => {
     evt.preventDefault();
+    const hintDiv = evt.target.querySelector('.sign-result-div');
+    hintDiv.replaceChildren(createElement({
+      tagname_: "p",  childs_:
+      [
+        {tagname_: "i", class:"form-icon loading"}, 
+      ], 
+      class: "form-input-hint", 
+    }))
     fe_.UserLogin({
       userId: signInIdInput.current.value,
       password: createHash(signInPasswordInput.current.value),
     }, (res) => {
-      console.log(res)
+      if(res.error){
+        //failed
+        setTimeout(() => {
+          hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("User ID or password not matched.", translation)}`, class: "form-input-hint"}));
+        }, 300);
+      }else{
+        //successed
+        setUserInfo(res.data);
+        on_sign_modal_close_click();
+        addMessage(trans("Successed login.", translation),"", "toast-success");
+        hintDiv.replaceChildren();
+      }
     })
     
-    // fe_.UserLogin({userId: signInIdInput.current.value, })
-    //
   }
   const userId_input_change = (evt) => {
     const hintDiv = evt.target.form.querySelector('.userId-hint-div');
@@ -219,6 +236,9 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
                     <div className="col-9">
                       <input className="form-input" type="password" ref={signInPasswordInput} placeholder={trans("Password", translation)} />
                     </div>
+                  </div>
+                  <div className="form-group sign-result-div has-error">
+                    {/* <p className="form-input-hint">{trans("The name is invalid.", translation)}</p> */}
                   </div>
                   <div className="form-group login-modal-justify-right">
                     <button className="btn btn-style-h"> {trans("Login", translation)} </button>

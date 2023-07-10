@@ -3,9 +3,11 @@ let default_fetch_options = {
   "Access-Control-Allow-Origin": "*" ,
   "Content-Type": "application/json",
 };
+
 function error_handle(error) {
   console.error(error);
 }
+
 function fetch_post(url, body, callback){
   //add cookies when fired
   body.credentials = "include";
@@ -19,6 +21,7 @@ function fetch_post(url, body, callback){
     callback(false);
   });
 }
+
 function fetch_get(url, callback){
   const body = {
     method: "GET",
@@ -84,6 +87,11 @@ function UserLogout(callback){
     callback(data);
   })
 }
+function checkLoginStatus(callback){
+  fetch_get(`${API}/login/check_login_status`, (data) => {
+    callback(data);
+  })
+}
 ////language/////////////////////////////////////
 function getLanguages(callback){
   fetch_get(`${API}/languages/all_languages`, (data) => {
@@ -109,7 +117,7 @@ function getDocuments(type, callback){
 /////////////////////////////////////////////////
 const entry = { 
   checkLoginFunction, checkUserID, 
-  UserRegister, UserLogin, UserLogout,
+  UserRegister, UserLogin, UserLogout, checkLoginStatus,
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,

@@ -6,7 +6,7 @@ const autoCollapseTime = 5000;
 function MessageFooter({translation}){
   const messageBoard = useRef(null);
   ///////////////////////////////////////////////////////
-  function createMessage(title, content, type="toast-primary"){
+  function createMessage(title, content = "", type="toast-primary"){
     //creating element
     const element = createElement({class: `toast ${type}`, childs_:[
       {tagname_: "button", class: "btn btn-clear float-right", event_:{"click": onRemove}},
