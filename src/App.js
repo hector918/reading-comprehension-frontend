@@ -2,6 +2,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from './pages/landing';
+import ReadingPage from './pages/reading-page';
 import NavBar from './components/navbar';
 import { useEffect, useState } from 'react';
 import fe_ from './fetch_';
@@ -30,8 +31,6 @@ function App() {
   //////////////////////////////////////////
   return (
     <div className="App">
-      {/* <link rel="stylesheet" href="./bulma@0.9.4.min.css"></link>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"></link> */}
       <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css"/>
       <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css"/>
       <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"></link>
@@ -54,7 +53,7 @@ function App() {
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/login" element={<Navigation />} /> */}
             {/* <Route path="/assistance" element={<ReadingAssistance />} /> */}
-            {/* <Route path="/comprehension" element={<ReadingComprehension />} /> */}
+            <Route path="/reading" element={<ReadingPage translation={translation} />} />
             {/* <Route path="/framework-testing" element={<AllInOneFramework />} /> */}
             <Route path="/" element={<Landing translation={translation}/>} />
             {/* <Route path="/testing_fetch" element={<TestOnly />} /> */}

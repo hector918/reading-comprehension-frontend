@@ -5,7 +5,9 @@ import {createElement, trans, createHash} from '../general_';
 import fe_ from '../fetch_';
 
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
+  //define useref
   let [sign_up, sign_in, signUpIdInput, signUpPasswordInput1, signUpPasswordInput2, signInIdInput, signInPasswordInput, sign_in_tab_button] = [useRef(null),useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
+  //
   let [userIdRegex, setUserIDRegex] = useState([]);
   let [passwordRegex, setPasswordRegex] = useState([]);
   useEffect(()=>{
@@ -18,6 +20,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   }
   const on_sign_modal_tab_click = (evt) => {
     const type = evt.currentTarget.getAttribute("type");
+    //switching tabs
     if(type === "sign-up"){
       sign_up.current.classList.remove("is-not-visable-h");
       sign_in.current.classList.add("is-not-visable-h");
@@ -34,13 +37,13 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
     evt.preventDefault();
     const form = {userId: signUpIdInput.current.value};
     const hintDiv = evt.currentTarget.querySelector('.password-hint-div');
+    // verification of input value
     if(signUpPasswordInput1.current.value !== signUpPasswordInput2.current.value){
       
       hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("Two password should be same.", translation)}`, class: "form-input-hint"}));
       return false;
     }else form['password'] = signUpPasswordInput1.current.value;
     
-
     if(new RegExp(userIdRegex.regex).test(form.userId) === false){
       console.log(trans("sign in user id regex test failed.",translation));
       return;
@@ -52,16 +55,19 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
     //init register
     fe_.UserRegister(form, (res) => {
       if(res.userId){ //if successed
-          addMessage(
-            trans("Successfully registered"), 
-            trans("This message will automatically close."), 
-            "toast-success"
-          );
-          sign_in_tab_button.current.click();
+        addMessage(
+          trans("Successfully registered"), 
+          trans("This message will automatically close."), 
+          "toast-success"
+        );
+        sign_in_tab_button.current.click();
+        //clean up input value
+        signUpIdInput.current.value = "";
+        signUpPasswordInput1.current.value = "";
+        signUpPasswordInput2.current.value = "";
       }else{ // if failed
         hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("Register failed, contact Admin.", translation)}`, class: "form-input-hint"}));
       }
-      // console.log(res);
     })
   }
   const sign_in_form_submit = (evt) => {
@@ -89,6 +95,8 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         on_sign_modal_close_click();
         addMessage(trans("Successed login.", translation),"", "toast-success");
         hintDiv.replaceChildren();
+        signInPasswordInput.current.value = "";
+        signInIdInput.current.value = "";
       }
     })
     

@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import './navbar.css';
 import Login from "./login-panel";
+import UserProfileDropdown from "./user-profile";
 import fe_ from '../fetch_';
 import {trans} from '../general_';
+
 export default function NavBar({ language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin }) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
@@ -25,9 +27,7 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
       } 
     })
   }
-  const on_user_profile_click = (evt) => {
-    console.log(userInfo)
-  }
+
   const on_user_logout_click = (evt) => {
     fe_.UserLogout((res) => {
       if(res.error){
@@ -74,42 +74,29 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
         </div>
         <Link to={"/about"} className="btn btn-link text-color nav-link-h">{trans("About", translation)}</Link>
         {isLogin()?
-          <>
-            <div className="dropdown dropdown-right">
-              <span href="#" className="btn btn-link dropdown-toggle" tabIndex="0">
-              {trans("Me", translation)} <i className="icon icon-caret"></i>
-              </span>
-              <ul className="menu profile-menu"><form>
-                <li className="menu-item">
-                    <div className="tile tile-centered">
-                      <div className="tile-icon"><img className="avatar" src="../img/avatar-4.png" alt="Avatar"/></div>
-                      <div className="tile-content">{userInfo.username}</div>
-                    </div>
-                </li>
-                <li className="menu-item">
-                    <div className="tile tile-centered" onClick={on_user_logout_click}>
-                      <div className="tile-icon"><i class="icon icon-arrow-left"></i></div>
-                      <div className="tile-content">{trans("logout", translation)}</div>
-                    </div>
-                </li>
-              </form></ul>
-            </div>
-          </>
+          <UserProfileDropdown
+            translation = {translation}
+            userInfo = {userInfo}
+            setUserInfo = {setUserInfo}
+            addMessage = {addMessage}
+            on_user_logout_click = {on_user_logout_click}
+          />
         :
           <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
         }
       </section>
     </header>
-    <Login 
-      sign_modal = {sign_modal} 
-      loginAvailable = {loginAvailable} 
-      loginRegex = {loginRegex} 
-      translation = {translation}
-      addMessage = {addMessage}
-      userInfo = {userInfo}
-      setUserInfo = {setUserInfo}
-    />
-    
+    {isLogin()? ""
+      :<Login 
+        sign_modal = {sign_modal} 
+        loginAvailable = {loginAvailable} 
+        loginRegex = {loginRegex} 
+        translation = {translation}
+        addMessage = {addMessage}
+        userInfo = {userInfo}
+        setUserInfo = {setUserInfo}
+      />
+    }
   </>
   )
 }
