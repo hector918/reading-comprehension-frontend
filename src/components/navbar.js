@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import './navbar.css';
 import Login from "./login-panel";
-import UserProfileDropdown from "./user-profile";
+import UserProfileDropdown from "./user-profile-dropdown";
 import fe_ from '../fetch_';
 import {trans} from '../general_';
 

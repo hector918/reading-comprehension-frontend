@@ -1,4 +1,9 @@
 .reading-page-div-h{
   background-color: aqua;
   height: 100%;
+  display: grid;
+  grid-template-rows: repeat(12, 1fr);
+  & > div{
+    border: 1px red solid;
+  }
 }

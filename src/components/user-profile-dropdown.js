@@ -1,5 +1,5 @@
 import React from "react";
-import './user-profile.css';
+import './user-profile-dropdown.css';
 import {trans} from '../general_';
 
 export default function UserProfileDropdown({translation, userInfo, setUserInfo, addMessage, on_user_logout_click}){
@@ -9,7 +9,7 @@ export default function UserProfileDropdown({translation, userInfo, setUserInfo,
       {trans("Me", translation)} <i className="icon icon-caret"></i>
       </span>
       <ul className="menu profile-menu"><form>
-        <li class="divider text-left" data-content={trans("Profile", translation)}></li>
+        <li className="divider text-left" data-content={trans("Profile", translation)}></li>
         <li className="menu-item">
             <div className="tile tile-centered">
               <div className="tile-icon"><img className="avatar" src="../img/avatar-4.png" alt="Avatar"/></div>
