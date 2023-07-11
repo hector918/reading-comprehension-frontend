@@ -5,7 +5,7 @@
   display: grid;
   box-sizing: border-box;
   grid-auto-flow: column;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 #root > .App > .message-footer-h > div{
   min-width: calc(100vw / 6);

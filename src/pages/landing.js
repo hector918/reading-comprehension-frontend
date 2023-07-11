@@ -12,24 +12,41 @@ export default function Landing({translation}) {
   return <div className="landing-container">
     <div className="moving-gallery-panel"><MovingGallery /></div>
     <div className="floating-panel">
-      <div className="panel">
-        <div className="panel-header">
-          <div className="panel-title"></div>
-        </div>
-        <div className="panel-nav">
-          <p>{trans("Uses AI read the document", translation)}</p>
-          <p>{trans("and anwser questions", translation)}</p>
-        </div>
-        <div className="panel-body">
-          <p>{trans("Discover the full story - let AI guide you through every page.", translation)}</p>
-          
-        </div>
-        <div className="panel-body">
-          <button className="btn-style-h-lg" onClick={startButtonOnClick}>Start</button>
-        </div>
-        <div className="panel-footer">
-          
-        </div>
+      <div>
+      </div>
+      <div>
+        <span className="title-h">{trans("Uses AI", translation)}</span>
+      </div>
+      <div>
+        <span className="title-h">{trans("read the document", translation)}</span>
+      </div>
+      <div>
+        <span className="title-h">{trans("and anwser", translation)}</span>
+      </div>
+      <div>
+        <span className="title-h">{trans("questions.", translation)}</span>
+      </div>
+
+
+      <div>
+        <span className="subtitle-h">{trans("Discover the full story", translation)}</span>
+      </div>
+      <div>
+        <span className="subtitle-h">{trans("let AI guide you through every page.", translation)}</span>
+      </div>
+      <div>
+        <span className="under-construction">{trans("Under construction", translation)}</span>
+        
+      </div>
+      <div style={{justifyContent:"center"}}>
+        <span className="major-button"><span onClick={startButtonOnClick}>{trans("Start", translation)}</span></span>
+        
+      </div>
+      <div>
+        <span className="title-h">{trans("", translation)}</span>
+      </div>
+      <div>
+        
       </div>
     </div>
     
