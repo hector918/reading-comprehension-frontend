@@ -26,7 +26,11 @@ function App() {
   }, [])
   //////////////////////////////////////////
   const isLogin = () => {
-    return userInfo.username ? true : false;
+    try {
+      return userInfo.username ? true : false;
+    } catch (error) {
+      return false;
+    }
   }
   //////////////////////////////////////////
   return (
