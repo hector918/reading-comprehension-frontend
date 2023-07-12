@@ -41,6 +41,9 @@ export default function MovingGallery(){
     <section className="">
 
       <div className="container-fluid px-0">
+        <div className="gap-h">
+          <span>Shared documents &darr;</span>
+        </div>
         <div className="row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_forward">
@@ -49,6 +52,9 @@ export default function MovingGallery(){
               {cards.popular?.repeatSerial.map(card_templete)}
             </div>
           </div>
+        </div>
+        <div className="gap-h">
+          <span>Chat history &darr;</span>
         </div>
 
         <div className="row">
@@ -59,6 +65,10 @@ export default function MovingGallery(){
               {cards.collection?.repeatSerial.map(card_templete)}
             </div>
           </div>
+        </div>
+        <div className="gap-h">
+          <span>Random &darr;</span>
+
         </div>
 
         <div className="row third-row">

@@ -2,8 +2,18 @@
   background-color: aqua;
   height: 100%;
   display: grid;
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: 1fr 10fr 1fr;
   & > div{
     border: 1px red solid;
   }
+}
+
+.reading-page-div-h > .reading-header-gap{
+
+}
+.reading-page-div-h > .reading-central-panel{
+  
+}
+.reading-page-div-h > .reading-footer-gap{
+
 }
