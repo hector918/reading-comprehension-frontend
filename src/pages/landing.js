@@ -39,7 +39,7 @@ export default function Landing({translation}) {
         
       </div>
       <div style={{justifyContent:"center"}}>
-        <span className="major-button"><span onClick={startButtonOnClick}>{trans("Start", translation)}</span></span>
+        <span className="major-button"><span onClick={startButtonOnClick}>{trans("Start>", translation)}</span></span>
         
       </div>
       <div>

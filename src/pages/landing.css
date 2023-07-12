@@ -59,11 +59,14 @@ main > .landing-container{
     font-size: 3vw;
     text-indent: 1.3vw;
     font-weight: bold;
+    cursor: default;
   }
   .landing-container > .floating-panel > div > .subtitle-h{
     text-align: left;
     font-size: 1.8vw;
     text-indent: 1.5vw;
+    cursor: default;
+
   }
   .landing-container > .floating-panel > div > .under-construction{
     flex-grow: 1;
