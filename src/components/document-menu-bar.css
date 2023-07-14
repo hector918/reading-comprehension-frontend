@@ -1,0 +1,8 @@
+.document-menu-bar{
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 3vw;
+  > div{
+    cursor: pointer;
+  }
+}

@@ -2,11 +2,13 @@ import React from "react";
 import './landing.css';
 import MovingGallery from "../components/moving-gallery";
 import {trans} from '../general_';
+import { useNavigate } from "react-router-dom";
 
 export default function Landing({translation}) {
+  const navigate = useNavigate();
   //////////////////////////////////////////
   const startButtonOnClick = (evt) => {
-    console.log(evt)
+    navigate("/reading");
   }
   //////////////////////////////////////////
   return <div className="landing-container">
