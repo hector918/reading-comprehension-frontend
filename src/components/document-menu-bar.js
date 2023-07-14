@@ -1,43 +1,47 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import './document-menu-bar.css';
-import sha256 from 'crypto-js/sha256';
-
-export default function DocumentMenuBar(){
+import {createHash, trans} from '../general_';
+import fe_ from '../fetch_';
+/////////////////////////////////////////////////
+export default function DocumentMenuBar({translation}) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
   const fileInput = useRef(null);
+  const tooltip = useRef(null);
   const onUploadClick = (evt) => {
     fileInput.current.click();
   }
-  const OnUploadInputChange = (evt) => {
-    console.log(evt);
-    if (evt.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (event) {
-         var data = event.target.result;
-         var encrypted = sha256(data).toString();
-         console.log(encrypted)
-      };
-      reader.readAsArrayBuffer(evt.target.files[0]);
+  const OnUploadInputChange = async(evt) => {
+    const file = evt.target.files[0];
+    if (file && !isUploading) {
+      setIsUploading(true);
+      setUploadingStatus(pv => [...pv, trans("Start upload...", translation)]);
+      setUploadingStatus(pv => [...pv, trans("File name:", translation) + ` ${file.name}`]);
+
+      const fileHash = await createHash(file);
       
-      // setIsLoading(true); //start animation loading
+      const fileMeta = await fe_.uploadFileCheckExists(fileHash);
+      setUploadingStatus(pv => [...pv, trans("File exists:", translation) + ` ${!fileMeta.error?"true":"false"}`]);
 
-      // lc.uploadFile(evt.target, (data) => {
-      //   evt.target.value = "";
-      //   // setIsLoading(false);
-      //   if (data === false) return;
-      //   update_recents();
-      //   // pop_frame(1);
+      console.log(fileMeta);
+      //clear up after upload
+      //clear file input value
+      setUploadingStatus([trans("Click me to upload file...", translation)]);
+      evt.target.value = "";
+      setIsUploading(false);
 
-      //   if (data.fileHash) setCurrentFileHash(data.fileHash);
-      // });
+      //hash of the old man and the sea
+      //0ad1d820761a5aca9df52c22ea1cfc4ca5dad64923f51270dbe8f106f3817eef
     }
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>
-    <div onClick={onUploadClick}>
-      <span><i class="icon icon-upload"></i>Upload</span>
+    <div className='' onClick={onUploadClick}>
+      <span ref={tooltip} className='tooltip tooltip-bottom' data-tooltip={uploadingStatus.join("\n")}><i className="icon icon-upload"></i>{trans("Upload", translation)}</span>
       <input ref={fileInput} type="file" style={{ display: "none" }} onChange={OnUploadInputChange} />
+      <div className='icon-place-holder'>{isUploading?<div className="loading"></div>:""}</div>
     </div>
-    <div><span><i class="icon icon-apps"></i>Library</span></div>
+    <div><span><i className="icon icon-apps"></i>Library</span></div>
 
   </div>
 }

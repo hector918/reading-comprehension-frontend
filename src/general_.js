@@ -1,4 +1,5 @@
-import sha256 from 'crypto-js/sha256';
+import CryptoJS from 'crypto-js';
+
 /////////////////////////////////////////////////
 function removeAllChild(node){
   if(!node || !node.childNodes) return false;
@@ -42,11 +43,46 @@ function createElement(json){
   }
   return root;
 }
-///////////////////////////////////
-function createHash(str){
-  
-  const hashDigest = sha256(str);
-  return hashDigest.toString();
+////this is callback version of createFileHash//////////
+// function createHash(file, callback){
+//   var reader = new FileReader();
+//   reader.onload = function (evt) {
+//     const hash = CryptoJS.SHA256(arrayBufferToWordArray(evt.target.result)).toString();
+//     callback(hash);
+//     ///////////////////////////////
+//     function arrayBufferToWordArray(ab) {
+//       var i8a = new Uint8Array(ab);
+//       var a = [];
+//       for (var i = 0; i < i8a.length; i += 4) {
+//         a.push((i8a[i] << 24) | (i8a[i + 1] << 16) | (i8a[i + 2] << 8) | (i8a[i + 3]));
+//       }
+//       return CryptoJS.lib.WordArray.create(a, i8a.length);
+//     }
+//   };
+//   reader.readAsArrayBuffer(file);
+// }
+function createHash(file) {
+  return new Promise((resolve, reject) => {
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+      const hash = CryptoJS.SHA256(arrayBufferToWordArray(evt.target.result)).toString();
+      resolve(hash);
+    };
+    reader.onerror = function (evt) {
+      reject(evt.target.error);
+    };
+    reader.readAsArrayBuffer(file);
+
+    ///////////////////////////////
+    function arrayBufferToWordArray(ab) {
+      var i8a = new Uint8Array(ab);
+      var a = [];
+      for (var i = 0; i < i8a.length; i += 4) {
+        a.push((i8a[i] << 24) | (i8a[i + 1] << 16) | (i8a[i + 2] << 8) | (i8a[i + 3]));
+      }
+      return CryptoJS.lib.WordArray.create(a, i8a.length);
+    }
+  });
 }
 ///////////////////////////////////
 function trans(str, translation){

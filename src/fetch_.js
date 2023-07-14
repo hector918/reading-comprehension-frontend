@@ -40,6 +40,23 @@ function fetch_get(url, callback){
     callback(false);
   });
 }
+async function fetch_get_async(url){
+  try {
+    const body = {
+      method: "GET",
+      headers: {
+        ...default_fetch_options,
+      },
+      credentials: "include",
+    };
+    const response = await fetch(url, body);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    error_handle(error);
+    return false;
+  }
+}
 //// login potion/////////////////////////////////////
 function checkLoginFunction(callback){
   fetch(`${API}/login/available`)
@@ -102,17 +119,19 @@ function getLanguageFile(filename, callback){
   fetch_get(`${API}/languages/change_language/${filename}`, callback);
 }
 /////////////////////////////////////////////////
-function getDocuments(type, callback){
-  const body = {
-    method: "POST",
-    body: JSON.stringify(type),
-    headers: {
-      ...default_fetch_options,
-    },
-  }
-  fetch_post(`${API}/pda/list`, body, (data) => {
+function getDocuments(callback){
+  
+  fetch_get(`${API}/pda/list`, (data) => {
     callback(data);
   });
+}
+////////////////////////////////////
+////////////////////////////////////
+async function uploadFileCheckExists(fileHash){
+  return await fetch_get_async(`${API}/download_file/meta/${fileHash}`);
+}
+function uploadFile(){
+  
 }
 /////////////////////////////////////////////////
 const entry = { 
@@ -121,5 +140,6 @@ const entry = {
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,
+  uploadFileCheckExists, uploadFile,
 };
 export default entry;
