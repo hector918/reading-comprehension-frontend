@@ -57,7 +57,10 @@ function App() {
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/login" element={<Navigation />} /> */}
             {/* <Route path="/assistance" element={<ReadingAssistance />} /> */}
-            <Route path="/reading" element={<ReadingPage translation={translation} />} />
+            <Route path="/reading" element={<ReadingPage 
+              translation = {translation} 
+              isLogin = {isLogin}
+            />} />
             {/* <Route path="/framework-testing" element={<AllInOneFramework />} /> */}
             <Route path="/" element={<Landing translation={translation}/>} />
             {/* <Route path="/testing_fetch" element={<TestOnly />} /> */}
