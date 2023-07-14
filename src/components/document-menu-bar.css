@@ -4,5 +4,12 @@
   column-gap: 3vw;
   > div{
     cursor: pointer;
+    display: flex;
+    text-align: left;
   }
+}
+.document-menu-bar > div > .icon-place-holder{
+  width: 20px;
+  height: 20px;
+  margin: auto;
 }

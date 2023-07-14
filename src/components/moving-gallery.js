@@ -9,7 +9,7 @@ export default function MovingGallery(){
   useEffect(()=>{
     checkDocumentList();
     function checkDocumentList (){
-      fe.getDocuments({},(data)=>{
+      fe.getDocuments((data)=>{
         for(let key in data){
           cardsRef.current[key] = {
             mainSerial: [],
