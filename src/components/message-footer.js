@@ -6,9 +6,16 @@ const autoCollapseTime = 5000;
 function MessageFooter({translation}){
   const messageBoard = useRef(null);
   ///////////////////////////////////////////////////////
-  function createMessage(title, content = "", type="toast-primary"){
+  function createMessage(title, content = "", type = "dark"){
+    let bgColor;
+    switch(type){
+      case "success": bgColor = "toast-success"; break;
+      case "warning": bgColor = "toast-warning"; break;
+      case "error": bgColor = "toast-error"; break;
+      default: bgColor = ""; 
+    }
     //creating element
-    const element = createElement({class: `toast ${type}`, childs_:[
+    const element = createElement({class: `toast ${bgColor}`, childs_:[
       {tagname_: "button", class: "btn btn-clear float-right", event_:{"click": onRemove}},
       {tagname_: "h6", innerText: trans(title, translation)},
       {tagname_: "p", innerText: trans(content, translation)}

@@ -31,9 +31,9 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
   const on_user_logout_click = (evt) => {
     fe_.UserLogout((res) => {
       if(res.error){
-        addMessage(trans("Logout failed.", translation),"", "toast-error");
+        addMessage(trans("Logout failed.", translation),"", "error");
       }else{
-        addMessage(trans("Successed logout.", translation),"", "toast-success");
+        addMessage(trans("Successed logout.", translation),"", "success");
         setUserInfo({});
       }
     })

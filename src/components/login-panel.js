@@ -58,7 +58,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         addMessage(
           trans("Successfully registered"), 
           trans("This message will automatically close."), 
-          "toast-success"
+          "success"
         );
         sign_in_tab_button.current.click();
         //clean up input value
@@ -93,7 +93,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         //successed
         setUserInfo(res.data);
         on_sign_modal_close_click();
-        addMessage(trans("Successed login.", translation),"", "toast-success");
+        addMessage(trans("Successed login.", translation),"", "success");
         hintDiv.replaceChildren();
         signInPasswordInput.current.value = "";
         signInIdInput.current.value = "";

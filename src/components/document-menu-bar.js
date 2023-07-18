@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import './document-menu-bar.css';
 import {createFileHash, trans} from '../general_';
 import fe_ from '../fetch_';
+import {MessageFooter, addMessage} from '../components/message-footer';
+
 /////////////////////////////////////////////////
 export default function DocumentMenuBar({translation}) {
   const [isUploading, setIsUploading] = useState(false);
@@ -23,18 +25,22 @@ export default function DocumentMenuBar({translation}) {
 
       if(fileMeta.error){
         //if file not exists on the backend
-        console.log("not exists", fileMeta);
+        // console.log("not exists", fileMeta);
         fe_.uploadFile([evt.target.files[0]], (data) => {
-          console.log("in upload file", data);
+          if(data.error) addMessage(
+            trans("In upload file", translation), 
+            trans(data.error, translation), 
+            "error"
+          );
+          console.error("in upload file", data);
         });
-        
+
+
       }else{
         console.log("exists", fileMeta);
-        ///remove after debug
-        fe_.uploadFile([evt.target.files[0]], (data) => {
-          console.log("in upload file", data);
-        });
+        
         //if file exists on the backend
+        // addMessage()
       }
       //clear up after upload
       //clear file input value
