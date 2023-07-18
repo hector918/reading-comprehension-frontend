@@ -1,6 +1,6 @@
 import './reading-page.css';
 import React from "react";
-import {MessageFooter, addMessage} from '../components/message-footer';
+// import {MessageFooter, addMessage} from '../components/message-footer';
 import {trans} from '../general_';
 import DocumentMenuBar from '../components/document-menu-bar';
 /////////////////////////////////////
