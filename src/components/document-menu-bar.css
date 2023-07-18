@@ -2,11 +2,12 @@
   display: grid;
   grid-auto-flow: column;
   column-gap: 3vw;
-  > div{
-    cursor: pointer;
-    display: flex;
-    text-align: left;
-  }
+  
+}
+.document-menu-bar > div{
+  /* cursor: pointer; */
+  display: flex;
+  text-align: left;
 }
 .document-menu-bar > div > .icon-place-holder{
   width: 20px;

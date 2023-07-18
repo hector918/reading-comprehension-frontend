@@ -1,13 +1,12 @@
 import { useRef, useState } from 'react';
 import './document-menu-bar.css';
-import {createHash, trans} from '../general_';
+import {createFileHash, trans} from '../general_';
 import fe_ from '../fetch_';
 /////////////////////////////////////////////////
 export default function DocumentMenuBar({translation}) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
   const fileInput = useRef(null);
-  const tooltip = useRef(null);
   const onUploadClick = (evt) => {
     fileInput.current.click();
   }
@@ -15,15 +14,28 @@ export default function DocumentMenuBar({translation}) {
     const file = evt.target.files[0];
     if (file && !isUploading) {
       setIsUploading(true);
-      setUploadingStatus(pv => [...pv, trans("Start upload...", translation)]);
+      setUploadingStatus([trans("Start upload...", translation)]);
       setUploadingStatus(pv => [...pv, trans("File name:", translation) + ` ${file.name}`]);
 
-      const fileHash = await createHash(file);
-      
+      const fileHash = await createFileHash(file);
       const fileMeta = await fe_.uploadFileCheckExists(fileHash);
       setUploadingStatus(pv => [...pv, trans("File exists:", translation) + ` ${!fileMeta.error?"true":"false"}`]);
 
-      console.log(fileMeta);
+      if(fileMeta.error){
+        //if file not exists on the backend
+        console.log("not exists", fileMeta);
+        fe_.uploadFile([evt.target.files[0]], (data) => {
+          console.log("in upload file", data);
+        });
+        
+      }else{
+        console.log("exists", fileMeta);
+        ///remove after debug
+        fe_.uploadFile([evt.target.files[0]], (data) => {
+          console.log("in upload file", data);
+        });
+        //if file exists on the backend
+      }
       //clear up after upload
       //clear file input value
       setUploadingStatus([trans("Click me to upload file...", translation)]);
@@ -36,10 +48,26 @@ export default function DocumentMenuBar({translation}) {
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>
-    <div className='' onClick={onUploadClick}>
-      <span ref={tooltip} className='tooltip tooltip-bottom' data-tooltip={uploadingStatus.join("\n")}><i className="icon icon-upload"></i>{trans("Upload", translation)}</span>
-      <input ref={fileInput} type="file" style={{ display: "none" }} onChange={OnUploadInputChange} />
+    <div 
+      className={`popover popover-bottom ${isUploading?"c-not-allowed":"c-hand"}`} 
+      onClick={onUploadClick}
+    >
+      <span><i className="icon icon-upload"></i>{trans("Upload", translation)}</span>
+      <input 
+        ref={fileInput} 
+        type="file" 
+        style={{ display: "none" }} 
+        onChange={OnUploadInputChange} 
+      />
       <div className='icon-place-holder'>{isUploading?<div className="loading"></div>:""}</div>
+      {/*  */}
+      <div className="popover-container bg-dark">
+        <div className="card bg-dark">
+          <div className="card-body">
+            {uploadingStatus.map((el, idx) => <div key={`document-menu-popover-card-${idx}`}>{el}</div>)}
+          </div>
+        </div>
+      </div>
     </div>
     <div><span><i className="icon icon-apps"></i>Library</span></div>
 

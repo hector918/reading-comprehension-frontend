@@ -6,7 +6,7 @@
 /* 如果大于 */
 @media screen and (min-width: 420px) {
   .moving-gallery-panel{
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5)), url(seamless-pattern-background-purple-vector-4822052-0.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5)), url(background.jpg);
   }
   
   .container-fluid, .container-fluid > .row , .container-fluid > .row > div, .container-fluid > .row > div > .carousel__wrapper{
@@ -134,17 +134,18 @@
     display: flex;
     justify-content: flex-end;
     padding-right: calc(100vw / 24);
-    > span{
-      font-size: 2vh;
-      margin: auto 0;
-      max-width: calc(100vw / 6);
-      min-width: fit-content;
-      padding: 0 15px;
-      color: violet;
-      border-radius: 3px;
-      background-color: purple;
-      cursor: default;
-    }
+    
+  }
+  .moving-gallery-div > section > .container-fluid > .gap-h > span{
+    font-size: 1.5vh;
+    margin: auto 0;
+    max-width: calc(100vw / 6);
+    min-width: fit-content;
+    padding: 0 15px;
+    color: violet;
+    border-radius: 3px;
+    background-color: purple;
+    cursor: default;
   }
   
   /* height more than 720px; */

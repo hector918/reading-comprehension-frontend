@@ -82,15 +82,16 @@ main > .landing-container{
     text-align: right;
     font-size: 6vh;
     letter-spacing: 2vw;
-    font-family: monospace;
+    font-family: sans-serif;
     font-weight: bold;
     transition: all 0.5s ease-in-out;
-    &:hover{
-      cursor: pointer;
-      color: var(--navbar-bg-color);
-      color: white;
-      text-shadow: 2px 2px 0 purple, 2px -2px 0 purple, -2px 2px 0 purple, -2px -2px 0 purple, 2px 0px 0 purple, 0px 2px 0 purple, -2px 0px 0 purple, 0px -2px 0 purple;
-    }
+    
+  }
+  .floating-panel > div > .major-button:hover{
+    cursor: pointer;
+    color: var(--navbar-bg-color);
+    color: white;
+    text-shadow: 2px 2px 0 purple, 2px -2px 0 purple, -2px 2px 0 purple, -2px -2px 0 purple, 2px 0px 0 purple, 0px 2px 0 purple, -2px 0px 0 purple, 0px -2px 0 purple;
   }
 }
 /* 如果小于 */
