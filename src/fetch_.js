@@ -9,6 +9,11 @@ function error_handle(error) {
 }
 
 function fetch_post(url, body, callback){
+  body.method = "POST";
+    body.headers = {
+      ...body.headers, 
+      ...default_fetch_options,
+    }
   //add cookies when fired
   body.credentials = "include";
   fetch(url, body)
@@ -50,12 +55,30 @@ async function fetch_get_async(url){
       credentials: "include",
     };
     const response = await fetch(url, body);
-    const data = await response.json();
-    return data;
+    const ret = await response.json();
+    return ret;
   } catch (error) {
     error_handle(error);
     return false;
   }
+}
+async function fetch_post_async(url, body){
+  try {
+    body.method = "POST";
+    body.headers = {
+      ...body.headers, 
+      ...default_fetch_options,
+    }
+    //add cookies when fired
+    body.credentials = "include";
+    const res = await fetch(url, body);
+    const ret = await res.json();
+    return ret;
+  } catch (error) {
+    error_handle(error);
+    return false;
+  }
+  
 }
 //// login potion/////////////////////////////////////
 function checkLoginFunction(callback){
@@ -71,11 +94,7 @@ function checkLoginFunction(callback){
 }
 function checkUserID(userId, callback){
   const body = {
-    method: "POST",
     body: JSON.stringify({userId}),
-    headers: {
-      ...default_fetch_options,
-    },
   }
   fetch_post(`${API}/login/check_userID`, body, callback)
 }
@@ -91,11 +110,7 @@ function UserRegister(form, callback){
 }
 function UserLogin(form, callback){
   const body = {
-    method: "POST",
     body: JSON.stringify(form),
-    headers: {
-      ...default_fetch_options,
-    },
   }
   fetch_post(`${API}/login/login`, body, callback);
 }
@@ -130,8 +145,35 @@ function getDocuments(callback){
 async function uploadFileCheckExists(fileHash){
   return await fetch_get_async(`${API}/download_file/meta/${fileHash}`);
 }
-function uploadFile(){
-  
+
+function uploadFile(files, callback){
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    formData.append("files", files[i]);
+  }
+  const body  = {
+    method: "POST",
+    body: formData,
+    headers : { 
+      "Access-Control-Allow-Origin": "*" 
+    }
+  }
+  fetch(`${API}/upload_files`, body)
+    .then((response) => response.json())
+    .then((data) => {
+      callback(data);
+    })
+    .catch(error => {
+      error_handle(error);
+      callback({error});
+    });
+  /* result example
+    {
+      "result":"success",
+      "fileHash":"0ad1d820761a5aca9df52c22ea1cfc4ca5dad64923f51270dbe8f106f3817eef",
+      "message":"Successfully uploaded"
+    }
+  */
 }
 /////////////////////////////////////////////////
 const entry = { 

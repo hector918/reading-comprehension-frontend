@@ -8,27 +8,34 @@
 .reading-page-div-h > .reading-header-gap{
   display: grid;
   grid-template-columns: 1fr 10fr 10fr 1fr;
-  > div{
-    margin: auto;
-  }
+ 
 }
+
+.reading-page-div-h > .reading-header-gap > div{
+  margin: auto;
+}
+
 .reading-page-div-h > .reading-central-panel{
   display: grid;
   grid-template-columns: 1fr 10fr 10fr 1fr;
-  > .document-display{
-    background-color: violet;
-  }
-  > .interaction-panel{
-    background-color: purple;
-
-  }
 }
+
+.reading-page-div-h > .reading-central-panel > .document-display{
+  background-color: violet;
+}
+
+.reading-page-div-h > .reading-central-panel > .interaction-panel{
+  background-color: purple;
+}
+
 .reading-page-div-h > .reading-footer-gap{
   margin: auto 0;
   display: grid;
-  > span{
-    color: white;
-    background-color: red;
-    width: 100%;
-  }
 }
+
+.reading-page-div-h > .reading-footer-gap > span{
+  color: white;
+  background-color: red;
+  width: 100%;
+}
+

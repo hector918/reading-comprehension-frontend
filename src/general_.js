@@ -61,7 +61,11 @@ function createElement(json){
 //   };
 //   reader.readAsArrayBuffer(file);
 // }
-function createHash(file) {
+function createPasswordHash(str){
+  const hashDigest = CryptoJS.SHA256(str);
+  return hashDigest.toString();
+}
+function createFileHash(file) {
   return new Promise((resolve, reject) => {
     var reader = new FileReader();
     reader.onload = function (evt) {
@@ -94,4 +98,10 @@ function trans(str, translation){
   }
   return str;
 }
-export {removeAllChild, createElement, trans, createHash};
+export {
+  removeAllChild, 
+  createElement, 
+  trans, 
+  createFileHash,
+  createPasswordHash,
+};

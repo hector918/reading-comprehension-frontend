@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import { Link } from "react-router-dom";
 import './login-panel.css';
-import {createElement, trans, createHash} from '../general_';
+import {createElement, trans, createPasswordHash} from '../general_';
 import fe_ from '../fetch_';
 
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
@@ -82,7 +82,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
     }))
     fe_.UserLogin({
       userId: signInIdInput.current.value,
-      password: createHash(signInPasswordInput.current.value),
+      password: createPasswordHash(signInPasswordInput.current.value),
     }, (res) => {
       if(res.error){
         //failed
