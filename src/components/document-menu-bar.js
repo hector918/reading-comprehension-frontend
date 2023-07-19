@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './document-menu-bar.css';
 import {createFileHash, trans} from '../general_';
 import fe_ from '../fetch_';
@@ -6,9 +6,23 @@ import {MessageFooter, addMessage} from '../components/message-footer';
 
 /////////////////////////////////////////////////
 export default function DocumentMenuBar({translation}) {
+  const libraryModal = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
   const fileInput = useRef(null);
+  ///////////////////////////////////////////////
+  useEffect(()=>{
+    fe_.getLibrary((data) => {
+      if(data.error){
+        addMessage(
+          trans("Reading library", translation),
+          trans(data.error, translation),
+          'error'
+        );
+      }else console.log(data);
+    })
+  }, []);
+  //////////////////////////////////////////////
   const onUploadClick = (evt) => {
     fileInput.current.click();
   }
@@ -52,6 +66,10 @@ export default function DocumentMenuBar({translation}) {
       //0ad1d820761a5aca9df52c22ea1cfc4ca5dad64923f51270dbe8f106f3817eef
     }
   }
+  const openLibraryClick = (evt) => {
+    //
+    libraryModal.current.classList.toggle("active");
+  }
   /////////////////////////////////
   return <div className='document-menu-bar'>
     <div 
@@ -75,7 +93,34 @@ export default function DocumentMenuBar({translation}) {
         </div>
       </div>
     </div>
-    <div><span><i className="icon icon-apps"></i>Library</span></div>
-
+    <div className='popover popover-bottom'>
+      <span className='c-hand' onClick={openLibraryClick}><i className="icon icon-apps"></i>{trans("Library", translation)}</span>
+      {/* // */}
+      <div ref={libraryModal} className="modal modal-lg">
+        <span href="#close" className="modal-overlay" aria-label="Close"></span>
+        <div className="modal-container">
+          <div className="modal-header"><span className="btn btn-clear float-right" href="#modals-sizes" aria-label="Close" onClick={openLibraryClick}></span>
+            <div className="modal-title h3">{trans("Library", translation)}</div>
+          </div>
+          <div className="modal-body">
+            <div className="content">
+              Library
+            </div>
+          </div>
+          <div className="modal-footer">
+            ...
+          </div>
+        </div>
+      </div>
+      {/* // */}
+      <div className="popover-container bg-dark">
+        <div className="card bg-dark">
+          <div className="card-body">
+            "something in here"
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 }

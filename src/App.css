@@ -83,7 +83,7 @@ html{
   color: white!important;
 }
 .modal.active > .modal-overlay{
-  background-color: #66758ccc!important;
+  background-color: white!important;
 }
 /* button */
 .btn-style-h-lg{
