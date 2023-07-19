@@ -135,15 +135,20 @@ function getLanguageFile(filename, callback){
 }
 /////////////////////////////////////////////////
 function getDocuments(callback){
-  
   fetch_get(`${API}/pda/list`, (data) => {
+    callback(data);
+  });
+}
+
+function getLibrary(callback){
+  fetch_get(`${API}/luda/library`, (data) => {
     callback(data);
   });
 }
 ////////////////////////////////////
 ////////////////////////////////////
 async function uploadFileCheckExists(fileHash){
-  return await fetch_get_async(`${API}/download_file/meta/${fileHash}`);
+  return await fetch_get_async(`${API}/pda/meta/${fileHash}`);
 }
 
 function uploadFile(files, callback){
@@ -183,5 +188,6 @@ const entry = {
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,
   uploadFileCheckExists, uploadFile,
+  getLibrary,
 };
 export default entry;
