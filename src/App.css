@@ -113,3 +113,82 @@ html{
 .btn-style-h > * , .btn-style-h-lg > *{
   margin-bottom: 0;
 }
+
+.c-hand{
+  cursor: pointer;
+}
+
+.modal.active, .modal:target {
+  display: -ms-flexbox;
+  display: flex;
+  opacity: 1;
+  z-index: 400;
+}
+.modal {
+  align-items: center;
+  bottom: 0;
+  display: none;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0.4rem;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.modal.active .modal-container, .modal:target .modal-container {
+  animation: slide-down .2s ease 1;
+  z-index: 1;
+}
+.modal-container {
+  background: #fff;
+  border-radius: 0.1rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(48,55,66,.3);
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  max-height: 75vh;
+  max-width: 640px;
+  padding: 0 0.8rem;
+  width: 100%;
+}
+
+.modal.active .modal-overlay, .modal:target .modal-overlay {
+  background: rgba(247,248,249,.75);
+  bottom: 0;
+  cursor: default;
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.modal.active>.modal-overlay {
+  background-color: #66758ccc!important;
+}
+.modal-container .modal-header {
+  color: #303742;
+  padding: 0.8rem;
+}
+.btn.btn-clear {
+  background: 0 0;
+  border: 0;
+  color: currentColor;
+  height: 1rem;
+  line-height: .8rem;
+  margin-left: 0.2rem;
+  margin-right: -2px;
+  opacity: 1;
+  padding: 0.1rem;
+  text-decoration: none;
+  width: 1rem;
+}
+.float-right {
+  float: right!important;
+}

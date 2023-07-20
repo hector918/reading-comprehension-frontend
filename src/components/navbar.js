@@ -56,8 +56,8 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
         <button className="btn btn-primary input-group-btn">Search</button>
       </div> */}
         <div className="dropdown dropdown-right">
-          <span className="btn btn-link dropdown-toggle" tabIndex="0">
-            Language <i className="icon icon-caret"></i>
+          <span className="btn btn-link dropdown-toggle c-hand" tabIndex="0">
+            Language <i className="fa-solid fa-caret-down"></i>
           </span>
           <ul className="menu">
             <form>
@@ -72,9 +72,10 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
             </form>
           </ul>
         </div>
-        <Link to={"/about"} className="btn btn-link text-color nav-link-h">{trans("About", translation)}</Link>
+        <Link to={"/about"} className="btn btn-link text-color nav-link-h c-hand">{trans("About", translation)}</Link>
         {isLogin()?
           <UserProfileDropdown
+            
             translation = {translation}
             userInfo = {userInfo}
             setUserInfo = {setUserInfo}
@@ -82,7 +83,7 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
             on_user_logout_click = {on_user_logout_click}
           />
         :
-          <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
+          <Link className="btn btn-link text-color nav-link-h c-hand" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
         }
       </section>
     </header>

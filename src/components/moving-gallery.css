@@ -146,6 +146,7 @@
     border-radius: 3px;
     background-color: purple;
     cursor: default;
+    z-index: 100;
   }
   
   /* height more than 720px; */

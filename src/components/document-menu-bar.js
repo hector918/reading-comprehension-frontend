@@ -1,27 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './document-menu-bar.css';
 import {createFileHash, trans} from '../general_';
 import fe_ from '../fetch_';
 import {MessageFooter, addMessage} from '../components/message-footer';
 
 /////////////////////////////////////////////////
-export default function DocumentMenuBar({translation}) {
+export default function DocumentMenuBar({translation, isLogin}) {
   const libraryModal = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
+  const [libraryData, setLibraryData] = useState([]);
   const fileInput = useRef(null);
+
+  ///////////////////////////////////////
+  const cardTemplete = (json) => {
+    return <div className=''>
+
+    </div>
+  }
+
+  const readLibrary = useCallback((data) => {
+    if(data.error){
+      addMessage(
+        trans("Reading library", translation),
+        trans(data.error, translation),
+        'error'
+      );
+    }else{
+      setLibraryData(data);
+      console.log(data);
+    } 
+  }, [translation])
   ///////////////////////////////////////////////
   useEffect(()=>{
-    fe_.getLibrary((data) => {
-      if(data.error){
-        addMessage(
-          trans("Reading library", translation),
-          trans(data.error, translation),
-          'error'
-        );
-      }else console.log(data);
-    })
-  }, []);
+    
+    fe_.getLibrary(readLibrary);
+  }, [readLibrary, isLogin]);
   //////////////////////////////////////////////
   const onUploadClick = (evt) => {
     fileInput.current.click();
@@ -104,7 +118,19 @@ export default function DocumentMenuBar({translation}) {
           </div>
           <div className="modal-body">
             <div className="content">
-              Library
+              {libraryData.map((el, idx) => <div className='library-content-card' key={`library-content-div-${idx}`} style={{backgroundImage:`url(${fe_.pdfThumbnailPrefix}/${el.filehash})`}}>
+                {/* <span>{el.filehash}</span> */}
+                <div>
+                  <span>{el.name}</span>
+                </div>
+                
+                <div>
+                  <div>bookmark</div>
+                  <div>delete</div>
+                </div>
+                
+                
+              </div>)}
             </div>
           </div>
           <div className="modal-footer">

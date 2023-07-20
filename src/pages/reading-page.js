@@ -10,7 +10,7 @@ export default function ReadingPage({translation, isLogin}){
       
       <div className='reading-header-gap'>
         <div></div>
-        <DocumentMenuBar translation={translation}/>
+        <DocumentMenuBar translation={translation} isLogin= {isLogin} />
         <div>menu 2</div>
         <div></div>
 

@@ -167,7 +167,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
       <span href="#close" className="modal-overlay" aria-label="Close"></span>
       <div className="modal-container">
         <div className="modal-header">
-          <span href="#close" className="btn btn-clear float-right" aria-label="Close" onClick={on_sign_modal_close_click}></span>
+          <span href="#close" className="btn btn-clear float-right c-hand" aria-label="Close" onClick={on_sign_modal_close_click}><i class="fa-solid fa-xmark"></i></span>
           <div className="modal-title h5 text-left">Binary Mind - {trans("Sign Up/ In", translation)}</div>
         </div>
         <div className="modal-body">
