@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import { Link } from "react-router-dom";
 import './login-panel.css';
-import {createElement, trans, createPasswordHash} from '../general_';
+import {createElement, trans, createPasswordHash, loadingIcon} from '../general_';
 import fe_ from '../fetch_';
 
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
@@ -10,6 +10,8 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   //
   let [userIdRegex, setUserIDRegex] = useState([]);
   let [passwordRegex, setPasswordRegex] = useState([]);
+  let [checkUserIdLoading, setCheckUserIdLoading] = useState(false);
+  let [signInLoading, setSignInLoading] = useState(false);
   useEffect(()=>{
     setUserIDRegex(loginRegex.userIdRegex);
     setPasswordRegex(loginRegex.passwordRegex);
@@ -72,14 +74,9 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   }
   const sign_in_form_submit = (evt) => {
     evt.preventDefault();
+    setSignInLoading(true);
     const hintDiv = evt.target.querySelector('.sign-result-div');
-    hintDiv.replaceChildren(createElement({
-      tagname_: "p",  childs_:
-      [
-        {tagname_: "i", class:"form-icon loading"}, 
-      ], 
-      class: "form-input-hint", 
-    }))
+    hintDiv.replaceChildren(createElement({tagname_: "p", class: "form-input-hint"}))
     fe_.UserLogin({
       userId: signInIdInput.current.value,
       password: createPasswordHash(signInPasswordInput.current.value),
@@ -88,6 +85,8 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         //failed
         setTimeout(() => {
           hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("User ID or password not matched.", translation)}`, class: "form-input-hint"}));
+          setSignInLoading(false);
+
         }, 300);
       }else{
         //successed
@@ -107,14 +106,9 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
 
     function test_userId(value){
       //in this case are differently others it return dom element instead of string
+      setCheckUserIdLoading(true);
       const ret = [];
-      const check_userID_p = createElement({
-        tagname_: "p",  childs_:
-        [
-          {tagname_: "i", class:"form-icon loading"}, 
-        ], 
-        class: "form-input-hint", 
-      });
+      const check_userID_p = createElement({tagname_: "p", class: "form-input-hint",});
       ret.push(check_userID_p);
 
       // check UserID
@@ -124,6 +118,8 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         }else{
           setTimeout(() => {
             hintDiv.removeChild(check_userID_p);
+            setCheckUserIdLoading(false);
+
           }, 300);
         }
       });
@@ -166,10 +162,12 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   <div ref={sign_modal} className="modal" >
       <span href="#close" className="modal-overlay" aria-label="Close"></span>
       <div className="modal-container">
+
         <div className="modal-header">
-          <span href="#close" className="btn btn-clear float-right" aria-label="Close" onClick={on_sign_modal_close_click}></span>
+          <span href="#close" className="btn btn-clear float-right c-hand" aria-label="Close" onClick={on_sign_modal_close_click}><i className="fa-solid fa-xmark"></i></span>
           <div className="modal-title h5 text-left">Binary Mind - {trans("Sign Up/ In", translation)}</div>
         </div>
+        
         <div className="modal-body">
           <div className="content modal-content-h">
             {loginAvailable?
@@ -186,8 +184,9 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
               <div className="column col-12 col-sm-12">
                 <form className="form-horizontal" action="#forms" onSubmit={sign_up_form_submit}>
                   <div className="form-group">
-                    <div className="col-3">
+                    <div className="col-3 flex justify-between">
                       <label className="form-label form-label-h" >{trans("User Id", translation)}</label>
+                      {checkUserIdLoading && loadingIcon()}
                     </div>
                     <div className="col-9">
                       <input ref={signUpIdInput} className="form-input" type="text" placeholder={trans("User Id", translation)} onBlur={userId_input_change} name="userId"/>
@@ -229,8 +228,9 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
               <div className="column col-12 col-sm-12">
                 <form className="form-horizontal" action="#forms" onSubmit={sign_in_form_submit}>
                   <div className="form-group">
-                    <div className="col-3">
+                    <div className="col-3 flex justify-between">
                       <label className="form-label form-label-h" >{trans("User Id", translation)}</label>
+                      {signInLoading && loadingIcon()}
                     </div>
                     <div className="col-9">
                       <input className="form-input" ref={signInIdInput}  type="text" placeholder={trans("User Id", translation)} />

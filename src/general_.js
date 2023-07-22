@@ -43,6 +43,10 @@ function createElement(json){
   }
   return root;
 }
+
+function loadingIcon(){
+  return <div className="fa-1x loading-icon-h"><i className="fas fa-circle-notch fa-pulse"></i></div>;
+}
 ////this is callback version of createFileHash//////////
 // function createHash(file, callback){
 //   var reader = new FileReader();
@@ -104,4 +108,5 @@ export {
   trans, 
   createFileHash,
   createPasswordHash,
+  loadingIcon
 };

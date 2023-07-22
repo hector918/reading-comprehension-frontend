@@ -1,13 +1,13 @@
 .tab-h > .tab-item{
   color: black;
   font-size: 20px;
-  transition: all 0.5 ease-in-out;
+  transition: all 0.5s ease-in-out;
   cursor: pointer;
 }
 
 .tab-h > .active{
   color: purple;
-  border-bottom: 2px solid violet;
+  border-bottom: 2px solid purple;
 }
 
 .login-modal-justify-right{
@@ -31,4 +31,30 @@ form > .password-hint-div > p, form > .userId-hint-div > p{
 }
 form > .userId-hint-div > p > i{
   margin-left: 30px;
+}
+
+.modal > .modal-container > .modal-header > .modal-title{
+  color: darkgrey;
+}
+.modal > .modal-container > .modal-body > .content > .tab-h{
+  align-items: center;
+  border-bottom: 0.05rem solid #dadee4;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0.2rem 0 0.15rem 0;
+}
+
+.tab.tab-block .tab-item {
+  -ms-flex: 1 0 0;
+  flex: 1 0 0;
+  text-align: center;
+}
+
+.tab .tab-item {
+  margin-top: 0;
+  padding-bottom: 5px;
 }

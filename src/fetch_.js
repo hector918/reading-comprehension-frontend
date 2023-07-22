@@ -56,7 +56,11 @@ async function fetch_get_async(url){
     };
     const response = await fetch(url, body);
     const ret = await response.json();
-    return ret;
+    if(response.ok){
+      return ret;
+    }else {
+      return false;
+    }
   } catch (error) {
     error_handle(error);
     return false;
@@ -72,8 +76,12 @@ async function fetch_post_async(url, body){
     //add cookies when fired
     body.credentials = "include";
     const res = await fetch(url, body);
-    const ret = await res.json();
-    return ret;
+    if(res.ok){
+      const ret = await res.json();
+      return ret;
+    }else{
+      return false;
+    }
   } catch (error) {
     error_handle(error);
     return false;

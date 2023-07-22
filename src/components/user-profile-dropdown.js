@@ -4,7 +4,7 @@ import {trans} from '../general_';
 
 export default function UserProfileDropdown({translation, userInfo, setUserInfo, addMessage, on_user_logout_click}){
   return (
-    <div className="dropdown dropdown-right">
+    <div className="dropdown dropdown-right c-hand">
       <span href="#" className="btn btn-link dropdown-toggle" tabIndex="0">
       {trans("Me", translation)} <i className="icon icon-caret"></i>
       </span>
