@@ -2,7 +2,7 @@ import React, {useRef} from "react";
 import './message-footer.css';
 import {createElement, trans} from '../general_';
 let addMessage = null;
-const autoCollapseTime = 5000;
+const autoCollapseTime = 50000000;
 function MessageFooter({translation}){
   const messageBoard = useRef(null);
   ///////////////////////////////////////////////////////
@@ -15,9 +15,10 @@ function MessageFooter({translation}){
       default: bgColor = ""; 
     }
     //creating element
-    const element = createElement({class: `toast ${bgColor}`, childs_:[
-      {tagname_: "button", class: "btn btn-clear float-right", event_:{"click": onRemove}},
-      {tagname_: "h6", innerText: trans(title, translation)},
+    const element = createElement({class: `toast `, childs_:[
+      
+      {tagname_: "i", class: "fa-solid fa-xmark p-absolute c-hand close-button", event_:{"click": onRemove}},
+      {tagname_: "p", class:`${bgColor} toast-title`, innerText: trans(title, translation)},
       {tagname_: "p", innerText: trans(content, translation)}
     ]});
     messageBoard.current.append(element);

@@ -44,9 +44,10 @@ export default function DocumentMenuBar({translation, isLogin}) {
     const file = evt.target.files[0];
     if (file && !isUploading) {
       setIsUploading(true);
-      setUploadingStatus([trans("Start upload...", translation)]);
-      setUploadingStatus(pv => [...pv, trans("File name:", translation) + ` ${file.name}`]);
-
+      setUploadingStatus([
+        trans("Start upload...", translation), 
+        trans("File name:", translation) + ` ${file.name}`
+      ]);
       const fileHash = await createFileHash(file);
       const fileMeta = await fe_.uploadFileCheckExists(fileHash);
       setUploadingStatus(pv => [...pv, trans("File exists:", translation) + ` ${!fileMeta.error?"true":"false"}`]);
@@ -63,10 +64,8 @@ export default function DocumentMenuBar({translation, isLogin}) {
           console.error("in upload file", data);
         });
 
-
       }else{
         console.log("exists", fileMeta);
-        
         //if file exists on the backend
         // addMessage()
       }

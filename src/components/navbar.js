@@ -50,7 +50,7 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
         {/* <a href="..." className="btn btn-link">Docs</a>
       <a href="..." className="btn btn-link">GitHub</a> */}
       </section>
-      <section className="navbar-section">
+      <section className="navbar-section navbar-section-s">
         {/* <div className="input-group input-inline">
         <input className="form-input" type="text" placeholder="search"/>
         <button className="btn btn-primary input-group-btn">Search</button>
