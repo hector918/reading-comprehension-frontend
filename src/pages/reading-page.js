@@ -3,6 +3,7 @@ import React from "react";
 // import {MessageFooter, addMessage} from '../components/message-footer';
 import {trans} from '../general_';
 import DocumentMenuBar from '../components/document-menu-bar';
+import DocumentDisplay from '../components/document-display';
 /////////////////////////////////////
 export default function ReadingPage({translation, isLogin}){
   return(
@@ -10,15 +11,21 @@ export default function ReadingPage({translation, isLogin}){
       
       <div className='reading-header-gap'>
         <div></div>
-        <DocumentMenuBar translation={translation} isLogin= {isLogin} />
+        <DocumentMenuBar 
+          translation={translation} 
+          isLogin= {isLogin} 
+        />
         <div>menu 2</div>
         <div></div>
 
       </div>
       <div className='reading-central-panel'>
         <div></div>
-        <div className='document-display'>
-
+        <div className=''>
+          <DocumentDisplay 
+            translation={translation} 
+            isLogin= {isLogin} 
+          />
         </div>
         <div className='interaction-panel'>
 

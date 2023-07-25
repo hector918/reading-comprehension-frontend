@@ -102,11 +102,22 @@ function trans(str, translation){
   }
   return str;
 }
+/////////////////////////////////////
+var setfileHash_ = undefined;
+function change_setFileHash(func){
+  setfileHash_ = func;
+}
+function setFileHash(){
+  setfileHash_(arguments);
+}
+/////////////////////////////////////
+
 export {
   removeAllChild, 
   createElement, 
   trans, 
   createFileHash,
   createPasswordHash,
-  loadingIcon
+  loadingIcon,
+  change_setFileHash, setFileHash,
 };

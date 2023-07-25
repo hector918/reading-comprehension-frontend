@@ -8,22 +8,24 @@ function error_handle(error) {
   console.error(error);
 }
 
-function fetch_post(url, body, callback){
-  body.method = "POST";
-    body.headers = {
-      ...body.headers, 
-      ...default_fetch_options,
-    }
+function fetch_post(url, fetchOptions, callback){
+  fetchOptions.method = "POST";
+  fetchOptions.headers = { 
+    ...default_fetch_options,
+    ...fetchOptions.headers
+  }
+  if(fetchOptions.headers['Content-Type'] === "delete")
+    delete fetchOptions.headers['Content-Type'];
   //add cookies when fired
-  body.credentials = "include";
-  fetch(url, body)
+  fetchOptions.credentials = "include";
+  fetch(url, fetchOptions)
   .then((response) => response.json())
   .then((data) => {
     callback(data);
   })
   .catch(error => {
     error_handle(error);
-    callback(false);
+    callback(error);
   });
 }
 
@@ -42,7 +44,7 @@ function fetch_get(url, callback){
   })
   .catch(error => {
     error_handle(error);
-    callback(false);
+    callback(error);
   });
 }
 async function fetch_get_async(url){
@@ -56,14 +58,10 @@ async function fetch_get_async(url){
     };
     const response = await fetch(url, body);
     const ret = await response.json();
-    if(response.ok){
-      return ret;
-    }else {
-      return false;
-    }
+    return ret;
   } catch (error) {
     error_handle(error);
-    return false;
+    return error;
   }
 }
 async function fetch_post_async(url, body){
@@ -154,32 +152,24 @@ function getLibrary(callback){
   });
 }
 ////////////////////////////////////
+async function downloadFile (fileHash, callback){
+  fetch_get(`${API}/pda/${fileHash}`, callback);
+}
 ////////////////////////////////////
 async function uploadFileCheckExists(fileHash){
   return await fetch_get_async(`${API}/pda/meta/${fileHash}`);
 }
 
 function uploadFile(files, callback){
+
   const formData = new FormData();
-  for (let i = 0; i < files.length; i++) {
-    formData.append("files", files[i]);
-  }
+  
+  for(let file of files) formData.append("files", file);
   const body  = {
-    method: "POST",
     body: formData,
-    headers : { 
-      "Access-Control-Allow-Origin": "*" 
-    }
+    headers: {"Content-Type": "delete"}
   }
-  fetch(`${API}/upload_files`, body)
-    .then((response) => response.json())
-    .then((data) => {
-      callback(data);
-    })
-    .catch(error => {
-      error_handle(error);
-      callback({error});
-    });
+  fetch_post(`${API}/upload_files`, body, callback);
   /* result example
     {
       "result":"success",
@@ -195,7 +185,7 @@ const entry = {
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,
-  uploadFileCheckExists, uploadFile,
+  uploadFileCheckExists, uploadFile, downloadFile,
   getLibrary,
 };
 export default entry;
