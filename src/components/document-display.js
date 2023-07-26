@@ -1,13 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
 import './document-display.css';
-import {extractTextAndImageFromPDF} from '../pdf-wrapper_';
+import {extractTextAndImageFromPDF, init} from '../pdf-wrapper_';
 import fe_ from '../fetch_';
 import {change_setFileHash} from '../general_';
+
+init();
 ////////////////////////////////////
-export default function DocumentDisplay({translation, isLogin}){
-  const [fileHash, setFileHash] = useState(undefined);
+export default function DocumentDisplay({translation, isLogin, fileHashFromParent}){
+  const [fileHash, setFileHash] = useState(fileHashFromParent);
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
+  console.log(fileHashFromParent)
 ////////////////////////////////////
   change_setFileHash(setFileHash);
   useEffect(() => {
@@ -74,9 +77,10 @@ export default function DocumentDisplay({translation, isLogin}){
         return el;
       }
     }
-  }, [fileHash, isLoading]);
+  }, [fileHash]);
 
   return <div className='document-display'>
+    {isLoading && "Loading"}
     <div ref={render_container} ></div>
   </div>
 }

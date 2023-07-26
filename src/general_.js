@@ -108,7 +108,10 @@ function change_setFileHash(func){
   setfileHash_ = func;
 }
 function setFileHash(filehash){
-  if(setfileHash_) setfileHash_(filehash);
+  if(setfileHash_){
+    console.log("updating file hash")
+    setfileHash_(filehash);
+  } 
 }
 /////////////////////////////////////
 

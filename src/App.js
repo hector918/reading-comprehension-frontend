@@ -7,7 +7,6 @@ import NavBar from './components/navbar';
 import { useEffect, useState } from 'react';
 import fe_ from './fetch_';
 import {MessageFooter, addMessage} from './components/message-footer';
-import {setFileHash} from './general_';
 /////////////////////
 
 function App() {
@@ -24,9 +23,10 @@ function App() {
     fe_.checkLoginStatus((data)=>{
       setUserInfo(data.data);
     });
-    setTimeout(() => {
-      setFileHash('0ad1d820761a5aca9df52c22ea1cfc4ca5dad64923f51270dbe8f106f3817eef');
-    }, 500);
+    //for testing filehash to document display
+    // setTimeout(() => {
+    //   setFileHash('0ad1d820761a5aca9df52c22ea1cfc4ca5dad64923f51270dbe8f106f3817eef');
+    // }, 500);
   }, [])
   //////////////////////////////////////////
   const isLogin = () => {
@@ -64,6 +64,10 @@ function App() {
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/login" element={<Navigation />} /> */}
             {/* <Route path="/assistance" element={<ReadingAssistance />} /> */}
+            <Route path="/reading/:fileHash" element={<ReadingPage 
+              translation = {translation} 
+              isLogin = {isLogin}
+            />} />
             <Route path="/reading" element={<ReadingPage 
               translation = {translation} 
               isLogin = {isLogin}

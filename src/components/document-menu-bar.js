@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './document-menu-bar.css';
-import {createFileHash, setFileHash, trans} from '../general_';
+import {createFileHash, trans, setFileHash} from '../general_';
 import fe_ from '../fetch_';
 import {MessageFooter, addMessage} from '../components/message-footer';
 
@@ -99,8 +99,8 @@ export default function DocumentMenuBar({translation, isLogin}) {
   }
   function onDocumentCardClick(evt){
     const fileHash = evt.currentTarget.getAttribute("filehash");
-    setFileHash(fileHash)
-
+    setFileHash(fileHash);
+    libraryModal.current.classList.toggle("active");
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>

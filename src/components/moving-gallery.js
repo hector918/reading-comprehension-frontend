@@ -2,11 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import './moving-gallery.css';
 import fe_ from '../fetch_';
 import stroage_ from '../stroage_';
+import {setFileHash, trans} from '../general_';
+import { useNavigate } from "react-router-dom";
+
+
 export default function MovingGallery(){
   const [cards, setCards] = useState({
     popular:{mainSerial:[], repeatSerial:[]}
   });
   const cardsRef = useRef(cards);
+  const navigation = useNavigate();
+  //////////////////////////////////////
   useEffect(()=>{
     stroage_.getDocuments(({data}) => {
       //remove timestamp, timestamp only for storage to check data during.
@@ -28,13 +34,20 @@ export default function MovingGallery(){
   
   ///////////////////////////////////////////////
   function card_templete(json, idx){
-    return <div className="carousel__slide carousel__slide_forward" key={idx} onClick={cardOnClick}>
+    return <div 
+      className = "carousel__slide carousel__slide_forward" 
+      key = {`carousel-slide-${idx}`} 
+      onClick = {cardOnClick}
+      filehash = {json.fileHash}
+    >
       <div className="carousel__image" style={{backgroundImage:`url(${fe_.pdfThumbnailPrefix}/${json.fileHash})`}}></div>
     </div>
   }
   ////////////////////////////////////////////////
   const cardOnClick = (evt) => {
-    console.log(evt.currentTarget)
+    const fileHash = evt.currentTarget.getAttribute("filehash");
+    // setFileHash(fileHash);
+    navigation(`/reading/${fileHash}`);
   }
   ////////////////////////////////////////////////
   return <div className="moving-gallery-div">

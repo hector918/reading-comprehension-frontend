@@ -2,20 +2,18 @@
 // <script src="https://unpkg.com/pdfjs-dist@2/build/pdf.worker.js"></script> -->
 // const cdn_pdfjs_link = '//mozilla.github.io/pdf.js/build/pdf.js';
 // const cdn_pdfjs_worker_link = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-const cdn_pdfjs_link = '/pdf.js';
-const cdn_pdfjs_worker_link = '/pdf.worker.js';
-let PDFJS;
-const script = document.createElement('script');
-script.src = cdn_pdfjs_link;
-script.async = true;
-script.onload = () => {
-  PDFJS = window['pdfjs-dist/build/pdf'];
-  PDFJS.GlobalWorkerOptions.workerSrc = cdn_pdfjs_worker_link;
-};
-document.body.appendChild(script);
+
 ////hector build jun/01/2023 //////////////////////////
 async function extractTextAndImageFromPDF(url){
+  let PDFJS = window['pdfjs-dist/build/pdf'];
+  
+  if(PDFJS === undefined){
+    await init();
+  }
+  PDFJS = window['pdfjs-dist/build/pdf'];
+  console.log(PDFJS)
   if(PDFJS === undefined) throw new Error("pdfjs not found");
+
   if(url.trim() === "") return false;
   const pdf = await PDFJS.getDocument(url).promise;
   const ret = [];
@@ -41,6 +39,18 @@ async function extractTextAndImageFromPDF(url){
     const text = await page.getTextContent();
     return {imgs, text};
   }
+  
 }
-
-export {extractTextAndImageFromPDF};
+async function init(){
+  const cdn_pdfjs_link = `${window.location.origin}/pdf.js`;
+  const cdn_pdfjs_worker_link = `${window.location.origin}/pdf.worker.js`;
+  const script = document.createElement('script');
+  script.src = cdn_pdfjs_link;
+  script.async = true;
+  script.onload = () => {
+    window['pdfjs-dist/build/pdf'].GlobalWorkerOptions.workerSrc = cdn_pdfjs_worker_link;
+  };
+  document.body.appendChild(script);
+  console.log("after init", window['pdfjs-dist/build/pdf'])
+}
+export {extractTextAndImageFromPDF, init};
