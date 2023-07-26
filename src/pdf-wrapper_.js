@@ -6,14 +6,11 @@
 ////hector build jun/01/2023 //////////////////////////
 async function extractTextAndImageFromPDF(url){
   let PDFJS = window['pdfjs-dist/build/pdf'];
-  
   if(PDFJS === undefined){
     await init();
   }
   PDFJS = window['pdfjs-dist/build/pdf'];
-  console.log(PDFJS)
   if(PDFJS === undefined) throw new Error("pdfjs not found");
-
   if(url.trim() === "") return false;
   const pdf = await PDFJS.getDocument(url).promise;
   const ret = [];
@@ -51,6 +48,5 @@ async function init(){
     window['pdfjs-dist/build/pdf'].GlobalWorkerOptions.workerSrc = cdn_pdfjs_worker_link;
   };
   document.body.appendChild(script);
-  console.log("after init", window['pdfjs-dist/build/pdf'])
 }
 export {extractTextAndImageFromPDF, init};

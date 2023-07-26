@@ -3,12 +3,21 @@ import './landing.css';
 import MovingGallery from "../components/moving-gallery";
 import {trans} from '../general_';
 import { useNavigate } from "react-router-dom";
+import {addMessage} from '../components/message-footer';
 
-export default function Landing({translation}) {
+export default function Landing({translation, isLogin}) {
   const navigate = useNavigate();
   //////////////////////////////////////////
   const startButtonOnClick = (evt) => {
-    navigate("/reading");
+    if(isLogin()){
+      navigate("/reading")
+    }else{
+      addMessage(
+        trans("Landing page", translation),
+        trans("You need to login first.", translation),
+        'error'
+      );
+    } 
   }
   //////////////////////////////////////////
   return <div className="landing-container">
