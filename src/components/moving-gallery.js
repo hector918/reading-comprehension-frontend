@@ -1,39 +1,53 @@
 import React, { useEffect, useRef, useState } from "react";
 import './moving-gallery.css';
-import fe from '../fetch_';
+import fe_ from '../fetch_';
+import stroage_ from '../stroage_';
+import {setFileHash, trans} from '../general_';
+import { useNavigate } from "react-router-dom";
+
+
 export default function MovingGallery(){
   const [cards, setCards] = useState({
     popular:{mainSerial:[], repeatSerial:[]}
   });
   const cardsRef = useRef(cards);
+  const navigation = useNavigate();
+  //////////////////////////////////////
   useEffect(()=>{
-    checkDocumentList();
-    function checkDocumentList (){
-      fe.getDocuments((data)=>{
-        for(let key in data){
-          cardsRef.current[key] = {
-            mainSerial: [],
-            repeatSerial: []
-          }
-          data[key].forEach((document) => {
-            cardsRef.current[key].mainSerial.push(document);
-            cardsRef.current[key].repeatSerial.push(document);
-          })
+    stroage_.getDocuments(({data}) => {
+      //remove timestamp, timestamp only for storage to check data during.
+      delete data.timestamp;
+      //check key and try to render it
+      for(let key in data){
+        cardsRef.current[key] = {
+          mainSerial: [],
+          repeatSerial: []
         }
-        setCards({...cardsRef.current});
-      });
-    }
+        data[key].forEach((document) => {
+          cardsRef.current[key].mainSerial.push(document);
+          cardsRef.current[key].repeatSerial.push(document);
+        })
+      }
+      setCards({...cardsRef.current});
+    });
   }, [])
   
   ///////////////////////////////////////////////
   function card_templete(json, idx){
-    return <div className="carousel__slide carousel__slide_forward" key={idx} onClick={cardOnClick}>
-      <div className="carousel__image" style={{backgroundImage:`url(${fe.pdfThumbnailPrefix}/${json.fileHash})`}}></div>
+    return <div 
+      className = "carousel__slide carousel__slide_forward" 
+      key = {`carousel-slide-${idx}`} 
+      onClick = {cardOnClick}
+      filehash = {json.fileHash}
+    >
+      <div className="carousel__image" style={{backgroundImage:`url(${fe_.pdfThumbnailPrefix}/${json.fileHash})`}}></div>
     </div>
   }
   ////////////////////////////////////////////////
   const cardOnClick = (evt) => {
-    console.log(evt.currentTarget)
+    const fileHash = evt.currentTarget.getAttribute("filehash");
+    // setFileHash(fileHash);
+    navigation(`/reading/${fileHash}`);
   }
   ////////////////////////////////////////////////
   return <div className="moving-gallery-div">

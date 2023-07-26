@@ -1,0 +1,18 @@
+.document-display{
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  text-align: left;
+}
+.document-display > div canvas{
+  margin: auto;
+  display: block;
+}
+.document-display .page-separator{
+  font-size: 1rem;
+  text-align: center;
+  border-bottom: 2px solid darkgrey;
+  padding: 5px;
+  margin: 15px;
+  color: darkgrey;
+}

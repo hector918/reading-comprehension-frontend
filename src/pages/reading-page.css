@@ -18,8 +18,13 @@
 .reading-page-div-h > .reading-central-panel{
   display: grid;
   grid-template-columns: 1fr 10fr 10fr 1fr;
+  height: 100%;
+  overflow-y: hidden;
 }
-
+.reading-page-div-h > .reading-central-panel > div{
+  height: 100%;
+  overflow-y: hidden;
+}
 .reading-page-div-h > .reading-central-panel > .document-display{
   background-color: violet;
 }

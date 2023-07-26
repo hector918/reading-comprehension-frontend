@@ -43,7 +43,7 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
     <header className="navbar navbar-h">
       <section className="navbar-section">
         <Link className="navbar-logo" to={"/"}>
-          <img src="./logo.png" width="44" height="44" alt="Logo" />
+          <img src={`${window.location.origin}/logo.png`} width="44" height="44" alt="Logo" />
           <span className="unselectable text-color">Binary Mind</span>
         </Link>
 

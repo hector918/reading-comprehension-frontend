@@ -101,9 +101,8 @@ html{
 .text-color{
   color: white!important;
 }
-.modal.active > .modal-overlay{
-  background-color: white!important;
-}
+
+
 /* button */
 .btn-style-h-lg{
   background-color: #060644!important;
@@ -190,7 +189,7 @@ html{
 }
 
 .modal.active>.modal-overlay {
-  background-color: #66758ccc!important;
+  background-color: #66758ccc;
 }
 .modal-container .modal-header {
   color: #303742;
@@ -201,6 +200,15 @@ html{
   overflow-y: auto;
   padding: 0.8rem;
   position: relative;
+}
+
+.modal.modal-lg .modal-overlay {
+  background: #fff
+}
+
+.modal.modal-lg .modal-container {
+  box-shadow: none;
+  max-width: 960px
 }
 
 .btn.btn-clear {
@@ -329,7 +337,7 @@ ol, ul {
 .loading-icon-h{
   margin: 0px 10px;
   line-height: 38px;
-  color: violet;
+  color: purple;
 }
 
 .p-absolute{
@@ -356,4 +364,217 @@ ol, ul {
       opacity: 1;
       transform: translateY(0)
   }
+}
+
+.bg-gray {
+  background: #f7f8f9!important
+}
+.bg-dark {
+  background: #303742!important;
+  color: #fff
+}
+
+.tooltip {
+  position: relative;
+}
+
+.popover {
+  display: inline-block;
+  position: relative
+}
+
+.popover .popover-container {
+  left: 50%;
+  opacity: 0;
+  padding: .4rem;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%,-50%) scale(0);
+  transition: transform .2s;
+  width: 320px;
+  z-index: 300
+}
+
+.popover :focus+.popover-container,.popover:hover .popover-container {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%,-100%) scale(1)
+}
+
+.popover.popover-right .popover-container {
+  left: 100%;
+  top: 50%
+}
+
+.popover.popover-right :focus+.popover-container,.popover.popover-right:hover .popover-container {
+  transform: translate(0,-50%) scale(1)
+}
+
+.popover.popover-bottom .popover-container {
+  left: 50%;
+  top: 100%
+}
+
+.popover.popover-bottom :focus+.popover-container,.popover.popover-bottom:hover .popover-container {
+  transform: translate(-50%,0) scale(1)
+}
+
+.popover.popover-left .popover-container {
+  left: 0;
+  top: 50%
+}
+
+.popover.popover-left :focus+.popover-container,.popover.popover-left:hover .popover-container {
+  transform: translate(-100%,-50%) scale(1)
+}
+
+.popover .card {
+  border: 0;
+  box-shadow: 0 .2rem .5rem rgba(48,55,66,.3)
+}
+
+.close-button{
+  transition: all 0.2s ease;
+}
+.close-button:hover{
+  font-size: larger;
+  transform: rotate(90deg);
+}
+
+
+.tile {
+  align-content: space-between;
+  align-items: flex-start;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  -ms-flex-line-pack: justify
+}
+
+.tile .tile-action,.tile .tile-icon {
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto
+}
+
+.tile .tile-content {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto
+}
+
+.tile .tile-content:not(:first-child) {
+  padding-left: .4rem
+}
+
+.tile .tile-content:not(:last-child) {
+  padding-right: .4rem
+}
+
+.tile .tile-subtitle,.tile .tile-title {
+  line-height: 1.2rem
+}
+
+.tile.tile-centered {
+  align-items: center;
+  -ms-flex-align: center
+}
+
+.tile.tile-centered .tile-content {
+  overflow: hidden
+}
+
+.tile.tile-centered .tile-subtitle,.tile.tile-centered .tile-title {
+  margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+
+.avatar {
+  background: #5755d9;
+  border-radius: 50%;
+  color: rgba(255,255,255,.85);
+  display: inline-block;
+  font-size: .8rem;
+  font-weight: 300;
+  height: 1.6rem;
+  line-height: 1.25;
+  margin: 0;
+  position: relative;
+  vertical-align: middle;
+  width: 1.6rem
+}
+
+.avatar.avatar-xs {
+  font-size: .4rem;
+  height: .8rem;
+  width: .8rem
+}
+
+.avatar.avatar-sm {
+  font-size: .6rem;
+  height: 1.2rem;
+  width: 1.2rem
+}
+
+.avatar.avatar-lg {
+  font-size: 1.2rem;
+  height: 2.4rem;
+  width: 2.4rem
+}
+
+.avatar.avatar-xl {
+  font-size: 1.6rem;
+  height: 3.2rem;
+  width: 3.2rem
+}
+
+.avatar img {
+  border-radius: 50%;
+  height: 100%;
+  position: relative;
+  width: 100%;
+  z-index: 1
+}
+
+.avatar .avatar-icon,.avatar .avatar-presence {
+  background: #fff;
+  bottom: 14.64%;
+  height: 50%;
+  padding: .1rem;
+  position: absolute;
+  right: 14.64%;
+  transform: translate(50%,50%);
+  width: 50%;
+  z-index: 2
+}
+
+.avatar .avatar-presence {
+  background: #bcc3ce;
+  border-radius: 50%;
+  box-shadow: 0 0 0 .1rem #fff;
+  height: .5em;
+  width: .5em
+}
+
+.avatar .avatar-presence.online {
+  background: #32b643
+}
+
+.avatar .avatar-presence.busy {
+  background: #e85600
+}
+
+.avatar .avatar-presence.away {
+  background: #ffb700
+}
+
+.avatar[data-initial]::before {
+  color: currentColor;
+  content: attr(data-initial);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 1
 }

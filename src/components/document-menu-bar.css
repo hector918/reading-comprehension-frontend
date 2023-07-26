@@ -4,33 +4,44 @@
   column-gap: 3vw;
   
 }
+
 .document-menu-bar > div{
   /* cursor: pointer; */
   display: flex;
   text-align: left;
 }
+
 .document-menu-bar > div > .icon-place-holder{
   width: 20px;
   height: 20px;
   margin: auto;
 }
 
-.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card{
-  display: grid;
-  grid-template-rows: 1fr 1fr;
+.document-menu-bar > div > .modal > .modal-container > .modal-body > .content{
+  display: flex;
+}
+
+.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card {
+  /* display: grid; */
   margin-right: var(--slide-width-gap);
   box-sizing: border-box;
   width: var(--slide-width);
   height: var(--slide-height);
-  position: relative;
   border: 0.1rem solid #888;
   border-radius: 3px;
+  background-size: contain;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card > .card-info-container{
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-  border-radius: 3px;
-  opacity: 1;
-  background-size: contain;
-
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
 }
 
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card:hover{
@@ -39,18 +50,55 @@
   /* border: 0.3rem solid purple; */
   box-shadow: 0.2rem 4px 9px 0px violet;
   border: 0.1rem solid purple;
+  background-color: aliceblue;
+  
 }
 
-.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card > div:hover{
-  background-color: rgba(255,255,255,255.5);
+.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card > .card-info-container:hover {
+  /* background-color: rgba(0,0,0,.5); */
+  opacity: 1;
 }
-.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card > div{
-  width: 100%;
+
+.library-content-card > div > .card-title{
+  justify-content: center;
   height: 100%;
-  grid-column: 1 / -1;
 }
 
-.document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card > div:hover{
-  mix-blend-mode:color-burn;
-
+.library-content-card > div > .card-title > span{
+  width: 100%;
+  margin: auto;
+  text-overflow: clip;
+  word-break: break-word;
+  overflow: hidden;
+  display: block;
+  padding: 10px;
+  color: white;
+}
+.library-content-card > .icon-container{
+  position: absolute;
+  display: flex;
+  right: 0;
+  bottom: 0;
+  flex-direction: row-reverse;
+  height: 20%;
+  /* width: 100%; */
+  align-items: center;
+  padding-right: 5px;
+}
+.library-content-card > .icon-container > div > i{
+  transition: all 0.3s ease-in-out;
+  margin-left: 10px;
+  color: #333;
+  
+  /* mix-blend-mode: difference; */
+}
+.library-content-card > .icon-container > div > i:hover{
+  scale: 1.2;
+  color: orange;
+}
+.library-content-card > .icon-container > div > .icon-active:hover{
+  color: #333;
+}
+.library-content-card > .icon-container > div > .icon-active{
+  color: orange;
 }
