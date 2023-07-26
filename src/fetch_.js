@@ -153,6 +153,7 @@ function getLibrary(callback){
 }
 ////////////////////////////////////
 async function downloadFile (fileHash, callback){
+  console.log(`${API}/pda/${fileHash}`)
   fetch_get(`${API}/pda/${fileHash}`, callback);
 }
 ////////////////////////////////////
@@ -185,6 +186,7 @@ const entry = {
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,
+  pdfLinkPrefix:`${API}/pda`,
   uploadFileCheckExists, uploadFile, downloadFile,
   getLibrary,
 };

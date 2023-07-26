@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './document-menu-bar.css';
-import {createFileHash, trans} from '../general_';
+import {createFileHash, setFileHash, trans} from '../general_';
 import fe_ from '../fetch_';
 import {MessageFooter, addMessage} from '../components/message-footer';
 
@@ -36,15 +36,15 @@ export default function DocumentMenuBar({translation, isLogin}) {
     </div>
   }
 
-  const readLibrary = useCallback((data) => {
-    if(data.error){
+  const readLibrary = useCallback((res) => {
+    if(res.error){
       addMessage(
         trans("Reading library", translation),
-        trans(data.error, translation),
+        trans(res.error, translation),
         'error'
       );
     }else{
-      setLibraryData(data);
+      setLibraryData(res.data);
     } 
   }, [translation])
   ///////////////////////////////////////////////
@@ -70,13 +70,12 @@ export default function DocumentMenuBar({translation, isLogin}) {
         //if file not exists on the backend
         // console.log("not exists", fileMeta);
         fe_.uploadFile([evt.target.files[0]], (data) => {
-          console.log(data)
+          
           if(data.error) addMessage(
             trans("In upload file", translation), 
             trans(data.error, translation), 
             "error"
           );
-          console.error("in upload file", data);
         });
 
       }else{
@@ -99,7 +98,9 @@ export default function DocumentMenuBar({translation, isLogin}) {
     libraryModal.current.classList.toggle("active");
   }
   function onDocumentCardClick(evt){
-    console.log(evt);
+    const fileHash = evt.currentTarget.getAttribute("filehash");
+    setFileHash(fileHash)
+
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>

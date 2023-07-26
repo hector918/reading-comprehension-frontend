@@ -107,8 +107,8 @@ var setfileHash_ = undefined;
 function change_setFileHash(func){
   setfileHash_ = func;
 }
-function setFileHash(){
-  setfileHash_(arguments);
+function setFileHash(filehash){
+  if(setfileHash_) setfileHash_(filehash);
 }
 /////////////////////////////////////
 
