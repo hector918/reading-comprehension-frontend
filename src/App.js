@@ -73,7 +73,10 @@ function App() {
               isLogin = {isLogin}
             />} />
             {/* <Route path="/framework-testing" element={<AllInOneFramework />} /> */}
-            <Route path="/" element={<Landing translation={translation}/>} />
+            <Route path="/" element={<Landing 
+              translation = {translation}
+              isLogin = {isLogin}
+            />} />
             {/* <Route path="/testing_fetch" element={<TestOnly />} /> */}
             {/* <Route path="/userwalkthrough" element={<UserGuide />} /> */}
           </Routes>

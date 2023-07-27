@@ -116,7 +116,7 @@ function UserRegister(form, callback){
 }
 function UserLogin(form, callback){
   const body = {
-    body: JSON.stringify(form),
+    body: JSON.stringify(form)
   }
   fetch_post(`${API}/login/login`, body, callback);
 }
@@ -150,6 +150,10 @@ function getLibrary(callback){
   fetch_get(`${API}/luda/library`, (data) => {
     callback(data);
   });
+}
+function addDocumentToUser(filehash, callback){
+  const body = {body: JSON.stringify({filehash})};
+  fetch_post(`${API}/luda/addDocumentToUser`, body, callback);
 }
 ////////////////////////////////////
 async function downloadFile (fileHash, callback){
@@ -189,5 +193,6 @@ const entry = {
   pdfLinkPrefix:`${API}/pda`,
   uploadFileCheckExists, uploadFile, downloadFile,
   getLibrary,
+  addDocumentToUser
 };
 export default entry;

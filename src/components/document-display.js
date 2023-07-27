@@ -10,7 +10,6 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
   const [fileHash, setFileHash] = useState(fileHashFromParent);
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
-  console.log(fileHashFromParent)
 ////////////////////////////////////
   change_setFileHash(setFileHash);
   useEffect(() => {
@@ -23,12 +22,11 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
         container.removeChild(container.firstChild);
       }
       // 
-      processPdfHash();
+      processPdfHash(() => setIsLoading(false));
+      
     }
-    async function processPdfHash(){
+    async function processPdfHash(callback){
       const pdfContent = await extractTextAndImageFromPDF(fe_.pdfLinkPrefix +`/${fileHash}`);
-      console.log(pdfContent);
-
       render_pdf_page(pdfContent);
       function render_pdf_page(pdf_content){
         let elements_list = [];
@@ -63,6 +61,7 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
           
         });
         render_container.current.append(...elements_list);
+        callback();
       }
      
       //////helper//////////////////////
@@ -80,7 +79,7 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
   }, [fileHash]);
 
   return <div className='document-display'>
-    {isLoading && "Loading"}
+    {isLoading && <div><h1>Loading...</h1></div>}
     <div ref={render_container} ></div>
   </div>
 }

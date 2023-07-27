@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './document-menu-bar.css';
 import {createFileHash, trans, setFileHash} from '../general_';
 import fe_ from '../fetch_';
+import lc_ from '../stroage_';
 import {MessageFooter, addMessage} from '../components/message-footer';
 
 /////////////////////////////////////////////////
@@ -43,13 +44,16 @@ export default function DocumentMenuBar({translation, isLogin}) {
         trans(res.error, translation),
         'error'
       );
-    }else{
+      // if return error remove state
+      setLibraryData([]);
+    }else if(res.data){
+      //if return data plug in to state
       setLibraryData(res.data);
-    } 
+    }
   }, [translation])
   ///////////////////////////////////////////////
-  useEffect(()=>{
-    fe_.getLibrary(readLibrary);
+  useEffect(() => {
+    lc_.getLibrary(readLibrary);
   }, [readLibrary, isLogin]);
   //////////////////////////////////////////////
   const onUploadClick = (evt) => {
@@ -79,8 +83,14 @@ export default function DocumentMenuBar({translation, isLogin}) {
         });
 
       }else{
-        console.log("exists", fileMeta);
         //if file exists on the backend
+        ///add document to user library
+        console.log("exists", fileMeta);
+        lc_.addDocumentToUser(fileHash, (res) => {
+          lc_.getLibrary(readLibrary);
+        })
+        
+        
         // addMessage()
       }
       //clear up after upload
@@ -136,7 +146,7 @@ export default function DocumentMenuBar({translation, isLogin}) {
           </div>
           <div className="modal-body">
             <div className="content">
-              {libraryData.map(cardTemplete)}
+              {libraryData && libraryData.map(cardTemplete)}
             </div>
           </div>
           <div className="modal-footer">
@@ -144,7 +154,6 @@ export default function DocumentMenuBar({translation, isLogin}) {
           </div>
         </div>
       </div>
-      {/* // */}
       <div className="popover-container bg-dark">
         <div className="card bg-dark">
           <div className="card-body">

@@ -7,6 +7,7 @@
 .document-display > div canvas{
   margin: auto;
   display: block;
+  max-width: 100%;
 }
 .document-display .page-separator{
   font-size: 1rem;

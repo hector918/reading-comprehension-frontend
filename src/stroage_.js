@@ -1,6 +1,8 @@
 import CryptoJS from 'crypto-js';
 import srv from './fetch_';
-const [ fileTable, file_list_prefix, moving_gallery_prefix ] = [ "files", "filehash", "moving_gallery_prefix" ];
+import {addMessage} from './components/message-footer';
+;
+const [fileTable, file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "filehash", "moving_gallery_prefix", "library_documents_prefix"];
 
 function error_handle(error) {
   console.log(error);
@@ -12,7 +14,6 @@ function check_string(){
   }
   return true;
 }
-
 
 /////////////////////////////////////////////////
 function check_key_name(category, fileHash){
@@ -142,7 +143,6 @@ function getDocuments(callback){
   function callFetch(){
     srv.getDocuments((res) => {
       try {
-        console.log(res)
         localStorage.setItem(moving_gallery_prefix, JSON.stringify(res));
         callback(res);
       } catch (error) {
@@ -153,9 +153,83 @@ function getDocuments(callback){
   }
 }
 
+function getLibrary(callback){
+  try {
+    try {
+      //pulling history library in localstroage
+      const libraryFromLC = JSON.parse(localStorage.getItem(library_documents_prefix));
+      console.log("reading from lc")
+      callback(libraryFromLC);
+      return
+    } catch (error) {
+      //if parse go south remove problem data;
+      localStorage.removeItem(library_documents_prefix);
+    }
+    //read library from server
+    srv.getLibrary((res) => {
+      //plug res back to localstroage if return data
+      if(res.data) localStorage.setItem(library_documents_prefix, JSON.stringify(res));
+      callback(res);
+    });
+  } catch (error) {
+    error_handle(error);
+    callback(false);
+  }
+}
+
+function addDocumentToUser(filehash, callback){
+  try {
+    srv.addDocumentToUser(filehash, (res) => {
+      try {
+        //receive from Local stroage
+        const libraryFromLC = JSON.parse(localStorage.getItem(library_documents_prefix));
+        if(res.data) {
+          libraryFromLC.data.push(res.data);
+          localStorage.setItem(library_documents_prefix, JSON.stringify(libraryFromLC));
+        }
+      } catch (error) {
+        if(res.error){
+          localStorage.removeItem(library_documents_prefix);
+        }else{
+          localStorage.setItem(library_documents_prefix, JSON.stringify({data: [res.data]}));
+        }
+        
+        console.error(error);
+      }
+      callback(res);
+    });
+  } catch (error) {
+    error_handle(error);
+    callback(false);
+  }
+}
+
+function UserLogout(callback){
+  try {
+    srv.UserLogout((res) => {
+      if(res.data) {
+        //remove user data if user was logout
+    console.log("called stroage logout")
+
+        localStorage.removeItem(library_documents_prefix);
+      }
+      callback(res);
+    })
+  } catch (error) {
+    console.error(error);
+    callback(false);
+  }
+}
+//////////////////////////////////////////
+
+
+//////////////////////////////////////////
 const wrapper = {
   // getFileDetail
-  getDocuments
+  getDocuments,
+  getLibrary,
+  UserLogout,
+  addDocumentToUser,
 }
 
 export default wrapper;
