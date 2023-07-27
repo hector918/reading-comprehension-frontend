@@ -4,12 +4,16 @@ import './navbar.css';
 import Login from "./login-panel";
 import UserProfileDropdown from "./user-profile-dropdown";
 import fe_ from '../fetch_';
+import lc_ from '../stroage_';
 import {trans} from '../general_';
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar({ language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin }) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});
+  const navigation = useNavigate();
+
   ///////////////////////////////////////////
   const on_sign_modal_show_click = (evt) => {
     sign_modal.current.classList.add("active");
@@ -29,12 +33,13 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
   }
 
   const on_user_logout_click = (evt) => {
-    fe_.UserLogout((res) => {
+    lc_.UserLogout((res) => {
       if(res.error){
         addMessage(trans("Logout failed.", translation),"", "error");
       }else{
         addMessage(trans("Successed logout.", translation),"", "success");
         setUserInfo({});
+        navigation('/');
       }
     })
   }

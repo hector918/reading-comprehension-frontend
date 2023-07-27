@@ -22,10 +22,10 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
         container.removeChild(container.firstChild);
       }
       // 
-      processPdfHash();
-      setIsLoading(false);
+      processPdfHash(() => setIsLoading(false));
+      
     }
-    async function processPdfHash(){
+    async function processPdfHash(callback){
       const pdfContent = await extractTextAndImageFromPDF(fe_.pdfLinkPrefix +`/${fileHash}`);
       render_pdf_page(pdfContent);
       function render_pdf_page(pdf_content){
@@ -61,6 +61,7 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
           
         });
         render_container.current.append(...elements_list);
+        callback();
       }
      
       //////helper//////////////////////
@@ -78,7 +79,7 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
   }, [fileHash]);
 
   return <div className='document-display'>
-    {isLoading && "Loading"}
+    {isLoading && <div><h1>Loading...</h1></div>}
     <div ref={render_container} ></div>
   </div>
 }

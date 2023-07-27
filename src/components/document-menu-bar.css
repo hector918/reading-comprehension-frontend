@@ -19,11 +19,15 @@
 
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content{
   display: flex;
+  width: 100%;
+  flex-flow: wrap;
+  row-gap: 0.15vh;
 }
 
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card {
   /* display: grid; */
   margin-right: var(--slide-width-gap);
+  margin-bottom: var(--slide-row-gap);
   box-sizing: border-box;
   width: var(--slide-width);
   height: var(--slide-height);
