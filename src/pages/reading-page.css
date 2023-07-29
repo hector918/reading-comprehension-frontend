@@ -30,7 +30,8 @@
 }
 
 .reading-page-div-h > .reading-central-panel > .interaction-panel{
-  background-color: purple;
+  width: 100%;
+  height: 100%;
 }
 
 .reading-page-div-h > .reading-footer-gap{

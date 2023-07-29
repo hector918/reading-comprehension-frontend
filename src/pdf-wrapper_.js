@@ -6,9 +6,7 @@
 ////hector build jun/01/2023 //////////////////////////
 async function extractTextAndImageFromPDF(url){
   let PDFJS = window['pdfjs-dist/build/pdf'];
-  if(PDFJS === undefined){
-    await init();
-  }
+  if(PDFJS === undefined) await init();
   PDFJS = window['pdfjs-dist/build/pdf'];
   if(PDFJS === undefined) throw new Error("pdfjs not found");
   if(url.trim() === "") return false;

@@ -4,7 +4,7 @@ import fe_ from '../fetch_';
 import stroage_ from '../stroage_';
 import {setFileHash, trans} from '../general_';
 import { useNavigate } from "react-router-dom";
-
+import {addMessage} from './message-footer';
 
 export default function MovingGallery(){
   const [cards, setCards] = useState({
@@ -15,6 +15,7 @@ export default function MovingGallery(){
   //////////////////////////////////////
   useEffect(()=>{
     stroage_.getDocuments(({data}) => {
+      if(!data) return;
       //remove timestamp, timestamp only for storage to check data during.
       delete data.timestamp;
       //check key and try to render it

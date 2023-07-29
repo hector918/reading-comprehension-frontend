@@ -2,32 +2,37 @@ import { useEffect, useState, useRef } from 'react';
 import './document-display.css';
 import {extractTextAndImageFromPDF, init} from '../pdf-wrapper_';
 import fe_ from '../fetch_';
-import {change_setFileHash} from '../general_';
-
-init();
+import {trans} from '../general_';
+import {addMessage} from './message-footer';
+import LoadingIcon from './loading-icon';
 ////////////////////////////////////
-export default function DocumentDisplay({translation, isLogin, fileHashFromParent}){
-  const [fileHash, setFileHash] = useState(fileHashFromParent);
+init();
+export default function DocumentDisplay({translation, isLogin, fileHash}){
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
 ////////////////////////////////////
-  change_setFileHash(setFileHash);
   useEffect(() => {
-    //
     if(fileHash !== undefined) {
-      setIsLoading(true);
+      setIsLoading(trans("Loading file", translation));
       const container = render_container.current;
       //clear the container
       while (container.firstChild) {
         container.removeChild(container.firstChild);
       }
-      // 
       processPdfHash(() => setIsLoading(false));
-      
     }
     async function processPdfHash(callback){
-      const pdfContent = await extractTextAndImageFromPDF(fe_.pdfLinkPrefix +`/${fileHash}`);
-      render_pdf_page(pdfContent);
+      try {
+        const pdfContent = await extractTextAndImageFromPDF(fe_.pdfLinkPrefix + `/${fileHash}`);
+        setIsLoading(trans("Rendering page", translation));
+        setTimeout(() => {
+          render_pdf_page(pdfContent);
+        }, 100);
+      } catch (error) {
+        console.error(error);
+        addMessage(trans("processing PDF"), trans(error.message), "error");
+      }
+      
       function render_pdf_page(pdf_content){
         let elements_list = [];
         pdf_content.forEach((el, idx) => {
@@ -51,7 +56,7 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
             let span = ce({tagName: "span", innerHTML: text.str + " "});
             page_p.append(span);
             if(text.hasEOL){
-              if(/[^\w\s]$/.test(text.str.trim())){
+              if(/[^\w\s-—]$/.test(text.str.trim())){
                 div.append(page_p);
                 page_p = ce({tagName: "p"});
               } 
@@ -65,7 +70,6 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
       }
      
       //////helper//////////////////////
-      
       function ce(obj){
         let el = document.createElement(obj.tagName || "div");
         for(let x in obj)switch(x){
@@ -76,10 +80,12 @@ export default function DocumentDisplay({translation, isLogin, fileHashFromParen
         return el;
       }
     }
-  }, [fileHash]);
+  }, [fileHash, translation]);
 
   return <div className='document-display'>
-    {isLoading && <div><h1>Loading...</h1></div>}
+    {isLoading && <div>
+      <h1> {isLoading} <LoadingIcon/></h1>
+    </div>}
     <div ref={render_container} ></div>
   </div>
 }

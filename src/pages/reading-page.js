@@ -1,13 +1,17 @@
 import './reading-page.css';
-import React from "react";
+import React, { useState } from "react";
 // import {MessageFooter, addMessage} from '../components/message-footer';
-import {trans, setFileHash} from '../general_';
+import {trans, change_setFileHash} from '../general_';
 import DocumentMenuBar from '../components/document-menu-bar';
 import DocumentDisplay from '../components/document-display';
 import { useParams } from 'react-router-dom';
+import InteractionDisplay from '../components/interaction-panel';
 /////////////////////////////////////
 export default function ReadingPage({translation, isLogin}){
-  const {fileHash} = useParams();
+  const {filehash} = useParams();
+  const [fileHash, setFileHash] = useState(filehash);
+  //send globe setfilehash available
+  change_setFileHash(setFileHash);
   return(
     <div className="reading-page-div-h">
       <div className='reading-header-gap'>
@@ -26,12 +30,15 @@ export default function ReadingPage({translation, isLogin}){
           <DocumentDisplay 
             translation = {translation} 
             isLogin = {isLogin} 
-            fileHashFromParent = {fileHash}
-
+            fileHash = {fileHash}
           />
         </div>
         <div className='interaction-panel'>
-
+          <InteractionDisplay 
+            translation = {translation} 
+            isLogin = {isLogin} 
+            fileHash = {fileHash}
+          />
         </div>
         <div></div>
       </div>
