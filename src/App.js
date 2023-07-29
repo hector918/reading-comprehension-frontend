@@ -7,6 +7,7 @@ import NavBar from './components/navbar';
 import { useEffect, useState } from 'react';
 import fe_ from './fetch_';
 import {MessageFooter, addMessage} from './components/message-footer';
+
 /////////////////////
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/login" element={<Navigation />} /> */}
             {/* <Route path="/assistance" element={<ReadingAssistance />} /> */}
-            <Route path="/reading/:fileHash" element={<ReadingPage 
+            <Route path="/reading/:filehash" element={<ReadingPage 
               translation = {translation} 
               isLogin = {isLogin}
             />} />

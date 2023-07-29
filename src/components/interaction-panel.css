@@ -1,0 +1,48 @@
+.reading-central-panel > .interaction-panel > .interaction-Display{
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel{
+  background-color: aliceblue;
+  width: 100%;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .input-panel{
+  display: block;
+  width: 100%;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div{
+  width: 100%;
+  position: relative;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div > textarea{
+  width: 100%;
+  margin: 0px;
+  height: calc(100vh /12);
+  left: 0;
+  bottom: 0;
+  resize: none;
+  position: absolute;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div > button{
+  /* margin: 0px 5px; */
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  opacity: 0.5;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  background-color: #060644;
+  border: 1px solid violet;
+  color: white;
+  border-radius: 4px;
+  padding: 0 2vw;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div > button:hover{
+  opacity: 1;
+  box-shadow: 5px 2px 5px purple;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div > button:active{
+  scale: 1.1;
+}

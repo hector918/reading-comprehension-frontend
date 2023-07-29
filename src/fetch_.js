@@ -37,15 +37,16 @@ function fetch_get(url, callback){
     },
     credentials: "include",
   }
+  
   fetch(url, body)
-  .then((response) => response.json())
-  .then((data) => {
-    callback(data);
-  })
-  .catch(error => {
-    error_handle(error);
-    callback(error);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      callback(data);
+    })
+    .catch(error => {
+      error_handle(error);
+      callback({error: "fetch error"});
+    });
 }
 async function fetch_get_async(url){
   try {
@@ -64,28 +65,28 @@ async function fetch_get_async(url){
     return error;
   }
 }
-async function fetch_post_async(url, body){
-  try {
-    body.method = "POST";
-    body.headers = {
-      ...body.headers, 
-      ...default_fetch_options,
-    }
-    //add cookies when fired
-    body.credentials = "include";
-    const res = await fetch(url, body);
-    if(res.ok){
-      const ret = await res.json();
-      return ret;
-    }else{
-      return false;
-    }
-  } catch (error) {
-    error_handle(error);
-    return false;
-  }
+// async function fetch_post_async(url, body){
+//   try {
+//     body.method = "POST";
+//     body.headers = {
+//       ...body.headers, 
+//       ...default_fetch_options,
+//     }
+//     //add cookies when fired
+//     body.credentials = "include";
+//     const res = await fetch(url, body);
+//     if(res.ok){
+//       const ret = await res.json();
+//       return ret;
+//     }else{
+//       return false;
+//     }
+//   } catch (error) {
+//     error_handle(error);
+//     return false;
+//   }
   
-}
+// }
 //// login potion/////////////////////////////////////
 function checkLoginFunction(callback){
   fetch(`${API}/login/available`)
@@ -166,9 +167,7 @@ async function uploadFileCheckExists(fileHash){
 }
 
 function uploadFile(files, callback){
-
   const formData = new FormData();
-  
   for(let file of files) formData.append("files", file);
   const body  = {
     body: formData,
@@ -184,6 +183,33 @@ function uploadFile(files, callback){
   */
 }
 /////////////////////////////////////////////////
+function question_to_reading_comprehension(fileHash, q, level, callback){
+  const fetch_options  = {
+    body: JSON.stringify({q, fileHash, level}),
+  };
+  fetch_post(`${API}/rc`,fetch_options, callback);
+    /* result example
+      {
+        "id":"chatcmpl-7FtdtwCgRUMg6nEx64M0RPrNOpZJc","object":"chat.completion",
+        "created":1684023165,
+        "model":"gpt-3.5-turbo-0301",
+        "usage":{
+          "prompt_tokens":2023,
+          "completion_tokens":28,
+          "total_tokens":2051
+        },
+        "choices":[{
+          "message":{
+            "role":"assistant",
+            "content":"The story is about an old fisherman who has gone 84 days without catching a fish and his journey to catch a giant marlin."
+          },
+          "finish_reason":"stop",
+          "index":0
+        }]}
+     */
+  }
+
+/////////////////////////////////////////////////
 const entry = { 
   checkLoginFunction, checkUserID, 
   UserRegister, UserLogin, UserLogout, checkLoginStatus,
@@ -193,6 +219,7 @@ const entry = {
   pdfLinkPrefix:`${API}/pda`,
   uploadFileCheckExists, uploadFile, downloadFile,
   getLibrary,
-  addDocumentToUser
+  addDocumentToUser,
+  question_to_reading_comprehension
 };
 export default entry;
