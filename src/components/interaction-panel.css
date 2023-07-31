@@ -5,8 +5,9 @@
   grid-template-rows: 1fr auto;
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel{
-  background-color: aliceblue;
   width: 100%;
+  overflow-y: scroll;
+  padding-bottom: 80px;
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .input-panel{
   display: block;
@@ -45,4 +46,32 @@
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div > button:active{
   scale: 1.1;
+}
+
+.reading-central-panel > .interaction-panel > .history-panel{
+
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div{
+  text-align: left;
+  padding: 10px 0px;
+  border-bottom: #060644 1px dotted;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div > .question{
+  position: relative;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div > div > :first-child{
+  text-transform: capitalize;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div > div > :nth-child(2){
+  white-space: pre-line;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div > .anwser{
+  font-size: small;
+}
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div > .question  .function-panel{
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  display: flex;
+  gap: 10px;
 }

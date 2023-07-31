@@ -3,7 +3,7 @@ import './document-menu-bar.css';
 import {createFileHash, trans, setFileHash} from '../general_';
 import fe_ from '../fetch_';
 import lc_ from '../stroage_';
-import {MessageFooter, addMessage} from '../components/message-footer';
+import {addMessage} from '../components/message-footer';
 
 /////////////////////////////////////////////////
 export default function DocumentMenuBar({translation, isLogin}) {

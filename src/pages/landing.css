@@ -9,25 +9,6 @@ main > .landing-container{
   top: var(--navbar-height);
   left: 0;
 }
-/* 
-.landing-container > .columns {
-  height: 100%;
-  z-index: 50;
-  position: relative;
-}
-.landing-container > .columns > .column{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.landing-container > .columns > .column > .panel{
-  text-align: left;
-  width: 35%;
-  min-width: 400px;
-  height: 500px;
-  padding: 16px;
-  background-color: white;
-} */
 
 /* 如果大于 */
 @media screen and (min-width: 720px) {
@@ -68,12 +49,12 @@ main > .landing-container{
     cursor: default;
 
   }
-  .landing-container > .floating-panel > div > .under-construction{
+  .landing-container > .floating-panel > div > .guider{
     flex-grow: 1;
     color: white;
     width: 100%;
     margin: auto;
-    background-color: red;
+    background-color: #060644;
     font-size: 0.8vw;
   }
 

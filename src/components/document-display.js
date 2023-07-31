@@ -83,7 +83,7 @@ export default function DocumentDisplay({translation, isLogin, fileHash}){
   }, [fileHash, translation]);
 
   return <div className='document-display'>
-    {isLoading && <div>
+    {isLoading && <div className='loging-icon-div'>
       <h1> {isLoading} <LoadingIcon/></h1>
     </div>}
     <div ref={render_container} ></div>

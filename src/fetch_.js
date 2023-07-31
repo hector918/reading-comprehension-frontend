@@ -158,7 +158,6 @@ function addDocumentToUser(filehash, callback){
 }
 ////////////////////////////////////
 async function downloadFile (fileHash, callback){
-  console.log(`${API}/pda/${fileHash}`)
   fetch_get(`${API}/pda/${fileHash}`, callback);
 }
 ////////////////////////////////////
@@ -181,6 +180,9 @@ function uploadFile(files, callback){
       "message":"Successfully uploaded"
     }
   */
+}
+function get_all_history_from_fileHash(fileHash, callback){
+  fetch_get(`${API}/pda/chathistory/${fileHash}`, callback);
 }
 /////////////////////////////////////////////////
 function question_to_reading_comprehension(fileHash, q, level, callback){
@@ -220,6 +222,7 @@ const entry = {
   uploadFileCheckExists, uploadFile, downloadFile,
   getLibrary,
   addDocumentToUser,
-  question_to_reading_comprehension
+  question_to_reading_comprehension,
+  get_all_history_from_fileHash
 };
 export default entry;
