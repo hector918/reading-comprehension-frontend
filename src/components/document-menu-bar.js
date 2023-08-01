@@ -6,7 +6,7 @@ import lc_ from '../stroage_';
 import {addMessage} from '../components/message-footer';
 
 /////////////////////////////////////////////////
-export default function DocumentMenuBar({translation, isLogin}) {
+export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   const libraryModal = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
@@ -105,11 +105,11 @@ export default function DocumentMenuBar({translation, isLogin}) {
     }
   }
   
-  const LibraryModalClose = (evt) => {
+  const libraryModalClose = (evt) => {
     //
     libraryModal.current.classList.remove("active");
   }
-  const LibraryModalPopup = (evt) => {
+  const libraryModalPopup = (evt) => {
     //
     libraryModal.current.classList.add("active");
   }
@@ -117,9 +117,14 @@ export default function DocumentMenuBar({translation, isLogin}) {
     evt.stopPropagation();
     const fileHash = evt.currentTarget.getAttribute("filehash");
     setFileHash(fileHash);
-    LibraryModalClose();
+    libraryModalClose();
   }
-
+  const onDocPageControlConfirm = (evt) => {
+    const page = evt.currentTarget.value;
+    const element = document.querySelector(`#anchor-page-number-${page}`);
+    element?.scrollIntoView({ behavior: 'smooth' });
+    console.log()
+  }
   /////////////////////////////////
   return <div className='document-menu-bar'>
     <div 
@@ -144,12 +149,12 @@ export default function DocumentMenuBar({translation, isLogin}) {
       </div>
     </div>
     <div className='popover popover-bottom'>
-      <span className='c-hand' onClick={LibraryModalPopup}><i className="fa-solid fa-list"></i>{trans("Library", translation)}</span>
+      <span className='c-hand' onClick={libraryModalPopup}><i className="fa-solid fa-list"></i>{trans("Library", translation)}</span>
       {/* // */}
       <div ref={libraryModal} className="modal modal-lg">
         <span href="#close" className="modal-overlay" aria-label="Close"></span>
         <div className="modal-container">
-          <div className="modal-header"><span className="btn btn-clear float-right c-hand" href="#modals-sizes" aria-label="Close" onClick={LibraryModalClose}><i className="fa-solid fa-xmark close-button"></i></span>
+          <div className="modal-header"><span className="btn btn-clear float-right c-hand" href="#modals-sizes" aria-label="Close" onClick={libraryModalClose}><i className="fa-solid fa-xmark close-button"></i></span>
             <div className="modal-title h3">{trans("Library", translation)}</div>
           </div>
           <div className="modal-body">
@@ -171,5 +176,6 @@ export default function DocumentMenuBar({translation, isLogin}) {
         </div>
       </div>
     </div>
+    <div className='document-page-control'><span>Page: </span><input type='number' min={1} max={pagesCount} onBlur={onDocPageControlConfirm} defaultValue={1}/></div>
   </div>
 }

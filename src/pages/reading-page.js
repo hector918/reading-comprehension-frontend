@@ -10,6 +10,7 @@ import InteractionDisplay from '../components/interaction-panel';
 export default function ReadingPage({translation, isLogin}){
   const {filehash} = useParams();
   const [fileHash, setFileHash] = useState(filehash);
+  const [pagesCount, setPagesCount] = useState(999);
   //send globe setfilehash available
   change_setFileHash(setFileHash);
   return(
@@ -19,6 +20,7 @@ export default function ReadingPage({translation, isLogin}){
         <DocumentMenuBar 
           translation = {translation} 
           isLogin = {isLogin} 
+          pagesCount = {pagesCount}
         />
         <div>menu 2</div>
         <div></div>
@@ -31,6 +33,7 @@ export default function ReadingPage({translation, isLogin}){
             translation = {translation} 
             isLogin = {isLogin} 
             fileHash = {fileHash}
+            setPagesCount = {setPagesCount}
           />
         </div>
         <div className='reading-page-central-gap'></div>
@@ -44,7 +47,7 @@ export default function ReadingPage({translation, isLogin}){
         <div></div>
       </div>
       
-      <div className='reading-footer-gap'><span>{trans("Under construction", translation)}</span></div>
+      {/* <div className='reading-footer-gap'><span>{trans("Under construction", translation)}</span></div> */}
     </div>
   )
 }
