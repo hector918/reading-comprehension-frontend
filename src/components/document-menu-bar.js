@@ -11,6 +11,7 @@ export default function DocumentMenuBar({translation, isLogin}) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
   const [libraryData, setLibraryData] = useState([]);
+  const [recentsData, setRecentsData] = useState([]);
   const fileInput = useRef(null);
   ///////////////////////////////////////
 
@@ -22,7 +23,6 @@ export default function DocumentMenuBar({translation, isLogin}) {
       onClick = {onDocumentCardClick}
       filehash = {cardData.filehash}
     >
-      {/* <span>{el.filehash}</span> */}
       <div className='card-info-container'>
         <div className='card-title'>
           <span>{cardData.name}</span>
@@ -32,7 +32,6 @@ export default function DocumentMenuBar({translation, isLogin}) {
           <div><i className={`fa-solid fa-trash fa-xl c-hand`}></i></div>
           <div><i className={`fa-solid fa-star fa-xl c-hand ${cardData.is_favorite && "icon-active"}`}></i></div>
           <div><i className={`fa-solid fa-share-nodes fa-xl ${cardData.is_share && "icon-active"} c-hand`}></i></div>
-          
       </div>
     </div>
   }
@@ -49,6 +48,7 @@ export default function DocumentMenuBar({translation, isLogin}) {
     }else if(res.data){
       //if return data plug in to state
       setLibraryData(res.data);
+      setRecentsData(res.data.slice(0, 5));
     }
   }, [translation])
   ///////////////////////////////////////////////
@@ -104,22 +104,22 @@ export default function DocumentMenuBar({translation, isLogin}) {
       //0ad1d820761a5aca9df52c22ea1cfc4ca5dad64923f51270dbe8f106f3817eef
     }
   }
-  const openLibraryClick = (evt) => {
+  
+  const LibraryModalClose = (evt) => {
     //
-    libraryModal.current.classList.toggle("active");
+    libraryModal.current.classList.remove("active");
+  }
+  const LibraryModalPopup = (evt) => {
+    //
+    libraryModal.current.classList.add("active");
   }
   function onDocumentCardClick(evt){
-    console.log(evt)
     evt.stopPropagation();
     const fileHash = evt.currentTarget.getAttribute("filehash");
     setFileHash(fileHash);
-    libraryModal.current.classList.toggle("active");
+    LibraryModalClose();
   }
-  /////////////////////////////////
-  const render_recents = () => {
-    const recentsData = libraryData.slice(0, 5);
-    return <div className='user-recents-documents-container'>{recentsData.map(cardTemplete)}</div>
-  }
+
   /////////////////////////////////
   return <div className='document-menu-bar'>
     <div 
@@ -144,12 +144,12 @@ export default function DocumentMenuBar({translation, isLogin}) {
       </div>
     </div>
     <div className='popover popover-bottom'>
-      <span className='c-hand' onClick={openLibraryClick}><i className="fa-solid fa-list"></i>{trans("Library", translation)}</span>
+      <span className='c-hand' onClick={LibraryModalPopup}><i className="fa-solid fa-list"></i>{trans("Library", translation)}</span>
       {/* // */}
       <div ref={libraryModal} className="modal modal-lg">
         <span href="#close" className="modal-overlay" aria-label="Close"></span>
         <div className="modal-container">
-          <div className="modal-header"><span className="btn btn-clear float-right c-hand" href="#modals-sizes" aria-label="Close" onClick={openLibraryClick}><i className="fa-solid fa-xmark close-button"></i></span>
+          <div className="modal-header"><span className="btn btn-clear float-right c-hand" href="#modals-sizes" aria-label="Close" onClick={LibraryModalClose}><i className="fa-solid fa-xmark close-button"></i></span>
             <div className="modal-title h3">{trans("Library", translation)}</div>
           </div>
           <div className="modal-body">
@@ -163,8 +163,11 @@ export default function DocumentMenuBar({translation, isLogin}) {
         </div>
       </div>
       <div className="popover-container bg-dark popover-container-for-recents">
-        <div>
-          {render_recents()}
+        <div>{trans('Click again to open the Library.', translation)}</div>
+        <hr></hr>
+        <div>{trans('Recents', translation)}</div>
+        <div className='popover-subcontainer-for-recents'>
+          <div className='user-recents-documents-container'>{recentsData.map(cardTemplete)}</div>
         </div>
       </div>
     </div>
