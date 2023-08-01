@@ -108,7 +108,8 @@
 }
 
 .document-menu-bar > .popover > .popover-container-for-recents{
-  width: fit-content
+  width: fit-content;
+  min-width: 320px;
 }
 
 .document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
