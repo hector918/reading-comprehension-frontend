@@ -8,15 +8,15 @@ function error_handle(error) {
   console.error(error);
 }
 
-function fetch_post(url, fetchOptions, callback){
-  fetchOptions.method = "POST";
+function fetch_post(url, fetchOptions, callback, method = 'POST'){
+  fetchOptions.method = method;
   fetchOptions.headers = { 
     ...default_fetch_options,
     ...fetchOptions.headers
   }
   if(fetchOptions.headers['Content-Type'] === "delete")
     delete fetchOptions.headers['Content-Type'];
-  //add cookies when fired
+  //add cookies before fire
   fetchOptions.credentials = "include";
   fetch(url, fetchOptions)
   .then((response) => response.json())
@@ -28,7 +28,9 @@ function fetch_post(url, fetchOptions, callback){
     callback(error);
   });
 }
-
+function fetch_patch(url, fetchOptions, callback){
+  fetch_post(url, fetchOptions, callback, 'PATCH');
+}
 function fetch_get(url, callback){
   const body = {
     method: "GET",
@@ -156,9 +158,12 @@ function addDocumentToUser(filehash, callback){
   const body = {body: JSON.stringify({filehash})};
   fetch_post(`${API}/luda/addDocumentToUser`, body, callback);
 }
+function userToggleReadingComprehensionShare(comprehension_history_id, is_share, callback){
+  const body = JSON.stringify({comprehension_history_id, is_share});
+  fetch_patch(`${API}/luda/updateReadingComprehensionShareState`, {body}, callback);
+}
 ////////////////////////////////////
 async function downloadFile (fileHash, callback){
-  console.log(`${API}/pda/${fileHash}`)
   fetch_get(`${API}/pda/${fileHash}`, callback);
 }
 ////////////////////////////////////
@@ -181,6 +186,9 @@ function uploadFile(files, callback){
       "message":"Successfully uploaded"
     }
   */
+}
+function get_all_history_from_fileHash(fileHash, callback){
+  fetch_get(`${API}/pda/chathistory/${fileHash}`, callback);
 }
 /////////////////////////////////////////////////
 function question_to_reading_comprehension(fileHash, q, level, callback){
@@ -220,6 +228,8 @@ const entry = {
   uploadFileCheckExists, uploadFile, downloadFile,
   getLibrary,
   addDocumentToUser,
-  question_to_reading_comprehension
+  question_to_reading_comprehension,
+  get_all_history_from_fileHash,
+  userToggleReadingComprehensionShare
 };
 export default entry;

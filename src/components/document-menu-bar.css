@@ -106,3 +106,27 @@
 .library-content-card > .icon-container > div > .icon-active{
   color: orange;
 }
+
+.document-menu-bar > .popover > .popover-container-for-recents{
+  width: fit-content
+}
+
+.document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
+  display: flex;
+  gap: 5px;
+}
+
+.popover-container-for-recents > div >.user-recents-documents-container > .library-content-card{
+  width: var(--slide-width);
+  height: var(--slide-height);
+  background-size: cover;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  position: relative;
+  
+}
+.popover-container-for-recents > div >.user-recents-documents-container > .library-content-card:hover{
+  transform: scale(1.05);
+  box-shadow: 0.2rem 4px 9px 0px violet;
+  border: 0.1rem solid purple;
+}

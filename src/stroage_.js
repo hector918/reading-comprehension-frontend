@@ -34,10 +34,10 @@ function check_key_name(category, fileHash){
   }
   return keyName;
 }
-function setHistory(category, fileHash, subKeyName, data){
+function setHistory(category, fileHash, subKeyName, item){
   const keyName = check_key_name(category, fileHash);
   if(!keyName) return false;
-  const item = {...data, timestamp: new Date()};
+  // const item = {...data, timestamp: new Date()};
   try {
     let history = JSON.parse(localStorage.getItem(keyName));
     history[subKeyName] = item;
@@ -81,16 +81,14 @@ function getFileDetail(fileHash, history_category = ['metaData']){
         case "metaData":
           ret[x] = JSON.parse(localStorage.getItem(`${file_list_prefix}-${fileHash}`));
         break;
-        case "comprehension": case "image": case "text":
-          ret[x] = getHistory(x, fileHash);
-        break;
-        case "textToExplanation":
+        
+        case "text": case "textToExplanation":
           ret['textToExplanation'] = getHistory('text', fileHash);
         break;
-        case "textToImage":
+        case "image": case "textToImage":
           ret['textToImage'] = getHistory('image', fileHash);
         break;
-        case "textToComprehension":
+        case "comprehension": case "textToComprehension":
           ret['textToComprehension'] = getHistory('comprehension', fileHash);
         break;
         default:
@@ -128,7 +126,7 @@ function uploadDocument(file){
 function getDocuments(callback){
   try {
     let oldDataFromLC = JSON.parse(localStorage.getItem(moving_gallery_prefix));
-    if(oldDataFromLC.data && oldDataFromLC.data.popular && oldDataFromLC.data.collection){
+    if(oldDataFromLC?.data && oldDataFromLC.data.popular && oldDataFromLC.data.collection){
       //if have old data
       if(new Date(oldDataFromLC.data.timestamp).getDate() !== new Date().getDate()){
         //refreah moving gallery every day
@@ -139,7 +137,6 @@ function getDocuments(callback){
       callFetch();
     }
   } catch (error) {
-
     console.error(error);
     callFetch();
   }
@@ -215,8 +212,13 @@ function UserLogout(callback){
       if(res.data) {
         //remove user data if user was logout
         console.log("called stroage logout")
-
+        const userHistoryFileHash = JSON.parse(localStorage.getItem(library_documents_prefix)).data;
         localStorage.removeItem(library_documents_prefix);
+        userHistoryFileHash.forEach((el) => {
+          deleteHistory("comprehension",el.filehash);
+          deleteHistory("text",el.filehash);
+          deleteHistory("image",el.filehash);
+        });
       }
       callback(res);
     })
@@ -226,7 +228,7 @@ function UserLogout(callback){
   }
 }
 //////////////////////////////////////////
-function question_to_reading_comprehension(fileHash, q, level, callback){
+function questionToReadingComprehension(fileHash, q, level, callback){
   try {
     if (check_string(fileHash, q) === false ) return false;
     const subKeyName = `${q}-${level}`;
@@ -237,25 +239,63 @@ function question_to_reading_comprehension(fileHash, q, level, callback){
       return;
     } 
     srv.question_to_reading_comprehension(fileHash, q, level, (res) => {
-      callback(res);
+      
       //if res success
       if(res.data) setHistory("comprehension", fileHash, `${q}-${level}`, res.data);
+      callback(res);
     })
   } catch (error) {
     console.error(error);
     callback(false);
   }
-  
 }
+function getAllHistoryFromFileHash(filehash, callback){
+  try {
+    //const history = getHistory("comprehension", filehash);
+    srv.get_all_history_from_fileHash(filehash, (res) => {
+      if(res.data){
+        for(let type in res.data) for(let item of res.data[type])
+        {
+          setHistory(type, item.filehash, `${item.q}-${item.level}`, item);
+        }
+      }
+      callback(res);
+    })
+  } catch (error) {
+    console.error(error);
+    callback(false);
+  }
+}
+function userToggleReadingComprehensionShare(item, callback){
+  try {
+    const {comprehension_history_id, is_share, q, level, fileHash} = item;
+    srv.userToggleReadingComprehensionShare(comprehension_history_id, is_share, (res) => {
+      if(res.data){
+        const subKeyName = `${q}-${level}`;
+        const history = getHistory('comprehension', fileHash)[subKeyName];
 
+        history['is_share'] = is_share;
+        setHistory('comprehension', fileHash, subKeyName, history);
+        
+        callback(res);
+      }else callback(false);
+      
+    })
+  } catch (error) {
+    console.error(error);
+    callback(false);
+  }
+}
 //////////////////////////////////////////
 const wrapper = {
-  // getFileDetail
+  getFileDetail,
   getDocuments,
   getLibrary,
   UserLogout,
   addDocumentToUser,
-  question_to_reading_comprehension,
+  questionToReadingComprehension,
+  getAllHistoryFromFileHash,
+  userToggleReadingComprehensionShare
 }
 
 export default wrapper;

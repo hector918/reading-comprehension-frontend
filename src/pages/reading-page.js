@@ -33,6 +33,7 @@ export default function ReadingPage({translation, isLogin}){
             fileHash = {fileHash}
           />
         </div>
+        <div className='reading-page-central-gap'></div>
         <div className='interaction-panel'>
           <InteractionDisplay 
             translation = {translation} 
