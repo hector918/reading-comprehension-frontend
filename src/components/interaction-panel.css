@@ -1,13 +1,18 @@
+.interaction-panel > .interaction-Display > .history-panel >.textToComprehension > .question{
+  /* background-color: aqua; */
+}
+
 .reading-central-panel > .interaction-panel > .interaction-Display{
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: 8fr auto;
+  gap: 3px;
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel{
   width: 100%;
   overflow-y: scroll;
-  padding-bottom: 80px;
+  padding-bottom: 10px;
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .input-panel{
   display: block;
@@ -16,11 +21,12 @@
 .reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div{
   width: 100%;
   position: relative;
+  height: calc(100vh /12);
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .input-panel > div > textarea{
   width: 100%;
   margin: 0px;
-  height: calc(100vh /12);
+  height: 100%;
   left: 0;
   bottom: 0;
   resize: none;
@@ -48,13 +54,13 @@
   scale: 1.1;
 }
 
-.reading-central-panel > .interaction-panel > .history-panel{
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div:not(:last-child){
+  border-bottom: #060644 1px dotted;
 
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div{
   text-align: left;
   padding: 10px 0px;
-  border-bottom: #060644 1px dotted;
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div > .question{
   position: relative;
@@ -74,4 +80,11 @@
   top: 5px;
   display: flex;
   gap: 10px;
+  font-size: small;
+}
+.function-panel > .tooltip{
+  transition: all 0.2s ease-in-out;
+}
+.function-panel > .tooltip.active{
+  color: orange;
 }

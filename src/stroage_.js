@@ -266,6 +266,26 @@ function getAllHistoryFromFileHash(filehash, callback){
     callback(false);
   }
 }
+function userToggleReadingComprehensionShare(item, callback){
+  try {
+    const {comprehension_history_id, is_share, q, level, fileHash} = item;
+    srv.userToggleReadingComprehensionShare(comprehension_history_id, is_share, (res) => {
+      if(res.data){
+        const subKeyName = `${q}-${level}`;
+        const history = getHistory('comprehension', fileHash)[subKeyName];
+
+        history['is_share'] = is_share;
+        setHistory('comprehension', fileHash, subKeyName, history);
+        
+        callback(res);
+      }else callback(false);
+      
+    })
+  } catch (error) {
+    console.error(error);
+    callback(false);
+  }
+}
 //////////////////////////////////////////
 const wrapper = {
   getFileDetail,
@@ -274,7 +294,8 @@ const wrapper = {
   UserLogout,
   addDocumentToUser,
   questionToReadingComprehension,
-  getAllHistoryFromFileHash
+  getAllHistoryFromFileHash,
+  userToggleReadingComprehensionShare
 }
 
 export default wrapper;

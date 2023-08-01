@@ -52,8 +52,10 @@ export default function DocumentMenuBar({translation, isLogin}) {
     }
   }, [translation])
   ///////////////////////////////////////////////
+  
   useEffect(() => {
-    lc_.getLibrary(readLibrary);
+    
+    if(isLogin()) lc_.getLibrary(readLibrary);
   }, [readLibrary, isLogin]);
   //////////////////////////////////////////////
   const onUploadClick = (evt) => {
@@ -85,7 +87,6 @@ export default function DocumentMenuBar({translation, isLogin}) {
       }else{
         //if file exists on the backend
         ///add document to user library
-        console.log("exists", fileMeta);
         lc_.addDocumentToUser(fileHash, (res) => {
           lc_.getLibrary(readLibrary);
         })
@@ -108,9 +109,16 @@ export default function DocumentMenuBar({translation, isLogin}) {
     libraryModal.current.classList.toggle("active");
   }
   function onDocumentCardClick(evt){
+    console.log(evt)
+    evt.stopPropagation();
     const fileHash = evt.currentTarget.getAttribute("filehash");
     setFileHash(fileHash);
     libraryModal.current.classList.toggle("active");
+  }
+  /////////////////////////////////
+  const render_recents = () => {
+    const recentsData = libraryData.slice(0, 5);
+    return <div className='user-recents-documents-container'>{recentsData.map(cardTemplete)}</div>
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>
@@ -154,14 +162,11 @@ export default function DocumentMenuBar({translation, isLogin}) {
           </div>
         </div>
       </div>
-      <div className="popover-container bg-dark">
-        <div className="card bg-dark">
-          <div className="card-body">
-            "something in here"
-          </div>
+      <div className="popover-container bg-dark popover-container-for-recents">
+        <div>
+          {render_recents()}
         </div>
       </div>
     </div>
-    
   </div>
 }

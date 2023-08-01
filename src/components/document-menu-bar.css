@@ -106,3 +106,18 @@
 .library-content-card > .icon-container > div > .icon-active{
   color: orange;
 }
+
+.document-menu-bar > .popover > .popover-container-for-recents{
+  width: 500px;
+}
+
+.document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
+  width: var(--slide-width);
+  height: var(--slide-height)
+}
+
+.popover-container-for-recents > div >.user-recents-documents-container > .library-content-card{
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+}
