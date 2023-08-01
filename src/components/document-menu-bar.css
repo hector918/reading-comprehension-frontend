@@ -17,6 +17,13 @@
   margin: auto;
 }
 
+.document-menu-bar > .document-page-control {
+
+}
+.document-menu-bar > .document-page-control > input {
+  width: 60px;
+  text-align: right;
+}
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content{
   display: flex;
   width: 100%;
@@ -115,6 +122,7 @@
 .document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
   display: flex;
   gap: 5px;
+  justify-content: center;
 }
 
 .popover-container-for-recents > div >.user-recents-documents-container > .library-content-card{

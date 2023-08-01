@@ -7,7 +7,7 @@ import {addMessage} from './message-footer';
 import LoadingIcon from './loading-icon';
 ////////////////////////////////////
 init();
-export default function DocumentDisplay({translation, isLogin, fileHash}){
+export default function DocumentDisplay({translation, isLogin, fileHash, setPagesCount}){
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
 ////////////////////////////////////
@@ -35,7 +35,9 @@ export default function DocumentDisplay({translation, isLogin, fileHash}){
       
       function render_pdf_page(pdf_content){
         let elements_list = [];
+        let pagesCount = 0;
         pdf_content.forEach((el, idx) => {
+          pagesCount++;
           const div = ce({id: `anchor-page-number-${idx + 1}`});
           const p = ce({tagName: "p", innerHTML: `page: ${idx + 1}`,  class: "page-separator"})
           div.append(p);
@@ -65,6 +67,7 @@ export default function DocumentDisplay({translation, isLogin, fileHash}){
           div.append(page_p);
           
         });
+        setPagesCount(pagesCount);
         render_container.current.append(...elements_list);
         callback();
       }
@@ -80,7 +83,7 @@ export default function DocumentDisplay({translation, isLogin, fileHash}){
         return el;
       }
     }
-  }, [fileHash, translation]);
+  }, [fileHash, translation, setPagesCount]);
 
   return <div className='document-display'>
     {isLoading && <div className='loging-icon-div'>
