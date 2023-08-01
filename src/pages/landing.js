@@ -46,7 +46,7 @@ export default function Landing({translation, isLogin}) {
         <span className="subtitle-h">{trans("let AI guide you through every page.", translation)}</span>
       </div>
       <div>
-        <span className="guider">{trans("either sign up/sign in or click on moving books to ", translation)}</span>
+        <span className="guider">{trans("either sign up/sign in or click on moving books to", translation)}</span>
         
       </div>
       <div style={{justifyContent:"center"}}>
