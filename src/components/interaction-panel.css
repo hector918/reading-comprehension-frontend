@@ -7,6 +7,7 @@
   grid-template-rows: 8fr auto;
   gap: 3px;
 }
+
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel{
   width: 100%;
   overflow-y: scroll;

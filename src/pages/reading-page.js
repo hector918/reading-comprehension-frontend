@@ -1,18 +1,26 @@
 import './reading-page.css';
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 // import {MessageFooter, addMessage} from '../components/message-footer';
 import {trans, change_setFileHash} from '../general_';
 import DocumentMenuBar from '../components/document-menu-bar';
 import DocumentDisplay from '../components/document-display';
 import { useParams } from 'react-router-dom';
 import InteractionDisplay from '../components/interaction-panel';
+import InteractionMenuBar from '../components/interactionMenuBar';
 /////////////////////////////////////
 export default function ReadingPage({translation, isLogin}){
+  //filehash is from url just use it one time, fileHash is for react component Internal use and across pages
   const {filehash} = useParams();
   const [fileHash, setFileHash] = useState(filehash);
   const [pagesCount, setPagesCount] = useState(999);
+  const historyPanel = useRef(null);
   //send globe setfilehash available
   change_setFileHash(setFileHash);
+  /////////////////////////////////////
+  const onMouseUp = (evt) => {
+    // console.log(evt, window.getSelection().toString());
+  }
+  /////////////////////////////////////
   return(
     <div className="reading-page-div-h">
       <div className='reading-header-gap'>
@@ -22,11 +30,16 @@ export default function ReadingPage({translation, isLogin}){
           isLogin = {isLogin} 
           pagesCount = {pagesCount}
         />
-        <div>menu 2</div>
         <div></div>
-
+        <InteractionMenuBar
+          translation = {translation} 
+          isLogin = {isLogin}  
+          fileHash = {fileHash}
+          historyPanel = {historyPanel}
+        />
+        <div></div>
       </div>
-      <div className='reading-central-panel'>
+      <div className='reading-central-panel' onMouseUp={onMouseUp}>
         <div></div>
         <div className=''>
           <DocumentDisplay 
@@ -42,6 +55,7 @@ export default function ReadingPage({translation, isLogin}){
             translation = {translation} 
             isLogin = {isLogin} 
             fileHash = {fileHash}
+            historyPanel = {historyPanel}
           />
         </div>
         <div></div>

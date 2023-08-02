@@ -14,7 +14,6 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   const [recentsData, setRecentsData] = useState([]);
   const fileInput = useRef(null);
   ///////////////////////////////////////
-
   const cardTemplete = (cardData, idx) => {
     return <div 
       className = 'library-content-card' 
@@ -52,9 +51,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
     }
   }, [translation])
   ///////////////////////////////////////////////
-  
   useEffect(() => {
-    
     if(isLogin()) lc_.getLibrary(readLibrary);
   }, [readLibrary, isLogin]);
   //////////////////////////////////////////////
@@ -74,24 +71,19 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
       setUploadingStatus(pv => [...pv, trans("File exists:", translation) + ` ${!fileMeta.error?"true":"false"}`]);
       if(fileMeta.error){
         //if file not exists on the backend
-        // console.log("not exists", fileMeta);
         fe_.uploadFile([evt.target.files[0]], (data) => {
-          
           if(data.error) addMessage(
             trans("In upload file", translation), 
             trans(data.error, translation), 
             "error"
           );
         });
-
       }else{
         //if file exists on the backend
         ///add document to user library
         lc_.addDocumentToUser(fileHash, (res) => {
           lc_.getLibrary(readLibrary);
         })
-        
-        
         // addMessage()
       }
       //clear up after upload
@@ -106,14 +98,13 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   }
   
   const libraryModalClose = (evt) => {
-    //
     libraryModal.current.classList.remove("active");
   }
   const libraryModalPopup = (evt) => {
-    //
     libraryModal.current.classList.add("active");
   }
   function onDocumentCardClick(evt){
+    //stop event bubbling
     evt.stopPropagation();
     const fileHash = evt.currentTarget.getAttribute("filehash");
     setFileHash(fileHash);
@@ -123,7 +114,6 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
     const page = evt.currentTarget.value;
     const element = document.querySelector(`#anchor-page-number-${page}`);
     element?.scrollIntoView({ behavior: 'smooth' });
-    console.log()
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>
@@ -172,10 +162,27 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
         <hr></hr>
         <div>{trans('Recents', translation)}</div>
         <div className='popover-subcontainer-for-recents'>
-          <div className='user-recents-documents-container'>{recentsData.map(cardTemplete)}</div>
+          <div className='user-recents-documents-container'>
+            {recentsData.length === 0 
+            ?<div>{trans('Your have no document.', translation)}</div>
+            :recentsData.map(cardTemplete)
+            }
+          </div>
         </div>
       </div>
     </div>
-    <div className='document-page-control'><span>Page: </span><input type='number' min={1} max={pagesCount} onBlur={onDocPageControlConfirm} defaultValue={1}/></div>
+    <div className='document-page-control tooltip tooltip-bottom'  data-tooltip={trans('Edit this number and loses your mouse focus on the edit to go page.', translation)}>
+      <span>
+        <i className = "fa-brands fa-golang fa-lg"></i>
+        {trans('Page', translation)}: 
+      </span>
+      <input 
+        type = 'number' 
+        min = {1} 
+        max = {pagesCount} 
+        onBlur = {onDocPageControlConfirm} 
+        defaultValue = {1}
+      />
+    </div>
   </div>
 }

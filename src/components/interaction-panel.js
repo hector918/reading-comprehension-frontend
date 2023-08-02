@@ -1,69 +1,20 @@
 import './interaction-panel.css';
 import React, { useState, useRef, useEffect } from "react";
-import {trans} from '../general_';
+import {trans, createHashFromStr} from '../general_';
 import LoadingIcon from './loading-icon';
 import lc_ from '../stroage_';
 import {addMessage} from './message-footer';
-////globe helper/////////////////////////////////////
-function extractFromStructure(json, type){
-  //json data are nested , extract data base on template, 
-  const template = dataTemplate(type);
-  for(let key in template){
-    template[key] = readPosition(template[key]);
-  }
-  return template;
-  ////help below//////////////////////////
-  function readPosition(path){
-    let value = json;
-    for (const key of path) value = value[key];
-    return value;
-  }
-  function dataTemplate(type){
-    switch(type){
-      case "textToComprehension": return {
-        q: ["q"],
-        level: ['level'],
-        is_share: ['is_share'],
-        timestamp: ['timestamp'],
-        comprehension_history_id: ['comprehension_history_id'],
-        usage: ['usage'],
-        anwser: ['result', 'choices', 0, 'message', 'content']
-      }
-      default: return undefined;
-    }
-  }
-}
-function getAllHistoryOrderByUnifyTime(fileHash) {
-  //read all history about this filehash, and reorganized it to an array and order by timestamp
-  const raw = lc_.getFileDetail(fileHash, ["comprehension", "image", "text"]);
-  const ret = [];
-  for (let catalog_key in raw)
-    for (let content in raw[catalog_key]) {
-      ret.push({
-        ...extractFromStructure(raw[catalog_key][content], catalog_key),
-        type: catalog_key,
-      });
-    }
-  ret.sort((a, b) =>{
-    return new Date(a.timestamp).getTime() > new Date(b.timestamp).getTime()
-    ? 1
-    : -1
-    }
-  );
-  return ret;
-}
 ///main compoment///////////////////////////////////////
-export default function InteractionDisplay({translation, isLogin, fileHash}){
+export default function InteractionDisplay({translation, isLogin, fileHash, historyPanel}){
   const [isLoading, setIsLoading] = useState(false);
   const [historyList, setHistoryList] = useState([]);
   const inputBox = useRef(null);
-  const historyPanel = useRef(null);
   ///////////////////////////////////////////////////////
   useEffect(() => {
     //read all history about this hash
     if(fileHash !== undefined) lc_.getAllHistoryFromFileHash(fileHash, (res) => {
       //when res callback, the data from server were storaged in the local storage, getAllHistoryOrderByUnifyTime is reading from local stroage
-      const historyFromUpdatedLocalStorage = getAllHistoryOrderByUnifyTime(fileHash);
+      const historyFromUpdatedLocalStorage = lc_.getAllHistoryOrderByUnifyTime(fileHash);
       setHistoryList(historyFromUpdatedLocalStorage);
     })
   }, [fileHash]);
@@ -74,10 +25,6 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
     lastChildElement?.scrollIntoView({ behavior: 'smooth' });
   }, [historyList])
   ///////////////////////////////////////////////////////
-  const onTextareaKeyUp = (evt) => {
-    
-  }
-
   const onHistoryShareButtonClick = (evt, jsonItem) => {
     if(isLogin()){
       const currentTarget = evt.currentTarget;
@@ -87,7 +34,6 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
         if(res.data){
           currentTarget.classList.toggle('active');
         }
-        
       })
     }
   }
@@ -96,7 +42,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
     if(isLoading) return;
     setIsLoading(true);
     try {
-      let q = inputBox.current.value;
+      let q = inputBox.current.value.trim();
       if(fileHash === undefined) return;
       lc_.questionToReadingComprehension(fileHash, q, "2", (res) => {
         //if failed
@@ -108,9 +54,8 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
         //if successed
         if(res.data){
           inputBox.current.value = "";
-          const historyFromUpdatedLocalStorage = getAllHistoryOrderByUnifyTime(fileHash);
+          const historyFromUpdatedLocalStorage = lc_.getAllHistoryOrderByUnifyTime(fileHash);
           setHistoryList(historyFromUpdatedLocalStorage);
-          
         }
         setIsLoading(false);
       });
@@ -125,7 +70,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
     function returnTypeIcon(type){
       switch (type){
         case "textToComprehension" : 
-          return <div className='tooltip tooltip-left' data-tooltip={`reading comprehension.`}>
+          return <div className='tooltip tooltip-left' data-tooltip={trans(`reading comprehension.`, translation)}>
             <i className="fa-brands fa-readme"></i>
           </div>
         default: return <></>
@@ -136,7 +81,11 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
       key = {"history-card-div-" + idx} 
       className = {`history-card-div ${el.type}`}
     >
-      <div className='question'>
+      {/* because question may have some space, and space can not be id, so hash it use for id */}
+      <div 
+        className = 'question' 
+        id = {`reading-comprehension-question-id-${createHashFromStr(`${el.q}-${el.level}`)}`}
+      >
         <div>{trans("question",translation)}: 
           <div className='function-panel'>
             {returnTypeIcon(el.type)}
@@ -183,7 +132,6 @@ export default function InteractionDisplay({translation, isLogin, fileHash}){
         <textarea 
           readOnly = {isLoading} 
           ref = {inputBox} 
-          onKeyUp = {onTextareaKeyUp}
         ></textarea>
         <button onClick={onSendButtonClick}>{isLoading ? <LoadingIcon/> : trans("Send", translation)}</button>
       </div>

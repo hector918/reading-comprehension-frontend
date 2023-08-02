@@ -1,7 +1,7 @@
 .document-display{
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   text-align: left;
   position: relative;
 }
@@ -9,11 +9,12 @@
   margin: auto;
   display: block;
   max-width: 100%;
+  border-radius: 3%;
 }
 .document-display .page-separator{
-  font-size: 1rem;
-  text-align: center;
-  border-bottom: 2px solid darkgrey;
+  font-size: 0.9rem;
+  text-align: right;
+  border-bottom: 2px solid #ccc;
   padding: 5px;
   margin: 15px;
   color: darkgrey;
