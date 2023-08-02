@@ -53,9 +53,11 @@
 
   .carousel_forward > .carousel__slide{
     animation: scrollForward var(--iteration-time) linear infinite;
+    position: relative;
   }
   .carousel_backward > .carousel__slide{
     animation: scrollBackward var(--iteration-time) linear infinite;
+    position: relative;
   }
   .carousel_backward:active > *, .carousel_forward:active > *{
     animation-play-state: paused;
@@ -83,11 +85,13 @@
     cursor: pointer;
     border-radius: 3px;
     opacity: 0.4;
-
+    justify-content: center;
+    align-items: center;
   }
   .carousel__slide:hover{
     opacity: 1;
   }
+  
   .carousel__image:hover{
     scale: 1.1;
     /* border: 0.3rem solid purple; */
@@ -96,8 +100,8 @@
   }
 
   .carousel__image {
-    background-size: cover;
-    background-repeat: no-repeat;
+    /* background-size: cover; */
+    /* background-repeat: no-repeat; */
     width: 100%; 
     height: 100%;
     transition: all 0.5s ease-in-out;

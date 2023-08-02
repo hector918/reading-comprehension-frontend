@@ -46,3 +46,7 @@
   background-color: red;
   width: 100%;
 }
+.reading-page-div-h > .popup-div-for-selected-text{
+  position: absolute;
+  display: flex;
+}

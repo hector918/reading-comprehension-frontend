@@ -18,7 +18,16 @@ export default function ReadingPage({translation, isLogin}){
   change_setFileHash(setFileHash);
   /////////////////////////////////////
   const onMouseUp = (evt) => {
-    // console.log(evt, window.getSelection().toString());
+    if(window.getSelection()){
+      let str = window.getSelection().toString();
+      if(str.length < 1000){
+
+      }else {
+
+      }
+      console.log(str);
+
+    }
   }
   /////////////////////////////////////
   return(
@@ -62,6 +71,10 @@ export default function ReadingPage({translation, isLogin}){
       </div>
       
       {/* <div className='reading-footer-gap'><span>{trans("Under construction", translation)}</span></div> */}
+      <div className='is-not-visable-h popup-div-for-selected-text'>
+        <div><p></p></div>
+        <div></div>
+      </div>
     </div>
   )
 }
