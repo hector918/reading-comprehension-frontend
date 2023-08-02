@@ -1,4 +1,3 @@
-import CryptoJS from 'crypto-js';
 import srv from './fetch_';
 import {trans} from './general_';
 import {addMessage} from './components/message-footer';
@@ -6,8 +5,7 @@ import {addMessage} from './components/message-footer';
 const [fileTable, file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "filehash", "moving_gallery_prefix", "library_documents_prefix"];
 
 function error_handle(error) {
-  console.log(error);
-  // alert(error);
+  console.error(error);
 }
 function check_string(){
   for(let item of arguments) if(typeof item !== 'string'){
@@ -15,7 +13,7 @@ function check_string(){
   }
   return true;
 }
-
+//use local storage as cache
 /////////////////////////////////////////////////
 function check_key_name(category, fileHash){
   let keyName = ""
@@ -34,6 +32,7 @@ function check_key_name(category, fileHash){
   }
   return keyName;
 }
+
 function setHistory(category, fileHash, subKeyName, item){
   const keyName = check_key_name(category, fileHash);
   if(!keyName) return false;
@@ -46,6 +45,7 @@ function setHistory(category, fileHash, subKeyName, item){
     localStorage.setItem(keyName, JSON.stringify({[subKeyName]: item}));
   }
 }
+
 function getHistory(category, fileHash){
   if(typeof fileHash !== 'string') return false;
   const keyName = check_key_name(category, fileHash);
@@ -57,10 +57,12 @@ function getHistory(category, fileHash){
     return {};
   }
 }
+
 function deleteHistory(category, fileHash){
   const keyName = check_key_name(category, fileHash);
   localStorage.removeItem(keyName);
 }
+
 function pull_history(fileHash, category, question){
   const history = getFileDetail(fileHash, [category]);
   try{
@@ -72,6 +74,7 @@ function pull_history(fileHash, category, question){
     return false;
   }
 }
+
 function getFileDetail(fileHash, history_category = ['metaData']){
   const ret = {};
   if (check_string(fileHash) === false ) return false;
@@ -81,7 +84,6 @@ function getFileDetail(fileHash, history_category = ['metaData']){
         case "metaData":
           ret[x] = JSON.parse(localStorage.getItem(`${file_list_prefix}-${fileHash}`));
         break;
-        
         case "text": case "textToExplanation":
           ret['textToExplanation'] = getHistory('text', fileHash);
         break;
@@ -101,28 +103,59 @@ function getFileDetail(fileHash, history_category = ['metaData']){
   }
   return ret;
 }
-/////////////////////////////////////////////////
-
-
-function uploadDocument(file){
-  // if(res.error !== undefined) {
-  //   throw new Error("upload failed");
-  // }else if(res.data.fileHash.length === 64) {
-  //   let files_table = localStorage.getItem(fileTable);
-  //   try {
-  //     files_table = JSON.parse(files_table);
-  //     if(!files_table.includes(res.data.fileHash)){
-  //       files_table.push(res.data.fileHash);
-  //     }
-  //     localStorage.setItem(fileTable, JSON.stringify(files_table));
-  //   } catch (error) {
-  //     error_handle(error);
-  //     localStorage.setItem(fileTable, JSON.stringify([res.data.fileHash]));
-  //   }
-  //   // localStorage.setItem(`${file_list_prefix}-${res.data.fileHash}`, fileObjToString(files.files[0]));
-  //   callback(res);
-  // }
+////globe helper/////////////////////////////////////
+function extractFromStructure(json, type){
+  //json data are nested , extract data base on template, 
+  const template = dataTemplate(type);
+  if(!template){
+    error_handle('history data template error.')
+    return;
+  }
+  for(let key in template){
+    template[key] = readPosition(template[key]);
+  }
+  return template;
+  ////help below//////////////////////////
+  function readPosition(path){
+    let value = json;
+    for (const key of path) value = value[key];
+    return value;
+  }
+  function dataTemplate(type){
+    switch(type){
+      case "textToComprehension": return {
+        q: ["q"],
+        level: ['level'],
+        is_share: ['is_share'],
+        timestamp: ['timestamp'],
+        comprehension_history_id: ['comprehension_history_id'],
+        usage: ['usage'],
+        anwser: ['result', 'choices', 0, 'message', 'content']
+      }
+      default: return undefined;
+    }
+  }
 }
+
+function getAllHistoryOrderByUnifyTime(fileHash) {
+  //read all history about this filehash, and reorganized it to an array and order by timestamp
+  const raw = getFileDetail(fileHash, ["comprehension", "image", "text"]);
+  const ret = [];
+  for (let catalog_key in raw)
+    for (let content in raw[catalog_key]) {
+      ret.push({
+        ...extractFromStructure(raw[catalog_key][content], catalog_key),
+        type: catalog_key,
+      });
+    }
+  ret.sort((a, b) =>{
+    return new Date(a.timestamp).getTime() > new Date(b.timestamp).getTime()
+    ? 1
+    : -1
+  });
+  return ret;
+}
+/////////////////////////////////////////////////
 function getDocuments(callback){
   try {
     let oldDataFromLC = JSON.parse(localStorage.getItem(moving_gallery_prefix));
@@ -137,7 +170,7 @@ function getDocuments(callback){
       callFetch();
     }
   } catch (error) {
-    console.error(error);
+    error_handle(error);
     callFetch();
   }
   function callFetch(){
@@ -195,8 +228,7 @@ function addDocumentToUser(filehash, callback){
         }else{
           localStorage.setItem(library_documents_prefix, JSON.stringify({data: [res.data]}));
         }
-        
-        console.error(error);
+        error_handle(error);
       }
       callback(res);
     });
@@ -223,7 +255,7 @@ function UserLogout(callback){
       callback(res);
     })
   } catch (error) {
-    console.error(error);
+    error_handle(error);
     callback(false);
   }
 }
@@ -245,7 +277,7 @@ function questionToReadingComprehension(fileHash, q, level, callback){
       callback(res);
     })
   } catch (error) {
-    console.error(error);
+    error_handle(error);
     callback(false);
   }
 }
@@ -262,7 +294,7 @@ function getAllHistoryFromFileHash(filehash, callback){
       callback(res);
     })
   } catch (error) {
-    console.error(error);
+    error_handle(error);
     callback(false);
   }
 }
@@ -276,13 +308,13 @@ function userToggleReadingComprehensionShare(item, callback){
 
         history['is_share'] = is_share;
         setHistory('comprehension', fileHash, subKeyName, history);
-        
+
         callback(res);
       }else callback(false);
       
     })
   } catch (error) {
-    console.error(error);
+    error_handle(error);
     callback(false);
   }
 }
@@ -295,7 +327,8 @@ const wrapper = {
   addDocumentToUser,
   questionToReadingComprehension,
   getAllHistoryFromFileHash,
-  userToggleReadingComprehensionShare
+  userToggleReadingComprehensionShare,
+  getAllHistoryOrderByUnifyTime
 }
 
 export default wrapper;

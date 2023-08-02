@@ -17,12 +17,15 @@
   margin: auto;
 }
 
-.document-menu-bar > .document-page-control {
-
-}
 .document-menu-bar > .document-page-control > input {
   width: 60px;
-  text-align: right;
+  text-align: left;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  border-radius: 5px;
+}
+.document-menu-bar > .document-page-control > input:hover{
+  background-color: lightgray;
 }
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content{
   display: flex;
