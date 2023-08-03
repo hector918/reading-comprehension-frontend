@@ -121,7 +121,7 @@
   width: fit-content;
   min-width: 320px;
 }
-.document-menu-bar > .popover > .popover-container-for-recents:has(> :nth-child(5):last-child) {
+.document-menu-bar > .popover > .more-than-four-hack {
 	left: 100px!important;
 }
 
