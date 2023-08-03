@@ -132,6 +132,14 @@ function extractFromStructure(json, type){
         usage: ['usage'],
         anwser: ['result', 'choices', 0, 'message', 'content']
       }
+      case "textToExplanation": return {
+        q: ["q"],
+        is_share: ['is_share'],
+        timestamp: ['timestamp'],
+        text_explaination_history_id: ['text_explaination_history_id'],
+        usage: ['usage'],
+        anwser: ['result', 'choices', 0, 'message', 'content'],
+      }
       default: return undefined;
     }
   }
@@ -247,9 +255,9 @@ function UserLogout(callback){
         const userHistoryFileHash = JSON.parse(localStorage.getItem(library_documents_prefix)).data;
         localStorage.removeItem(library_documents_prefix);
         userHistoryFileHash.forEach((el) => {
-          deleteHistory("comprehension",el.filehash);
-          deleteHistory("text",el.filehash);
-          deleteHistory("image",el.filehash);
+          deleteHistory("comprehension", el.filehash);
+          deleteHistory("text", el.filehash);
+          deleteHistory("image", el.filehash);
         });
       }
       callback(res);
@@ -283,10 +291,18 @@ function questionToReadingComprehension(fileHash, q, level, callback){
 }
 function textToExplanation(fileHash, q, callback){
   try {
+
+    const subKeyName = q;
     //pull history
+    const history = pull_history(fileHash, 'textToExplanation', subKeyName);
+    if(history !== false){
+      callback(history);
+      return;
+    }
+    //read from server
     srv.text_to_explanation(fileHash, q, (res) => {
-      //
-      console.log(res);
+      if(res.data) setHistory('text', fileHash, q, res.data);
+      callback(res);
     })
   } catch (error) {
     error_handle(error);
@@ -300,7 +316,12 @@ function getAllHistoryFromFileHash(filehash, callback){
       if(res.data){
         for(let type in res.data) for(let item of res.data[type])
         {
-          setHistory(type, item.filehash, `${item.q}-${item.level}`, item);
+          //reading comprehension have level, else dosn't
+          if(item.level){
+            setHistory(type, item.filehash, `${item.q}-${item.level}`, item);
+          }else{
+            setHistory(type, item.filehash, item.q, item);
+          }
         }
       }
       callback(res);
@@ -316,14 +337,31 @@ function userToggleReadingComprehensionShare(item, callback){
     srv.userToggleReadingComprehensionShare(comprehension_history_id, is_share, (res) => {
       if(res.data){
         const subKeyName = `${q}-${level}`;
-        const history = getHistory('comprehension', fileHash)[subKeyName];
-
+        const history = getHistory('comprehension', fileHash);
         history['is_share'] = is_share;
         setHistory('comprehension', fileHash, subKeyName, history);
 
         callback(res);
       }else callback(false);
-      
+    })
+  } catch (error) {
+    error_handle(error);
+    callback(false);
+  }
+}
+function userToggleTextToExplainationShare(item, callback){
+  try {
+    const {text_explaination_history_id, is_share, q, level, fileHash} = item;
+    srv.userToggleTextToExplainationShare(text_explaination_history_id, is_share, (res) => {
+      if(res.data){
+        const subKeyName = `${q}-${level}`;
+        const history = getHistory('text', fileHash);
+console.log(history)
+        history['is_share'] = is_share;
+        setHistory('text', fileHash, subKeyName, history);
+
+        callback(res);
+      }else callback(false);
     })
   } catch (error) {
     error_handle(error);
@@ -341,7 +379,8 @@ const wrapper = {
   getAllHistoryFromFileHash,
   userToggleReadingComprehensionShare,
   getAllHistoryOrderByUnifyTime,
-  textToExplanation
+  textToExplanation,
+  userToggleTextToExplainationShare
 }
 
 export default wrapper;

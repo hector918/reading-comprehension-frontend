@@ -121,6 +121,9 @@
   width: fit-content;
   min-width: 320px;
 }
+.document-menu-bar > .popover > .popover-container-for-recents:has(> :nth-child(5):last-child) {
+	left: 100px!important;
+}
 
 .document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
   display: flex;

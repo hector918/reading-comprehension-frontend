@@ -10,11 +10,19 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
   const inputBox = useRef(null);
   ///////////////////////////////////////////////////////
   useEffect(() => {
-    //read all history about this hash
-    if(fileHash !== undefined) lc_.getAllHistoryFromFileHash(fileHash, (res) => {
+    
+    if(isLoading === false){
       //when res callback, the data from server were storaged in the local storage, getAllHistoryOrderByUnifyTime is reading from local stroage
       const historyFromUpdatedLocalStorage = lc_.getAllHistoryOrderByUnifyTime(fileHash);
       setHistoryList(historyFromUpdatedLocalStorage);
+    }
+  }, [isLoading])
+  useEffect(() => {
+    setIsLoading(true);
+    //read all history about this hash
+    if(fileHash !== undefined) lc_.getAllHistoryFromFileHash(fileHash, (res) => {
+      
+      setIsLoading(false);
     })
   }, [fileHash]);
 
@@ -29,11 +37,24 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
       const currentTarget = evt.currentTarget;
       jsonItem.is_share = !jsonItem.is_share;
       jsonItem.fileHash = fileHash;
-      lc_.userToggleReadingComprehensionShare(jsonItem, (res) => {
-        if(res.data){
-          currentTarget.classList.toggle('active');
-        }
-      })
+      switch(jsonItem.type){
+        case "textToComprehension":
+          lc_.userToggleReadingComprehensionShare(jsonItem, (res) => {
+            if(res.data){
+              currentTarget.classList.toggle('active');
+            }
+          });
+        break;
+        case "textToExplanation":
+          lc_.userToggleTextToExplainationShare(jsonItem, (res) => {
+            if(res.data){
+              currentTarget.classList.toggle('active');
+            }
+          })
+        break;
+        default: <></>
+      }
+      
     }
   }
 
@@ -53,8 +74,6 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
         //if successed
         if(res.data){
           inputBox.current.value = "";
-          const historyFromUpdatedLocalStorage = lc_.getAllHistoryOrderByUnifyTime(fileHash);
-          setHistoryList(historyFromUpdatedLocalStorage);
         }
         setIsLoading(false);
       });
@@ -71,6 +90,10 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
         case "textToComprehension" : 
           return <div className='tooltip tooltip-left' data-tooltip={trans(`reading comprehension.`, translation)}>
             <i className="fa-brands fa-readme"></i>
+          </div>
+        case "textToExplanation":
+            return <div className='tooltip tooltip-left' data-tooltip={trans(`text to explaination.`, translation)}>
+            <i className="fa-solid fa-quote-left"></i>
           </div>
         default: return <></>
       }

@@ -2,6 +2,8 @@
   text-align: left;
   width: fit-content;
   min-width: 33vw;
+  max-height: 80vh;
+  overflow-y: scroll;
 }
 
 .interaction-menu-bar > .popover > .popover-container-for-questions-history > div:not(:last-child){

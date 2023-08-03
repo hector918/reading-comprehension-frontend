@@ -1,6 +1,6 @@
 import './reading-page.css';
 import React, { useState, useRef } from "react";
-// import {MessageFooter, addMessage} from '../components/message-footer';
+import {addMessage} from '../components/message-footer';
 import {trans, change_setFileHash} from '../general_';
 import DocumentMenuBar from '../components/document-menu-bar';
 import DocumentDisplay from '../components/document-display';
@@ -24,9 +24,27 @@ export default function ReadingPage({translation, isLogin}){
   /////////////////////////////////////
   const onExplainButtonClick = (evt) => {
     textSelectionPopupDiv.current.classList.add('is-not-visable-h');
-    lc_.textToExplanation(fileHash, selectedText, (res) => {
-      console.log(res);
-    })
+    if(isLoading) return;
+    setIsLoading(true);
+    try {
+      let q = selectedText.trim();
+      if(fileHash === undefined) return;
+      lc_.textToExplanation(fileHash, selectedText, (res) => {
+        //
+        if(res.error) addMessage(
+          trans("Text to explaination", translation),
+          trans(res.error, translation),
+          "error"
+        );
+        if(res.data){
+          setSelectedText("");
+        }
+        setIsLoading(false);
+      })
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
   }
   const onMouseUp = (evt) => {
     //if cursor selected some text and page not loading
