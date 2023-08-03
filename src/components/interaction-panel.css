@@ -54,7 +54,7 @@
 }
 
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div:not(:last-child){
-  border-bottom: #060644 1px dotted;
+  border-bottom: lightgray 1px solid;
 
 }
 .reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > .history-card-div{

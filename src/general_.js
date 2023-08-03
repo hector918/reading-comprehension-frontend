@@ -97,6 +97,17 @@ function createFileHash(file) {
   });
 }
 ///////////////////////////////////
+function throttle(fn, wait) {
+  let lastCall = Date.now() - wait;
+  return function() {
+    let now = Date.now();
+    if (now - lastCall >= wait) {
+      lastCall = now;
+      fn.apply(this, arguments);
+    }
+  };
+}
+///////////////////////////////////
 function trans(str, translation){
   try {
     if(translation[str]) return translation[str];
@@ -126,5 +137,6 @@ export {
   createPasswordHash,
   loadingIcon,
   change_setFileHash, setFileHash,
-  createHashFromStr
+  createHashFromStr,
+  throttle
 };

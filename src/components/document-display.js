@@ -19,7 +19,10 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
       while (container.firstChild) {
         container.removeChild(container.firstChild);
       }
-      processPdfHash(() => setIsLoading(false));
+      init(() => {
+        processPdfHash(() => setIsLoading(false));
+      })
+      
     }
     async function processPdfHash(callback){
       try {

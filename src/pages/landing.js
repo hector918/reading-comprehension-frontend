@@ -21,7 +21,7 @@ export default function Landing({translation, isLogin}) {
   }
   //////////////////////////////////////////
   return <div className="landing-container">
-    <div className="moving-gallery-panel"><MovingGallery /></div>
+    <div className="moving-gallery-panel"><MovingGallery translation={translation} /></div>
     <div className="floating-panel">
       <div>
       </div>

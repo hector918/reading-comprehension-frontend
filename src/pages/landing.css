@@ -11,7 +11,7 @@ main > .landing-container{
 }
 
 /* 如果大于 */
-@media screen and (min-width: 720px) {
+@media screen and (min-width: 750px) {
   .landing-container > .floating-panel{
     z-index: 50;
     position: absolute;
@@ -76,7 +76,7 @@ main > .landing-container{
   }
 }
 /* 如果小于 */
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 750px) {
   .landing-container > .floating-panel{
     display: none;
   }

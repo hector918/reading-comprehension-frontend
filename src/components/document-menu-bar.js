@@ -4,7 +4,6 @@ import {createFileHash, trans, setFileHash} from '../general_';
 import fe_ from '../fetch_';
 import lc_ from '../stroage_';
 import {addMessage} from '../components/message-footer';
-
 /////////////////////////////////////////////////
 export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   const libraryModal = useRef(null);
@@ -149,7 +148,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
           </div>
           <div className="modal-body">
             <div className="content">
-              {libraryData && libraryData.map(cardTemplete)}
+              {libraryData.map && libraryData.map(cardTemplete)}
             </div>
           </div>
           <div className="modal-footer">

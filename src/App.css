@@ -1,3 +1,6 @@
+:root {
+  --theme-color: #060644;
+}
 .App {
   text-align: center;
   height: 100%;
@@ -81,6 +84,7 @@ html{
 }
 .input-theme-border{
   border: 2px solid purple!important;
+  border-radius: 3%;
 }
 .input-theme-border:hover{
   border: 2px solid violet!important;
@@ -89,6 +93,8 @@ html{
   background-color: #060644!important;
   border: 1px solid purple!important;
   color: #fff!important;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 .btn-theme-border:hover{
   background-color: #060644;

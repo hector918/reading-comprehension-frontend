@@ -5,13 +5,24 @@ import ReadingPage from './pages/reading-page';
 import NavBar from './components/navbar';
 import { useEffect, useState } from 'react';
 import fe_ from './fetch_';
+import {throttle} from './general_';
 import {MessageFooter, addMessage} from './components/message-footer';
+const mobileDesttopTrigger = 750;
 /////////////////////
 function App() {
   let [translation, setTranslation] = useState({});
   let [language, setLanguage] = useState({availableList: [],currentLanguage: "english.json"});
   let [userInfo, setUserInfo] = useState({});
-  // document.title = "Reading Comprehension - v0.02";
+  let [screenWidthMatch, setScreenWidthMatch] = useState(!window.matchMedia(`(max-width: ${mobileDesttopTrigger}px)`).matches);
+  //////////////////////////////////////////
+  //check screen size, for keeping the cpu usage low, build a throttle to limit the Frequent.
+  const throttleMoveFn = throttle(() => {
+    const ret = !window.matchMedia(`(max-width: ${mobileDesttopTrigger}px)`).matches;
+    if(screenWidthMatch !== ret) setScreenWidthMatch(ret);
+  }, 100);
+  window.addEventListener("resize", (evt) => {
+    throttleMoveFn();
+  })
   //////////////////////////////////////////
   useEffect(()=>{
     fe_.getLanguages(({availableList, currentLanguage, translation}) => {
@@ -34,36 +45,41 @@ function App() {
   //////////////////////////////////////////
   return (
     <div className="App">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-      <Router>
-        <NavBar 
-          language = {language} 
-          setLanguage = {setLanguage} 
-          setTranslation = {setTranslation} 
-          translation = {translation}
-          addMessage = {addMessage}
-          userInfo = {userInfo}
-          setUserInfo = {setUserInfo}
-          isLogin = {isLogin}
-        />
-        <MessageFooter translation={translation}/>
-        <main>
-          <Routes>
-            <Route path="/reading/:filehash" element={<ReadingPage 
-              translation = {translation} 
-              isLogin = {isLogin}
-            />} />
-            <Route path="/reading" element={<ReadingPage 
-              translation = {translation} 
-              isLogin = {isLogin}
-            />} />
-            <Route path="/" element={<Landing 
-              translation = {translation}
-              isLogin = {isLogin}
-            />} />
-          </Routes>
-        </main>
-      </Router>
+      
+      {screenWidthMatch 
+        ?
+        <Router>
+          <NavBar 
+            language = {language} 
+            setLanguage = {setLanguage} 
+            setTranslation = {setTranslation} 
+            translation = {translation}
+            addMessage = {addMessage}
+            userInfo = {userInfo}
+            setUserInfo = {setUserInfo}
+            isLogin = {isLogin}
+          />
+          <MessageFooter translation={translation}/>
+          <main>
+            <Routes>
+              <Route path="/reading/:filehash" element={<ReadingPage 
+                translation = {translation} 
+                isLogin = {isLogin}
+              />} />
+              <Route path="/reading" element={<ReadingPage 
+                translation = {translation} 
+                isLogin = {isLogin}
+              />} />
+              <Route path="/" element={<Landing 
+                translation = {translation}
+                isLogin = {isLogin}
+              />} />
+            </Routes>
+          </main>
+        </Router>
+        :
+        <div>{`not ready for mobile devices yet(screen size can't lower than ${mobileDesttopTrigger}px for now)`}</div>
+      }
     </div>
   );
 }
