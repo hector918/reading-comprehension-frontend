@@ -36,7 +36,11 @@ async function extractTextAndImageFromPDF(url){
   }
   
 }
-async function init(){
+async function init(callback){
+  if(window['pdfjs-dist/build/pdf']){
+    if (callback) callback();
+    return;
+  } 
   const cdn_pdfjs_link = `${window.location.origin}/pdf.js`;
   const cdn_pdfjs_worker_link = `${window.location.origin}/pdf.worker.js`;
   const script = document.createElement('script');
@@ -44,6 +48,7 @@ async function init(){
   script.async = true;
   script.onload = () => {
     window['pdfjs-dist/build/pdf'].GlobalWorkerOptions.workerSrc = cdn_pdfjs_worker_link;
+    if (callback) callback();
   };
   document.body.appendChild(script);
 }

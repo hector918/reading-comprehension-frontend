@@ -191,11 +191,17 @@ function get_all_history_from_fileHash(fileHash, callback){
   fetch_get(`${API}/pda/chathistory/${fileHash}`, callback);
 }
 /////////////////////////////////////////////////
+function text_to_explanation(fileHash, q, callback){
+  const fetch_options = {
+    body: JSON.stringify({q, fileHash})
+  }
+  fetch_post(`${API}/rc`, fetch_options, callback);
+}
 function question_to_reading_comprehension(fileHash, q, level, callback){
   const fetch_options  = {
     body: JSON.stringify({q, fileHash, level}),
   };
-  fetch_post(`${API}/rc`,fetch_options, callback);
+  fetch_post(`${API}/rc`, fetch_options, callback);
     /* result example
       {
         "id":"chatcmpl-7FtdtwCgRUMg6nEx64M0RPrNOpZJc","object":"chat.completion",
@@ -229,6 +235,7 @@ const entry = {
   getLibrary,
   addDocumentToUser,
   question_to_reading_comprehension,
+  text_to_explanation,
   get_all_history_from_fileHash,
   userToggleReadingComprehensionShare
 };

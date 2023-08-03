@@ -149,7 +149,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
           </div>
           <div className="modal-body">
             <div className="content">
-              {libraryData && libraryData.map(cardTemplete)}
+              {libraryData.map && libraryData.map(cardTemplete)}
             </div>
           </div>
           <div className="modal-footer">

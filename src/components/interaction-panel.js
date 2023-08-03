@@ -5,8 +5,7 @@ import LoadingIcon from './loading-icon';
 import lc_ from '../stroage_';
 import {addMessage} from './message-footer';
 ///main compoment///////////////////////////////////////
-export default function InteractionDisplay({translation, isLogin, fileHash, historyPanel}){
-  const [isLoading, setIsLoading] = useState(false);
+export default function InteractionDisplay({translation, isLogin, fileHash, historyPanel, isLoading, setIsLoading}){
   const [historyList, setHistoryList] = useState([]);
   const inputBox = useRef(null);
   ///////////////////////////////////////////////////////
@@ -23,7 +22,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
     //scroll to the bottom
     const lastChildElement = historyPanel.current?.lastElementChild;
     lastChildElement?.scrollIntoView({ behavior: 'smooth' });
-  }, [historyList])
+  }, [historyList, historyPanel])
   ///////////////////////////////////////////////////////
   const onHistoryShareButtonClick = (evt, jsonItem) => {
     if(isLogin()){
@@ -94,7 +93,6 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
               
               data-tooltip = {`switch me on to share answer to others.`}
               onClick = {(evt)=>{onHistoryShareButtonClick(evt, el)}}
-
             >
               <i className="fa-solid fa-comment " ></i>
             </div>
@@ -110,7 +108,6 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
         <span>{el.q}</span>
@@ -132,6 +129,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
         <textarea 
           readOnly = {isLoading} 
           ref = {inputBox} 
+          className = ''
         ></textarea>
         <button onClick={onSendButtonClick}>{isLoading ? <LoadingIcon/> : trans("Send", translation)}</button>
       </div>

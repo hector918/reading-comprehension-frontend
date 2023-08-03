@@ -2,7 +2,7 @@ import srv from './fetch_';
 import {trans} from './general_';
 import {addMessage} from './components/message-footer';
 ;
-const [fileTable, file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "filehash", "moving_gallery_prefix", "library_documents_prefix"];
+const [file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "filehash", "moving_gallery_prefix", "library_documents_prefix"];
 
 function error_handle(error) {
   console.error(error);
@@ -281,6 +281,18 @@ function questionToReadingComprehension(fileHash, q, level, callback){
     callback(false);
   }
 }
+function textToExplanation(fileHash, q, callback){
+  try {
+    //pull history
+    srv.text_to_explanation(fileHash, q, (res) => {
+      //
+      console.log(res);
+    })
+  } catch (error) {
+    error_handle(error);
+    callback(false);
+  }
+}
 function getAllHistoryFromFileHash(filehash, callback){
   try {
     //const history = getHistory("comprehension", filehash);
@@ -328,7 +340,8 @@ const wrapper = {
   questionToReadingComprehension,
   getAllHistoryFromFileHash,
   userToggleReadingComprehensionShare,
-  getAllHistoryOrderByUnifyTime
+  getAllHistoryOrderByUnifyTime,
+  textToExplanation
 }
 
 export default wrapper;
