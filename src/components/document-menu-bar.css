@@ -121,8 +121,8 @@
   width: fit-content;
   min-width: 320px;
 }
-.document-menu-bar > .popover > .more-than-four-hack {
-	left: 100px!important;
+.document-menu-bar > .popover > .more-than-five-hack{
+	left: 400%!important;
 }
 
 .document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
