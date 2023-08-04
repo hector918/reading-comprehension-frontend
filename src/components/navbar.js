@@ -8,7 +8,7 @@ import lc_ from '../stroage_';
 import {trans} from '../general_';
 import { useNavigate } from "react-router-dom";
 
-export default function NavBar({ language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin }) {
+export default function NavBar({language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin}) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});

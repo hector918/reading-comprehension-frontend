@@ -116,8 +116,8 @@ function extractFromStructure(json, type){
       template[key] = readPosition(template[key]);
     }
   } catch (error) {
-    console.error('reading from local stroage:', type, json);
-    throw error;
+    console.error('reading from local stroage:', type, json, template, error);
+    throw error; 
   }
   
   return template;
@@ -261,9 +261,9 @@ function UserLogout(callback){
     srv.UserLogout((res) => {
       if(res.data) {
         //remove user data if user was logout
-        console.log("called stroage logout")
         const userHistoryFileHash = JSON.parse(localStorage.getItem(library_documents_prefix)).data;
         localStorage.removeItem(library_documents_prefix);
+        console.log(userHistoryFileHash)
         userHistoryFileHash.forEach((el) => {
           deleteHistory("comprehension", el.filehash);
           deleteHistory("text", el.filehash);
