@@ -48,8 +48,9 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
       setLibraryData(res.data);
       setRecentsData(res.data.slice(0, 5));
       ////little bit hack here, if recent more than 5 move the container to the center////////
+      console.log(res.data.length)
       const recentsContainer = document.querySelector(".popover-container-for-recents");
-      if(res.data.length > 1){
+      if(res.data.length > 4){
         recentsContainer.classList.add('more-than-five-hack');
       }else{
         recentsContainer.classList.remove('more-than-five-hack');

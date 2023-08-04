@@ -111,9 +111,15 @@ function extractFromStructure(json, type){
     error_handle('history data template error.')
     return;
   }
-  for(let key in template){
-    template[key] = readPosition(template[key]);
+  try {
+    for(let key in template){
+      template[key] = readPosition(template[key]);
+    }
+  } catch (error) {
+    console.error('reading from local stroage:', type, json);
+    throw error;
   }
+  
   return template;
   ////help below//////////////////////////
   function readPosition(path){
@@ -151,10 +157,14 @@ function getAllHistoryOrderByUnifyTime(fileHash) {
   const ret = [];
   for (let catalog_key in raw)
     for (let content in raw[catalog_key]) {
-      ret.push({
-        ...extractFromStructure(raw[catalog_key][content], catalog_key),
-        type: catalog_key,
-      });
+      try {
+        ret.push({
+          ...extractFromStructure(raw[catalog_key][content], catalog_key),
+          type: catalog_key,
+        });
+      } catch (error) {
+        continue;
+      }
     }
   ret.sort((a, b) =>{
     return new Date(a.timestamp).getTime() > new Date(b.timestamp).getTime()

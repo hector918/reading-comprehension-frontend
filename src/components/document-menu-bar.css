@@ -76,8 +76,11 @@
 .library-content-card > div > .card-title{
   justify-content: center;
   height: 100%;
+  visibility: hidden;
 }
-
+.library-content-card > div > .card-title:hover{
+  visibility: visible;
+}
 .library-content-card > div > .card-title > span{
   width: 100%;
   margin: auto;
@@ -144,4 +147,6 @@
   transform: scale(1.05);
   box-shadow: 0.2rem 4px 9px 0px violet;
   border: 0.1rem solid purple;
+ 
+  background-color: #333;
 }
