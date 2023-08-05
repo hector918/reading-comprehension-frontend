@@ -10,13 +10,13 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
   const inputBox = useRef(null);
   ///////////////////////////////////////////////////////
   useEffect(() => {
-    
+
     if(isLoading === false){
       //when res callback, the data from server were storaged in the local storage, getAllHistoryOrderByUnifyTime is reading from local stroage
       const historyFromUpdatedLocalStorage = lc_.getAllHistoryOrderByUnifyTime(fileHash);
       setHistoryList(historyFromUpdatedLocalStorage);
     }
-  }, [isLoading])
+  }, [isLoading, fileHash])
   useEffect(() => {
     setIsLoading(true);
     //read all history about this hash
@@ -24,7 +24,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
       
       setIsLoading(false);
     })
-  }, [fileHash]);
+  }, [fileHash, setIsLoading]);
 
   useEffect(() => {
     //scroll to the bottom
@@ -54,10 +54,8 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
         break;
         default: <></>
       }
-      
     }
   }
-
   const onSendButtonClick = (evt) => {
     if(isLoading) return;
     setIsLoading(true);
@@ -70,7 +68,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
           trans("Reading comperhension", translation),
           trans(res.error, translation),
           "error"
-        );
+        )
         //if successed
         if(res.data){
           inputBox.current.value = "";

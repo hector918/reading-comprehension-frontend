@@ -6,13 +6,16 @@ import {trans} from '../general_';
 import {addMessage} from './message-footer';
 import LoadingIcon from './loading-icon';
 ////////////////////////////////////
-init();
+
 export default function DocumentDisplay({translation, isLogin, fileHash, setPagesCount}){
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
-////////////////////////////////////
+  const [errorMessage, setErrorMessage] = useState("");
+
+  init();
+  ////////////////////////////////////
   useEffect(() => {
-    if(fileHash !== undefined) {
+    if(fileHash !== undefined && render_container.current) {
       setIsLoading(trans("Loading file", translation));
       const container = render_container.current;
       //clear the container
@@ -34,6 +37,7 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
       } catch (error) {
         console.error(error);
         addMessage(trans("processing PDF"), trans(error.message), "error");
+        setErrorMessage(trans(error.message, translation));
       }
       
       function render_pdf_page(pdf_content){
@@ -87,11 +91,21 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
       }
     }
   }, [fileHash, translation, setPagesCount]);
-
+////////////////////////////////////
+  function renderContainer(){
+    if(errorMessage !== ""){
+      return <div className='loging-icon-div'>
+        <h1 className='red'> {errorMessage} </h1>
+      </div>
+    }else if(isLoading){
+      return <div className='loging-icon-div'>
+        <h1> {isLoading} <LoadingIcon/></h1>
+      </div>
+    }
+  }
+////////////////////////////////////
   return <div className='document-display'>
-    {isLoading && <div className='loging-icon-div'>
-      <h1> {isLoading} <LoadingIcon/></h1>
-    </div>}
+    {renderContainer()}
     <div ref={render_container} ></div>
   </div>
 }

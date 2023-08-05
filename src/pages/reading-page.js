@@ -16,7 +16,6 @@ export default function ReadingPage({translation, isLogin}){
   const [pagesCount, setPagesCount] = useState(999);
   const [selectedText, setSelectedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const historyPanel = useRef(null);
   const textSelectionPopupDiv = useRef(null);
   //send globe setfilehash available
@@ -29,7 +28,7 @@ export default function ReadingPage({translation, isLogin}){
     try {
       let q = selectedText.trim();
       if(fileHash === undefined) return;
-      lc_.textToExplanation(fileHash, selectedText, (res) => {
+      lc_.textToExplanation(fileHash, q, (res) => {
         //
         if(res.error) addMessage(
           trans("Text to explaination", translation),

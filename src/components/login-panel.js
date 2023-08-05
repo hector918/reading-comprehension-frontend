@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { Link } from "react-router-dom";
 import './login-panel.css';
 import {createElement, trans, createPasswordHash, loadingIcon} from '../general_';
 import fe_ from '../fetch_';
-
+///////////////////////////////////////
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
   //define useref
   let [sign_up, sign_in, signUpIdInput, signUpPasswordInput1, signUpPasswordInput2, signInIdInput, signInPasswordInput, sign_in_tab_button] = [useRef(null),useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -86,7 +85,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         setTimeout(() => {
           hintDiv.replaceChildren(createElement({tagname_: "p", innerText: `- ${trans("User ID or password not matched.", translation)}`, class: "form-input-hint"}));
           setSignInLoading(false);
-
         }, 300);
       }else{
         //successed
@@ -98,19 +96,16 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         signInIdInput.current.value = "";
       }
     })
-    
   }
   const userId_input_change = (evt) => {
     const hintDiv = evt.target.form.querySelector('.userId-hint-div');
     hintDiv.replaceChildren(...test_userId(evt.currentTarget.value));
-
     function test_userId(value){
       //in this case are differently others it return dom element instead of string
       setCheckUserIdLoading(true);
       const ret = [];
       const check_userID_p = createElement({tagname_: "p", class: "form-input-hint",});
       ret.push(check_userID_p);
-
       // check UserID
       fe_.checkUserID(value, (response) => {
         if(response['result']!==true){
@@ -119,7 +114,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
           setTimeout(() => {
             hintDiv.removeChild(check_userID_p);
             setCheckUserIdLoading(false);
-
           }, 300);
         }
       });
@@ -162,7 +156,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   <div ref={sign_modal} className="modal" >
       <span href="#close" className="modal-overlay" aria-label="Close"></span>
       <div className="modal-container">
-
         <div className="modal-header">
           <span href="#close" className="btn btn-clear float-right c-hand" aria-label="Close" onClick={on_sign_modal_close_click}><i className="fa-solid fa-xmark close-button"></i></span>
           <div className="modal-title h5 text-left">Binary Mind - {trans("Sign Up/ In", translation)}</div>
@@ -194,7 +187,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
                   </div>
 
                   <div className="form-group has-error userId-hint-div">
-                    {/* <p className="form-input-hint ">{trans("The name is invalid.", translation)}</p> */}
                   </div>
 
                   <div className="form-group">
@@ -215,7 +207,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
                     </div>
                   </div>
                   <div className="form-group password-hint-div has-error">
-                    {/* <p className="form-input-hint">{trans("The name is invalid.", translation)}</p> */}
                   </div>
                   <div className="form-group login-modal-justify-right">
                     <button className="btn btn-style-h"> {trans("Sign Up", translation)} </button>
@@ -246,7 +237,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
                     </div>
                   </div>
                   <div className="form-group sign-result-div has-error">
-                    {/* <p className="form-input-hint">{trans("The name is invalid.", translation)}</p> */}
                   </div>
                   <div className="form-group login-modal-justify-right">
                     <button className="btn btn-style-h"> {trans("Login", translation)} </button>
@@ -265,6 +255,5 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         </div>
       </div>
     </div>
-  
   </>
 }

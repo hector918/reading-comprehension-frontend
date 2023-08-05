@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import fe_ from './fetch_';
 import {throttle} from './general_';
 import {MessageFooter, addMessage} from './components/message-footer';
+import MobileLandingPage from './pages/mobile-landing-page';
+import MobileNavbar from './mobile-only-components/mobile-navbar';
 const mobileDesttopTrigger = 750;
 /////////////////////
 function App() {
@@ -45,9 +47,8 @@ function App() {
   //////////////////////////////////////////
   return (
     <div className="App">
-      
       {screenWidthMatch 
-        ?
+        ?//desktop version
         <Router>
           <NavBar 
             language = {language} 
@@ -77,8 +78,27 @@ function App() {
             </Routes>
           </main>
         </Router>
-        :
-        <div>{`not ready for mobile devices yet(screen size can't lower than ${mobileDesttopTrigger}px for now)`}</div>
+        ://mobile version
+        <Router>
+          <MobileNavbar
+            language = {language} 
+            setLanguage = {setLanguage} 
+            setTranslation = {setTranslation} 
+            translation = {translation}
+            addMessage = {addMessage}
+            userInfo = {userInfo}
+            setUserInfo = {setUserInfo}
+            isLogin = {isLogin}
+          />
+          <main>
+            <Routes>
+              <Route path='/' element={
+                <MobileLandingPage />
+              }></Route>
+              
+            </Routes>
+          </main>
+        </Router>
       }
     </div>
   );

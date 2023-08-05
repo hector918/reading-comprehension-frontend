@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import './navbar.css';
 import Login from "./login-panel";
-import UserProfileDropdown from "./user-profile-dropdown";
+import UserProfileContent from "./user-profile-dropdown";
 import fe_ from '../fetch_';
 import lc_ from '../stroage_';
 import {trans} from '../general_';
 import { useNavigate } from "react-router-dom";
 
-export default function NavBar({ language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin }) {
+export default function NavBar({language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin}) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});
@@ -79,14 +79,19 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
         </div>
         <Link to={"/about"} className="btn btn-link text-color nav-link-h c-hand">{trans("About", translation)}</Link>
         {isLogin()?
-          <UserProfileDropdown
-            
+          <div className="dropdown dropdown-right c-hand">
+          <span href="#" className="btn btn-link dropdown-toggle" tabIndex="0">
+          {trans("Me", translation)} <i className="fa-solid fa-caret-down"></i>
+          </span>
+          <UserProfileContent
             translation = {translation}
             userInfo = {userInfo}
             setUserInfo = {setUserInfo}
             addMessage = {addMessage}
             on_user_logout_click = {on_user_logout_click}
           />
+        </div>
+          
         :
           <Link className="btn btn-link text-color nav-link-h c-hand" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
         }
