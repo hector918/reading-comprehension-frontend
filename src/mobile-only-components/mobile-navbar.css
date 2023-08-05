@@ -1,13 +1,13 @@
 :root {
   --navbar-height: calc(100vh / 12);
   --navbar-bg-color: #060644;
-  --main-text-color: white;
+  --main-text-color: gray;
+  --main-navbar-text-color: white;
 }
 
 .App > .mobile-navbar-h{
   height: var(--navbar-height);
   background-color: var(--navbar-bg-color);
-  color: var(--main-text-color);
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
@@ -23,13 +23,17 @@
 .mobile-navbar-h > .nav-item > a{
   height: 100%;
 }
-.mobile-navbar-h > .nav-item:active {
-  color: purple;
+.mobile-navbar-h > .nav-item > i{
+  color: var(--main-navbar-text-color);
+}
+
+.mobile-navbar-h > .nav-item > i:active {
+  transform: scale(1.1);
 }
 .mobile-navbar-h > .nav-item > .navbar-logo{
   display: block;
   height: 100%;
-  padding: 1vh;
+  padding: 2vh;
   width: 100%;
   text-align: left;
 }

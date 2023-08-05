@@ -2,12 +2,9 @@ import React from "react";
 import './user-profile-dropdown.css';
 import {trans} from '../general_';
 
-export default function UserProfileDropdown({translation, userInfo, setUserInfo, addMessage, on_user_logout_click}){
+export default function UserProfileContent({translation, userInfo, setUserInfo, addMessage, on_user_logout_click}){
   return (
-    <div className="dropdown dropdown-right c-hand">
-      <span href="#" className="btn btn-link dropdown-toggle" tabIndex="0">
-      {trans("Me", translation)} <i className="icon icon-caret"></i>
-      </span>
+    
       <ul className="menu profile-menu"><form>
         <li className="divider text-left" data-content={trans("Profile", translation)}></li>
         <li className="menu-item">
@@ -26,6 +23,5 @@ export default function UserProfileDropdown({translation, userInfo, setUserInfo,
         </li>
 
       </form></ul>
-    </div>
   )
 }
