@@ -24,13 +24,13 @@ main > .landing-container{
     width: 33.3%;
     background-color: white;
     box-shadow: 5px 0px 10px -5px purple;
-    grid-template-rows: repeat(12, 1fr);
+    grid-template-rows: repeat(8, 1fr) 3fr 1fr;
     border-right: 0.1vw solid purple;
   }
   .landing-container > .floating-panel > div {
     width: 100%;
     height: 100%;
-    display: flex;
+    text-align: left;
   }
   .landing-container > .floating-panel > div > span{
     margin-block: auto;
@@ -38,36 +38,41 @@ main > .landing-container{
   .landing-container > .floating-panel > div > .title-h{
     text-align: center;
     font-size: 3vw;
-    text-indent: 1.3vw;
     font-weight: bold;
     cursor: default;
+    padding-left: 2vw;
   }
   .landing-container > .floating-panel > div > .subtitle-h{
     text-align: left;
     font-size: 1.8vw;
-    text-indent: 1.5vw;
     cursor: default;
+    padding-left: 2vw;
 
   }
   .landing-container > .floating-panel > div > .guider{
-    flex-grow: 1;
     color: white;
-    width: 100%;
-    margin: auto;
     background-color: #060644;
-    font-size: 1.2vw;
+    font-size: 1.1vw;
   }
+  .landing-container > .floating-panel > div > .guider > .guider-tooltip{
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: left;
+  }
+
 
   .floating-panel > div  > .major-button{
     color: black;
     text-align: right;
-    font-size: 6vh;
-    letter-spacing: 2vw;
-    font-family: sans-serif;
+    font-size: 2.8vw;
+    font-family: monospace, 'Courier New', Courier ;
     font-weight: bold;
     transition: all 0.5s ease-in-out;
-    
+    margin: 0px;
+    overflow: hidden;
+    padding-right: 1vw;
   }
+  
   .floating-panel > div > .major-button:hover{
     cursor: pointer;
     color: var(--navbar-bg-color);

@@ -47,6 +47,7 @@ function App() {
   //////////////////////////////////////////
   return (
     <div className="App">
+      <link rel="stylesheet" href="https://unpkg.com/transition-style"></link>
       {screenWidthMatch 
         ?//desktop version
         <Router>

@@ -3,16 +3,14 @@ import './moving-gallery.css';
 import fe_ from '../fetch_';
 import stroage_ from '../stroage_';
 import {trans} from '../general_';
-import { useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 import LoadingIcon from "./loading-icon";
-// import {addMessage} from './message-footer';
-
+//////////////////////////////////////
 export default function MovingGallery({translation}){
   const [cards, setCards] = useState({
     popular:{mainSerial:[], repeatSerial:[]}
   });
   const cardsRef = useRef(cards);
-  const navigation = useNavigate();
   //////////////////////////////////////
   useEffect(()=>{
     stroage_.getDocuments(({data}) => {
@@ -36,10 +34,10 @@ export default function MovingGallery({translation}){
   
   ///////////////////////////////////////////////
   function card_templete(json, idx){
-    return <div 
+    return <Link 
       className = "carousel__slide carousel__slide_forward" 
       key = {`carousel-slide-${idx}`} 
-      onClick = {cardOnClick}
+      to={`/reading/${json.fileHash}`}
       filehash = {json.fileHash}
     >
       <div><LoadingIcon size={'fa-2xl'}/></div>
@@ -50,18 +48,13 @@ export default function MovingGallery({translation}){
         alt = {json.meta.name}
         title = {json.meta.name}
       />
-    </div>
+    </Link>
   }
   ////////////////////////////////////////////////
   const backgroundImageOnLoad = (evt) => {
     const displayNone = 'is-not-visable-h';
     evt.currentTarget.previousElementSibling.classList.add(displayNone)
     evt.currentTarget.classList.remove(displayNone);
-  }
-  const cardOnClick = (evt) => {
-    const fileHash = evt.currentTarget.getAttribute("filehash");
-    // setFileHash(fileHash);
-    navigation(`/reading/${fileHash}`);
   }
   ////////////////////////////////////////////////
   return <div className="moving-gallery-div">

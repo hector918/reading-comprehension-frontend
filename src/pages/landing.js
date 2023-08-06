@@ -45,16 +45,26 @@ export default function Landing({translation, isLogin}) {
       <div>
         <span className="subtitle-h">{trans("let AI guide you through every page.", translation)}</span>
       </div>
-      <div>
-        <span className="guider">{trans("either sign up/sign in or click on moving books to", translation)}</span>
+      <div style={{display:"grid", textAlign:"center"}}>
+        <span className="guider">{trans("click on moving books to try", translation)} <span 
+          className = "tooltip tooltip-right guider-tooltip"
+          data-tooltip = {trans(`It's base on a document,\nwhen user ask a question,\nthe answer are sourcing from the document only.`, translation)}
+        >
+          {trans("Reading Comprehension", translation)} <i className="fa-solid fa-circle-question"></i>
+        </span> {trans("or", translation)}</span>
         
       </div>
-      <div style={{justifyContent:"center"}}>
-        <span className="major-button"><span onClick={startButtonOnClick}>{trans("Start>", translation)}</span></span>
-        
-      </div>
       <div>
-        <span className="title-h">{trans("", translation)}</span>
+        
+        {isLogin()
+        ?<>
+          <p className="major-button" onClick={startButtonOnClick}>{trans("Reading Comprehension", translation)}</p>
+          <p className="major-button" onClick={startButtonOnClick}>{trans("chatGPT", translation)}</p>
+        </>
+        :
+          <p className="major-button" onClick={startButtonOnClick}>{trans("Sign Up/ In", translation)}</p>
+        }
+        
       </div>
       <div>
         

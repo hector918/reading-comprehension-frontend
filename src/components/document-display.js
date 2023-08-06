@@ -11,8 +11,6 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
-
-  init();
   ////////////////////////////////////
   useEffect(() => {
     if(fileHash !== undefined && render_container.current) {
@@ -75,7 +73,7 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
           
         });
         setPagesCount(pagesCount);
-        render_container.current.append(...elements_list);
+        if(render_container.current.append) render_container.current.append(...elements_list);
         callback();
       }
      
