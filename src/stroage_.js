@@ -2,7 +2,7 @@ import srv from './fetch_';
 import {trans} from './general_';
 import {addMessage} from './components/message-footer';
 ;
-const [file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "filehash", "moving_gallery_prefix", "library_documents_prefix"];
+const [file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "moving_gallery_prefix", "library_documents_prefix"];
 
 function error_handle(error) {
   console.error(error);
@@ -261,20 +261,21 @@ function UserLogout(callback){
     srv.UserLogout((res) => {
       if(res.data) {
         //remove user data if user was logout
-        const userHistoryFileHash = JSON.parse(localStorage.getItem(library_documents_prefix)).data;
-        localStorage.removeItem(library_documents_prefix);
-        console.log(userHistoryFileHash)
-        userHistoryFileHash.forEach((el) => {
-          deleteHistory("comprehension", el.filehash);
-          deleteHistory("text", el.filehash);
-          deleteHistory("image", el.filehash);
-        });
+        let userHistoryFileHash = localStorage.getItem(library_documents_prefix);
+        if(userHistoryFileHash){
+          userHistoryFileHash = JSON.parse(userHistoryFileHash).data;
+          localStorage.removeItem(library_documents_prefix);
+          userHistoryFileHash.forEach((el) => {
+            deleteHistory("comprehension", el.filehash);
+            deleteHistory("text", el.filehash);
+            deleteHistory("image", el.filehash);
+          });
+        } 
       }
       callback(res);
     })
   } catch (error) {
     error_handle(error);
-    callback(false);
   }
 }
 //////////////////////////////////////////

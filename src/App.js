@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from './pages/landing';
 import ReadingPage from './pages/reading-page';
 import NavBar from './components/navbar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import fe_ from './fetch_';
 import {throttle} from './general_';
 import {MessageFooter, addMessage} from './components/message-footer';
@@ -16,6 +16,7 @@ function App() {
   let [language, setLanguage] = useState({availableList: [],currentLanguage: "english.json"});
   let [userInfo, setUserInfo] = useState({});
   let [screenWidthMatch, setScreenWidthMatch] = useState(!window.matchMedia(`(max-width: ${mobileDesttopTrigger}px)`).matches);
+  const signInUpButton = useRef(null);
   //////////////////////////////////////////
   //check screen size, for keeping the cpu usage low, build a throttle to limit the Frequent.
   const throttleMoveFn = throttle(() => {
@@ -60,6 +61,7 @@ function App() {
             userInfo = {userInfo}
             setUserInfo = {setUserInfo}
             isLogin = {isLogin}
+            signInUpButton = {signInUpButton}
           />
           <MessageFooter translation={translation}/>
           <main>
@@ -75,6 +77,7 @@ function App() {
               <Route path="/" element={<Landing 
                 translation = {translation}
                 isLogin = {isLogin}
+                signInUpButton = {signInUpButton}
               />} />
             </Routes>
           </main>
