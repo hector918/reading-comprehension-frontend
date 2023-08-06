@@ -23,12 +23,13 @@
 .mobile-navbar-h > .nav-item > a{
   height: 100%;
 }
-.mobile-navbar-h > .nav-item > i{
+.mobile-navbar-h > .nav-item i{
   color: var(--main-navbar-text-color);
+  transition: all 0.3s;
 }
 
-.mobile-navbar-h > .nav-item > i:active {
-  transform: scale(1.1);
+.mobile-navbar-h > .nav-item i:active {
+  transform: scale(1.3);
 }
 .mobile-navbar-h > .nav-item > .navbar-logo{
   display: block;

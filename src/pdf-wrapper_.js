@@ -34,7 +34,6 @@ async function extractTextAndImageFromPDF(url){
     const text = await page.getTextContent();
     return {imgs, text};
   }
-  
 }
 async function init(callback){
   if(window['pdfjs-dist/build/pdf']){
