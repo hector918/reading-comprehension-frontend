@@ -4,11 +4,11 @@ import MovingGallery from "../components/moving-gallery";
 import {trans} from '../general_';
 import { useNavigate } from "react-router-dom";
 import {addMessage} from '../components/message-footer';
-
-export default function Landing({translation, isLogin}) {
+//////////////////////////////////////////
+export default function Landing({translation, isLogin, signInUpButton}) {
   const navigate = useNavigate();
   //////////////////////////////////////////
-  const startButtonOnClick = (evt) => {
+  const onReadingButtonClick = (evt) => {
     if(isLogin()){
       navigate("/reading")
     }else{
@@ -18,6 +18,9 @@ export default function Landing({translation, isLogin}) {
         'error'
       );
     } 
+  }
+  const onLoginButtonClick = (evt) => {
+    signInUpButton.current.click();
   }
   //////////////////////////////////////////
   return <div className="landing-container">
@@ -37,8 +40,6 @@ export default function Landing({translation, isLogin}) {
       <div>
         <span className="title-h">{trans("questions.", translation)}</span>
       </div>
-
-
       <div>
         <span className="subtitle-h">{trans("Discover the full story", translation)}</span>
       </div>
@@ -52,33 +53,35 @@ export default function Landing({translation, isLogin}) {
         >
           {trans("Reading Comprehension", translation)} <i className="fa-solid fa-circle-question"></i>
         </span> {trans("or", translation)}</span>
-        
       </div>
       <div>
-        
         {isLogin()
         ?<>
           <p 
             className="major-button tooltip tooltip-right " 
-            onClick={startButtonOnClick}
+            onClick = {onReadingButtonClick}
             data-tooltip = {trans('go to next page', translation)}
           >
-            {trans("Reading Comprehension", translation)}</p>
+            {trans("Reading Comprehension", translation)}
+          </p>
           <p 
-            className = "major-button tooltip tooltip-right " 
+            className = "major-button tooltip tooltip-right" 
             data-tooltip = {trans('under construction', translation)}
           >
-            {trans("chatGPT", translation)}</p>
+            {trans("chatGPT", translation)}
+          </p>
         </>
         :
-          <p className="major-button " onClick={startButtonOnClick}>{trans("Sign Up/ In", translation)}</p>
+          <p 
+            className = "major-button tooltip tooltip-right " 
+            data-tooltip = {trans('after sign in enabling upload file.', translation)}
+            onClick = {onLoginButtonClick}
+          >
+            {trans("Sign Up/ In", translation)}
+          </p>
         }
-        
       </div>
-      <div>
-        
-      </div>
+      <div></div>
     </div>
-    
   </div>
 }

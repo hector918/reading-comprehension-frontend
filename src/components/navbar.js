@@ -8,7 +8,7 @@ import lc_ from '../stroage_';
 import {trans} from '../general_';
 import { useNavigate } from "react-router-dom";
 
-export default function NavBar({language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin}) {
+export default function NavBar({language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin, signInUpButton}) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});
@@ -48,7 +48,7 @@ export default function NavBar({language, setLanguage, translation, setTranslati
     <header className="navbar navbar-h">
       <section className="navbar-section">
         <Link className="navbar-logo" to={"/"}>
-          <img src={`${window.location.origin}/logo.png`} width="44" height="44" alt="Logo" />
+          <img src={`${window.location.origin}/logo.svg`} width="60" height="45" alt="Logo" />
           <span className="unselectable text-color">Binary Mind</span>
         </Link>
 
@@ -91,9 +91,8 @@ export default function NavBar({language, setLanguage, translation, setTranslati
             on_user_logout_click = {on_user_logout_click}
           />
         </div>
-          
         :
-          <Link className="btn btn-link text-color nav-link-h c-hand" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
+          <Link ref={signInUpButton} className="btn btn-link text-color nav-link-h c-hand" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
         }
       </section>
     </header>
