@@ -58,11 +58,20 @@ export default function Landing({translation, isLogin}) {
         
         {isLogin()
         ?<>
-          <p className="major-button" onClick={startButtonOnClick}>{trans("Reading Comprehension", translation)}</p>
-          <p className="major-button" onClick={startButtonOnClick}>{trans("chatGPT", translation)}</p>
+          <p 
+            className="major-button tooltip tooltip-right " 
+            onClick={startButtonOnClick}
+            data-tooltip = {trans('go to next page', translation)}
+          >
+            {trans("Reading Comprehension", translation)}</p>
+          <p 
+            className = "major-button tooltip tooltip-right " 
+            data-tooltip = {trans('under construction', translation)}
+          >
+            {trans("chatGPT", translation)}</p>
         </>
         :
-          <p className="major-button" onClick={startButtonOnClick}>{trans("Sign Up/ In", translation)}</p>
+          <p className="major-button " onClick={startButtonOnClick}>{trans("Sign Up/ In", translation)}</p>
         }
         
       </div>
