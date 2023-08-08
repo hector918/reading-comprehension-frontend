@@ -367,7 +367,6 @@ function userToggleTextToExplainationShare(item, callback){
       if(res.data){
         const subKeyName = `${q}-${level}`;
         const history = getHistory('text', fileHash);
-console.log(history)
         history['is_share'] = is_share;
         setHistory('text', fileHash, subKeyName, history);
 
@@ -378,6 +377,13 @@ console.log(history)
     error_handle(error);
     callback(false);
   }
+}
+///for chatting//////////////////////////////
+const saveChat = (topic, json) => {
+
+}
+const readChat = (topic) => {
+  
 }
 //////////////////////////////////////////
 const wrapper = {

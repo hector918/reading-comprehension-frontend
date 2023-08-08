@@ -20,8 +20,13 @@ function createElement(json){
       case "childs_":
         for(var o in json[x])
         {
-          var children = createElement(json[x][o]);
-          root.append(children);
+          //if json[x][o] === json object than create element, else just append
+          if(json[x][o].constructor === ({}).constructor){
+            var children = createElement(json[x][o]);
+            root.append(children);
+          }else{
+            root.append(json[x][o]);
+          } 
         }
       break;
       case "innerHTML":case "innerText":case "textContent":

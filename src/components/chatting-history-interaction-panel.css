@@ -1,16 +1,19 @@
 .chatting-container > .chatting-history-content-panel{
-  background-color:bisque;
+  background-color:var(--chatting-background-color);
   width: 100%;
   height: 100%;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 9fr 2fr 1fr;
+  grid-template-rows: 1fr 18fr 4fr 1fr;
 }
 .chatting-container > .chatting-history-content-panel > .chatting-history-display{
-  background-color: blueviolet;
+  background-color: var(--chatting-background-color);
+  text-align: left;
+  height: 100%;
+  overflow-y: scroll;
 }
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel{
-  background-color: yellow;
+  background-color: var(--chatting-background-color);
   position: relative;
 }
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .input{
@@ -25,6 +28,8 @@
   resize: none;
   outline: none;
   border: none;
+  background-color: var(--chatting-background-color);
+  border-top: var(--chatting-border-color) 1px solid;
 }
 
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .submit-button{
@@ -51,8 +56,7 @@
   transform: scale(1.2);
 }
 
-.box {
-	background-color: #78e08f;
+.animate-box {
 	padding: 10px;
 	margin: 0 0 20px 0;
 }
@@ -69,6 +73,15 @@
 }
 
 /* animate new box */
-.new-box {
+.animate-new-box {
 	animation: append-animate .3s linear;
+}
+
+.chatting-history-display > .chatting-card{
+  background-color: var(--chatting-background-color);
+}
+
+.chatting-card > .anwser-div > .anwser-display{
+  font-size: medium;
+  white-space: pre-wrap;
 }

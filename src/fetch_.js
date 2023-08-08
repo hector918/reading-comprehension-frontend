@@ -239,20 +239,22 @@ async function chatting_to_openai(body, stream_callback){
     body: JSON.stringify(body)
   }
   fetchOptions.credentials = "include";
-  const response = await fetch(`${API}/cwo/openai/SSE`, fetchOptions);
-  console.log(response);
-  if (!response.body) return;
-  
-  const reader = response.body
-    .pipeThrough(new TextDecoderStream())
-    .getReader();
-  while (true) {
-    var { value, done } = await reader.read();
-    if (done) break;
-    //some times the response from server will stack together, use \n on the server to separate each response and reduce it back to original data
-    const parsed = value.split("\n").filter(el => el !== undefined && el !== "");
-    stream_callback(parsed);
+  try {
+    const response = await fetch(`${API}/cwo/openai/SSE`, fetchOptions);
+    if (!response.body) return;
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    while (true) {
+      var { value, done } = await reader.read();
+      if (done) break;
+      //some times the response from server will stack together, use \n on the server to separate each response and reduce it back to original data
+      const parsed = value.split("\n").filter(el => el !== undefined && el !== "");
+      stream_callback(parsed);
+    }
+  } catch (error) {
+    console.error(error);
+    stream_callback(error);
   }
+  
 }
 /////////////////////////////////////////////////
 const entry = { 
