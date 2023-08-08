@@ -9,6 +9,7 @@ import {throttle} from './general_';
 import {MessageFooter, addMessage} from './components/message-footer';
 import MobileLandingPage from './pages/mobile-landing-page';
 import MobileNavbar from './mobile-only-components/mobile-navbar';
+import Chatting from './pages/chatting.js';
 const mobileDesttopTrigger = 750;
 /////////////////////
 function App() {
@@ -71,6 +72,10 @@ function App() {
                 isLogin = {isLogin}
               />} />
               <Route path="/reading" element={<ReadingPage 
+                translation = {translation} 
+                isLogin = {isLogin}
+              />} />
+              <Route path="/chatting" element={<Chatting 
                 translation = {translation} 
                 isLogin = {isLogin}
               />} />

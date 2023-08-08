@@ -3,7 +3,6 @@ import React, { useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import Login from '../components/login-panel';
 import fe_ from '../fetch_';
-import AbsoluteMainContainer from '../components/absoluteMainContainer';
 import '../components/absoluteMainContainer.css';
 ///////////////////////////////////////////
 export default function MobileNavbar({language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin}){

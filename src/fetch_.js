@@ -1,3 +1,5 @@
+/* global TextDecoderStream */
+
 const API = process.env.REACT_APP_API_URL;
 let default_fetch_options = { 
   "Access-Control-Allow-Origin": "*" ,
@@ -206,29 +208,55 @@ function question_to_reading_comprehension(fileHash, q, level, callback){
     body: JSON.stringify({q, fileHash, level}),
   };
   fetch_post(`${API}/rc`, fetch_options, callback);
-    /* result example
-      {
-        "id":"chatcmpl-7FtdtwCgRUMg6nEx64M0RPrNOpZJc","object":"chat.completion",
-        "created":1684023165,
-        "model":"gpt-3.5-turbo-0301",
-        "usage":{
-          "prompt_tokens":2023,
-          "completion_tokens":28,
-          "total_tokens":2051
-        },
-        "choices":[{
-          "message":{
-            "role":"assistant",
-            "content":"The story is about an old fisherman who has gone 84 days without catching a fish and his journey to catch a giant marlin."
-          },
-          "finish_reason":"stop",
-          "index":0
-        }]}
-     */
+  /* result example
+  {
+    "id":"chatcmpl-7FtdtwCgRUMg6nEx64M0RPrNOpZJc","object":"chat.completion",
+    "created":1684023165,
+    "model":"gpt-3.5-turbo-0301",
+    "usage":{
+      "prompt_tokens":2023,
+      "completion_tokens":28,
+      "total_tokens":2051
+    },
+    "choices":[{
+      "message":{
+        "role":"assistant",
+        "content":"The story is about an old fisherman who has gone 84 days without catching a fish and his journey to catch a giant marlin."
+      },
+      "finish_reason":"stop",
+      "index":0
+    }]}
+  */
+}
+async function chatting_to_openai(body, stream_callback){
+  const fetchOptions = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*" ,
+      
+    },
+    body: JSON.stringify(body)
   }
-
+  fetchOptions.credentials = "include";
+  const response = await fetch(`${API}/cwo/openai/SSE`, fetchOptions);
+  console.log(response);
+  if (!response.body) return;
+  
+  const reader = response.body
+    .pipeThrough(new TextDecoderStream())
+    .getReader();
+  while (true) {
+    var { value, done } = await reader.read();
+    if (done) break;
+    //some times the response from server will stack together, use \n on the server to separate each response and reduce it back to original data
+    const parsed = value.split("\n").filter(el => el !== undefined && el !== "");
+    stream_callback(parsed);
+  }
+}
 /////////////////////////////////////////////////
 const entry = { 
+  chatting_to_openai,
   checkLoginFunction, checkUserID, 
   UserRegister, UserLogin, UserLogout, checkLoginStatus,
   getLanguages, getLanguageFile,

@@ -84,9 +84,7 @@
 .dropdown .dropdown-toggle:focus+.menu,.dropdown .menu:hover,.dropdown.active .menu {
   display: block!important;
 }
-.navbar-h > .navbar-section > .dropdown > .dropdown-toggle{
-  /* color: white!important; */
-}
+
 .navbar-h > .navbar-section > .dropdown > .menu{
   border-radius: 3px;
   animation: slide-down .15s ease 1;
