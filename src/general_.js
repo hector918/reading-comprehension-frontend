@@ -74,10 +74,11 @@ function createPasswordHash(str){
   const hashDigest = CryptoJS.SHA256(str);
   return hashDigest.toString();
 }
+
 function createHashFromStr(str){
   return CryptoJS.MD5(str, { outputLength: 8 }).toString();
-  
 }
+
 function createFileHash(file) {
   return new Promise((resolve, reject) => {
     var reader = new FileReader();

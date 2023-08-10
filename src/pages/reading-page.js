@@ -102,7 +102,10 @@ export default function ReadingPage({translation, isLogin}){
         />
         <div></div>
       </div>
-      <div className='reading-central-panel' onMouseUp={onMouseUp}>
+      <div 
+        className = 'reading-central-panel' 
+        onMouseUp = {onMouseUp}
+      >
         <div></div>
         <div className=''>
           <DocumentDisplay 
@@ -136,7 +139,7 @@ export default function ReadingPage({translation, isLogin}){
             className = 'btn-theme-border'
             onClick = {onExplainButtonClick}
           >
-            {trans('Elaborate on this')}
+            {trans('Elaborate on this', translation)}
           </button>
         </div>
       </div>

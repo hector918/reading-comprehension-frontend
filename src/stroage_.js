@@ -4,6 +4,8 @@ import {addMessage} from './components/message-footer';
 ;
 const [file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "moving_gallery_prefix", "library_documents_prefix"];
 
+const [chatting_list_index, chatting_messages] = ["chatting_lists", "chat_hash_prefix"];
+
 function error_handle(error) {
   console.error(error);
 }
@@ -379,11 +381,11 @@ function userToggleTextToExplainationShare(item, callback){
   }
 }
 ///for chatting//////////////////////////////
-const saveChat = (topic, json) => {
+const saveChat = (topicHash, question, json) => {
 
 }
 const readChat = (topic) => {
-  
+
 }
 //////////////////////////////////////////
 const wrapper = {
@@ -397,7 +399,9 @@ const wrapper = {
   userToggleReadingComprehensionShare,
   getAllHistoryOrderByUnifyTime,
   textToExplanation,
-  userToggleTextToExplainationShare
+  userToggleTextToExplainationShare,
+  //for chatting///////////////////
+  saveChat, readChat
 }
 
 export default wrapper;

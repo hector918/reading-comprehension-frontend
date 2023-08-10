@@ -1,22 +1,21 @@
 import './chatting-history-interaction-panel.css'
 import React, { useState, useRef } from 'react';
-import {trans, createElement, throttle} from '../general_';
+import {trans, createElement, createHashFromStr} from '../general_';
 import LoadingIcon from './loading-icon';
 import fetch_ from '../fetch_';
+import lc_ from '../stroage_';
+import ChattingInitParameterPanel from "./chatting-init-parameter-panel";
+let continueScroll = true;// for control the history page scrolling
 //////////////////////////////////////////
 export default function ChattingHistoryInteractionPanel({translation}){
   const [textValue, setTextValue] = useState("js json object and element obj how to tell, could make it bullet points, Provide your response in a markdown code block?");
-  const [isloading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const chattingDisplay = useRef(null);
-  const [continueScroll, setContinueScroll] = useState(true);
+  let [topicHash, setTopichash] = useState(undefined);
   //////////////////////////////////////////
-  const clearChattingDisplay = () => {
-    chattingDisplay.current.innerHTML = "";
-
-  }
   const createChattingCard = ({q}) => {
     const answerDisplay = createElement({tagname_: "pre", class: "anwser-display"});
-    const blinkingCursor = createElement({tagname_: "i", class:"fa-solid fa-terminal fa-fade"});
+    const blinkingCursor = createElement({tagname_: "i", class: "fa-solid fa-terminal fa-sm fa-fade"});
     const card = createElement({
       class: "chatting-card animate-box animate-new-box",
       childs_: [
@@ -25,7 +24,7 @@ export default function ChattingHistoryInteractionPanel({translation}){
           {tagname_: "span", innerText: q}
         ]},
         {class: "anwser-div", childs_: [
-          {tagname_: "span", innerText: `${trans('Anwser')}: `},
+          {tagname_: "span", innerText: `${trans('Anwser',translation)}: `},
           answerDisplay,
           blinkingCursor
         ]},
@@ -33,16 +32,15 @@ export default function ChattingHistoryInteractionPanel({translation}){
     })
     return {card, answerDisplay, blinkingCursor};
   }
-
   //////////////////////////////////////////
   const onTextareaChange = (evt) => {
-    if(!isloading) setTextValue(evt.target.value);
+    if(!isLoading) setTextValue(evt.target.value);
   }
   const onHistoryPanelScroll = (evt) => {
-    setContinueScroll(false);
+    continueScroll = false;
   }
   const onSubmitClick = (evt) => {
-    if(!isloading && textValue.length > 4){
+    if(!isLoading && textValue.length > 4){
       setIsLoading(true);
       //preparing data
       const messages = [{
@@ -50,14 +48,15 @@ export default function ChattingHistoryInteractionPanel({translation}){
         content : textValue
       }];
       var fullContent = "";
+      
       //preparing html elements
       const {card, answerDisplay, blinkingCursor} = createChattingCard({q: textValue});
       chattingDisplay.current.append(card);
       //reset panel scroll, if user scroll in the process, it will stop scrolling
-      setContinueScroll(true);
-      const scrollFn = throttle(() => {blinkingCursor.scrollIntoView({ behavior: "smooth", block: "end" })}, 1000);
+      chattingDisplay.current.scrollTop = chattingDisplay.current.scrollHeight;
+      continueScroll = true;
       //fetch init
-      fetch_.chatting_to_openai({messages}, onData, answerDisplay);
+      fetch_.chatting_to_openai({messages}, onData);
       ////helper on data
       function onData(res){
         try {
@@ -67,25 +66,38 @@ export default function ChattingHistoryInteractionPanel({translation}){
               // on end 
               blinkingCursor.parentElement.removeChild(blinkingCursor);
               setIsLoading(false);
-              if(continueScroll) {
-                answerDisplay.scrollIntoView({ behavior: "smooth", block: "end" });
-              }
+              requestOnEnd();
             }else if(json.error){
               //on error
-              blinkingCursor.parentElement.removeChild(blinkingCursor);
-              setIsLoading(false);
-              console.log(json.error);
+              throw new Error(json.error);
             }else if(json.data.content){
               //on data
               fullContent += json.data.content;
               answerDisplay.innerHTML += json.data.content;
-              if(continueScroll) scrollFn();
+              
+              if(continueScroll){
+                chattingDisplay.current.scrollTop = chattingDisplay.current.scrollHeight;
+              } 
             }
           }
         } catch (error) {
+          if(blinkingCursor.parentElement) blinkingCursor.parentElement.removeChild(blinkingCursor);
           console.log("error", res, error);
+          card.append(createElement({
+            class: "error", 
+            innerHTML: `${trans('error',translation)}: ${error.message}`
+          }));
+          setIsLoading(false);
         }
       }
+    }
+    ///on end helper///////////////////////////////////
+    function requestOnEnd(){
+      if(topicHash === undefined){
+        topicHash = createHashFromStr(textValue + new Date().toLocaleString());
+        setTopichash(topicHash);
+      }
+      // lc_.saveChat(topicHash, textValue, )
     }
   }
   //////////////////////////////////////////
@@ -97,7 +109,9 @@ export default function ChattingHistoryInteractionPanel({translation}){
       onTouchMove = {onHistoryPanelScroll}
       onKeyDown = {onHistoryPanelScroll}
       onMouseDown = {onHistoryPanelScroll}
+      onWheel = {onHistoryPanelScroll}
     >
+      {(topicHash === undefined && !isLoading) && <ChattingInitParameterPanel />}
     </div>
     <div className='chatting-question-input-panel'>
       <div className='input'>
@@ -105,11 +119,13 @@ export default function ChattingHistoryInteractionPanel({translation}){
           value = {textValue} 
           onChange = {onTextareaChange}
           placeholder = {trans('type in you question in here.', translation)}
+          readOnly = {isLoading}
+          disabled = {isLoading}
         />
       </div>
       <div className='submit-button'>
         <button className='c-hand btn' onClick={onSubmitClick}>
-          {isloading? <LoadingIcon />: trans("Send", translation)}
+          {isLoading? <LoadingIcon />: trans("Send", translation)}
         </button>
       </div>
     </div>
