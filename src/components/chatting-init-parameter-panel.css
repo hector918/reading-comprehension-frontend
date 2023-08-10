@@ -1,0 +1,57 @@
+.form-checkbox,.form-radio,.form-switch {
+  display: block;
+  line-height: 1.2rem;
+  margin: .2rem 0;
+  min-height: 1.4rem;
+  padding: .1rem .4rem .1rem 1.2rem;
+  position: relative;
+
+}
+.form-inline{
+  display: inline-block;
+}
+.accordion input:checked~.accordion-header>.icon:first-child,.accordion[open] .accordion-header>.icon:first-child {
+  transform: rotate(90deg);
+}
+
+.accordion input:checked~.accordion-body,.accordion[open] .accordion-body {
+  max-height:50rem;
+}
+
+.accordion .accordion-header {
+  display: block;
+  padding: .2rem .4rem;
+}
+
+.accordion .accordion-header .icon {
+  transition: transform .25s;
+}
+
+.accordion .accordion-body {
+  margin-bottom: .4rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+
+.chatting-init-parameter-panel .prompt-container{
+  display: flex;
+  flex-wrap: wrap;
+
+}
+.chatting-init-parameter-panel .prompt-card{
+  border-bottom: 1px solid var(--chatting-border-color);
+  margin: 1%;
+  padding: 20px 1% ;
+  width: 96%;
+  transition: all .3s;
+  cursor: pointer;
+}
+.chatting-init-parameter-panel .new-prompt-div{
+  transition: all 0.3s;
+  margin: 5px;
+  padding: 5px;
+}
+.chatting-init-parameter-panel .new-prompt-div:hover,.prompt-card:hover{
+  transform: scale(1.02);
+}

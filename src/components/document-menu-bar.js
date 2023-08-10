@@ -8,7 +8,10 @@ import {addMessage} from '../components/message-footer';
 export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   const libraryModal = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadingStatus, setUploadingStatus] = useState([trans("Click me to upload file...", translation)]);
+  const uploadTips = isLogin() 
+  ?[trans("Click me to upload file...", translation)]
+  :[trans("You need to login first.", translation)];
+  const [uploadingStatus, setUploadingStatus] = useState(uploadTips);
   const [libraryData, setLibraryData] = useState([]);
   const [recentsData, setRecentsData] = useState([]);
   const fileInput = useRef(null);
@@ -62,7 +65,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   }, [readLibrary, isLogin]);
   //////////////////////////////////////////////
   const onUploadClick = (evt) => {
-    fileInput.current.click();
+    if(isLogin()) fileInput.current.click();
   }
   const OnUploadInputChange = async(evt) => {
     const file = evt.target.files[0];
@@ -94,7 +97,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
       }
       //clear up after upload
       //clear file input value
-      setUploadingStatus([trans("Click me to upload file...", translation)]);
+      setUploadingStatus(uploadTips);
       evt.target.value = "";
       setIsUploading(false);
 
@@ -129,9 +132,9 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
     >
       <span><i className="fa-solid fa-upload"></i>{trans("Upload", translation)}</span>
       <input 
-        ref={fileInput} 
-        type="file" 
-        style={{ display: "none" }} 
+        ref = {fileInput} 
+        type = "file" 
+        style = {{ display: "none" }} 
         onChange={OnUploadInputChange} 
       />
       <div className='icon-place-holder'>{isUploading?<div className="loading"></div>:""}</div>

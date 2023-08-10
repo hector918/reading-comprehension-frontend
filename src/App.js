@@ -29,10 +29,15 @@ function App() {
   })
   //////////////////////////////////////////
   useEffect(()=>{
-    fe_.getLanguages(({availableList, currentLanguage, translation}) => {
-      if(availableList && currentLanguage) setLanguage({availableList, currentLanguage});
-      if(translation) setTranslation(translation);
-    });
+    try {
+      fe_.getLanguages(({availableList, currentLanguage, translation}) => {
+        if(availableList && currentLanguage) setLanguage({availableList, currentLanguage});
+        if(translation) setTranslation(translation);
+      });
+    } catch (error) {
+      
+    }
+    
     fe_.checkLoginStatus((data)=>{
       setUserInfo(data.data);
     });
