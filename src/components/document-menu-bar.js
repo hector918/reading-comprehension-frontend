@@ -135,7 +135,8 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
         ref = {fileInput} 
         type = "file" 
         style = {{ display: "none" }} 
-        onChange={OnUploadInputChange} 
+        onChange = {OnUploadInputChange} 
+        accept = ".pdf"
       />
       <div className='icon-place-holder'>{isUploading?<div className="loading"></div>:""}</div>
       {/*  */}

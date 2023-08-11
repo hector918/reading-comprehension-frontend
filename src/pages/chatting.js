@@ -10,7 +10,10 @@ export default function Chatting({translation, isLogin}){
       <div className='chat-history-topic-panel'>
         <div></div>
       </div>
-      <ChattingHistoryInteractionPanel translation={translation} />
+      <ChattingHistoryInteractionPanel 
+        translation = {translation} 
+        isLogin = {isLogin}
+      />
     </>
     :
     <div>please login first</div>

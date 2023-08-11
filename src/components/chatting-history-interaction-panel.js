@@ -5,17 +5,23 @@ import LoadingIcon from './loading-icon';
 import fetch_ from '../fetch_';
 import lc_ from '../stroage_';
 import ChattingInitParameterPanel from "./chatting-init-parameter-panel";
-let continueScroll = true;// for control the history page scrolling
-//////////////////////////////////////////
-export default function ChattingHistoryInteractionPanel({translation}){
+// for control the history page scrolling
+let continueScroll = true;
+///////////////////////////////////////////
+export default function ChattingHistoryInteractionPanel({translation, isLogin}){
   const [textValue, setTextValue] = useState("js json object and element obj how to tell, could make it bullet points, Provide your response in a markdown code block?");
   const [isLoading, setIsLoading] = useState(false);
   const chattingDisplay = useRef(null);
   let [topicHash, setTopichash] = useState(undefined);
+  let initParameter = {};
   //////////////////////////////////////////
   const createChattingCard = ({q}) => {
     const answerDisplay = createElement({tagname_: "pre", class: "anwser-display"});
-    const blinkingCursor = createElement({tagname_: "i", class: "fa-solid fa-terminal fa-sm fa-fade"});
+    const blinkingCursor = createElement({
+      tagname_: "i", 
+      class: "fa-solid fa-terminal fa-sm fa-fade", 
+      style:"padding-bottom: 10vh;"
+    });
     const card = createElement({
       class: "chatting-card animate-box animate-new-box",
       childs_: [
@@ -40,6 +46,8 @@ export default function ChattingHistoryInteractionPanel({translation}){
     continueScroll = false;
   }
   const onSubmitClick = (evt) => {
+    console.log(initParameter)
+    return 
     if(!isLoading && textValue.length > 4){
       setIsLoading(true);
       //preparing data
@@ -48,7 +56,6 @@ export default function ChattingHistoryInteractionPanel({translation}){
         content : textValue
       }];
       var fullContent = "";
-      
       //preparing html elements
       const {card, answerDisplay, blinkingCursor} = createChattingCard({q: textValue});
       chattingDisplay.current.append(card);
@@ -111,7 +118,11 @@ export default function ChattingHistoryInteractionPanel({translation}){
       onMouseDown = {onHistoryPanelScroll}
       onWheel = {onHistoryPanelScroll}
     >
-      {(topicHash === undefined && !isLoading) && <ChattingInitParameterPanel />}
+      {(topicHash === undefined && !isLoading) && <ChattingInitParameterPanel 
+        translation = {translation} 
+        isLogin = {isLogin} 
+        initParameter = {initParameter}
+      />}
     </div>
     <div className='chatting-question-input-panel'>
       <div className='input'>
