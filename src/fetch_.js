@@ -52,6 +52,26 @@ function fetch_get(url, callback){
       callback({error: "fetch error"});
     });
 }
+function fetch_delete(url, callback){
+  const body = {
+    method: "DELETE",
+    headers: {
+      ...default_fetch_options,
+    },
+    credentials: "include",
+  }
+  
+  fetch(url, body)
+    .then((response) => response.json())
+    .then((data) => {
+      callback(data);
+    })
+    .catch(error => {
+      error_handle(error);
+      callback({error: "fetch error"});
+    });
+}
+
 async function fetch_get_async(url){
   try {
     const body = {
@@ -69,28 +89,23 @@ async function fetch_get_async(url){
     return error;
   }
 }
-// async function fetch_post_async(url, body){
-//   try {
-//     body.method = "POST";
-//     body.headers = {
-//       ...body.headers, 
-//       ...default_fetch_options,
-//     }
-//     //add cookies when fired
-//     body.credentials = "include";
-//     const res = await fetch(url, body);
-//     if(res.ok){
-//       const ret = await res.json();
-//       return ret;
-//     }else{
-//       return false;
-//     }
-//   } catch (error) {
-//     error_handle(error);
-//     return false;
-//   }
+async function fetch_post_async(url, body){
+  try {
+    body.method = "POST";
+    body.headers = {
+      ...body.headers, 
+      ...default_fetch_options,
+    }
+    //add cookies when fired
+    body.credentials = "include";
+    const res = await fetch(url, body);
+    return res;
+  } catch (error) {
+    error_handle(error);
+    return false;
+  }
   
-// }
+}
 //// login potion/////////////////////////////////////
 function checkLoginFunction(callback){
   fetch(`${API}/login/available`)
@@ -229,18 +244,8 @@ function question_to_reading_comprehension(fileHash, q, level, callback){
   */
 }
 async function chatting_to_openai(body, stream_callback){
-  const fetchOptions = {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": "*" ,
-      
-    },
-    body: JSON.stringify(body)
-  }
-  fetchOptions.credentials = "include";
   try {
-    const response = await fetch(`${API}/cwo/openai/SSE`, fetchOptions);
+    const response = await fetch_post_async(`${API}/cwo/openai/SSE`, {body: JSON.stringify(body)});
     if (!response.body) return;
     const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
     while (true) {
@@ -255,6 +260,19 @@ async function chatting_to_openai(body, stream_callback){
     stream_callback(error);
   }
   
+}
+
+async function insertNewPrompt(type, title, prompt, callback){
+  const body = {body: JSON.stringify({type, title, prompt})};
+  fetch_post(`${API}/prompt/new`, body, callback);
+}
+
+async function deletePrompt(prompt_id, callback){
+  fetch_delete(`${API}/prompt/`, callback);
+}
+
+async function readPrompts(callback){
+  fetch_get(`${API}/prompt/`, callback);
 }
 /////////////////////////////////////////////////
 const entry = { 
@@ -272,6 +290,8 @@ const entry = {
   text_to_explanation,
   get_all_history_from_fileHash,
   userToggleReadingComprehensionShare,
-  userToggleTextToExplainationShare
+  userToggleTextToExplainationShare,
+  insertNewPrompt, readPrompts, deletePrompt,
 };
+
 export default entry;

@@ -135,7 +135,7 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
         
       </div>
       <div className='anwser'>
-        <span>{trans("anwser", translation)}: </span>
+        <span>{trans("answer", translation)}: </span>
         <span>{el.anwser}</span>
       </div>
     </div>
