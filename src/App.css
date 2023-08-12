@@ -95,6 +95,9 @@ html{
   color: #fff!important;
   transition: all 0.3s ease;
   cursor: pointer;
+  transition: all .3s;
+  border-radius: 3px;
+  padding: 0 10px;
 }
 .btn-theme-border:hover{
   background-color: #060644;
@@ -647,6 +650,70 @@ ol, ul {
   transform: translate(-50%,-50%);
   z-index: 1
 }
+
+.input-group {
+  display: -ms-flexbox;
+  display: flex
+}
+
+.input-group .input-group-addon {
+  background: #f7f8f9;
+  border: .05rem solid #bcc3ce;
+  border-radius: .1rem;
+  line-height: 1.2rem;
+  padding: .25rem .4rem;
+  white-space: nowrap
+}
+
+.input-group .input-group-addon.addon-sm {
+  font-size: .7rem;
+  padding: .05rem .3rem
+}
+
+.input-group .input-group-addon.addon-lg {
+  font-size: .9rem;
+  padding: .35rem .6rem
+}
+
+.input-group .form-input,.input-group .form-select {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  width: 1%
+}
+
+.input-group .input-group-btn {
+  z-index: 1
+}
+
+.input-group .form-input:first-child:not(:last-child),.input-group .form-select:first-child:not(:last-child),.input-group .input-group-addon:first-child:not(:last-child),.input-group .input-group-btn:first-child:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0
+}
+
+.input-group .form-input:not(:first-child):not(:last-child),.input-group .form-select:not(:first-child):not(:last-child),.input-group .input-group-addon:not(:first-child):not(:last-child),.input-group .input-group-btn:not(:first-child):not(:last-child) {
+  border-radius: 0;
+  margin-left: -.05rem
+}
+
+.input-group .form-input:last-child:not(:first-child),.input-group .form-select:last-child:not(:first-child),.input-group .input-group-addon:last-child:not(:first-child),.input-group .input-group-btn:last-child:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  margin-left: -.05rem
+}
+
+.input-group .form-input:focus,.input-group .form-select:focus,.input-group .input-group-addon:focus,.input-group .input-group-btn:focus {
+  z-index: 2
+}
+
+.input-group .form-select {
+  width: auto
+}
+
+.input-group.input-inline {
+  display: -ms-inline-flexbox;
+  display: inline-flex
+}
+
 .red{
   color: red;
 }

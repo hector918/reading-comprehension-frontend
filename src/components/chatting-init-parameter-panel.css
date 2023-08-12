@@ -48,19 +48,33 @@
   transition: all .3s;
   cursor: pointer;
   border-radius: 5px;
+  position: relative;
 }
-.chatting-init-parameter-panel .prompt-card > .type-and-function-div{
+.chatting-init-parameter-panel .prompt-container .prompt-card > .type-and-function-div{
+  margin-left: 22px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.chatting-init-parameter-panel .new-prompt-div{
+.chatting-init-parameter-panel .new-prompt-div, .chatting-init-parameter-panel .filter-prompt-div{
   transition: all 0.3s;
   margin: 5px;
   padding: 5px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
-.chatting-init-parameter-panel .new-prompt-div:hover,.prompt-card:hover{
+.chatting-init-parameter-panel .filter-prompt-div > label > *{
+  margin-left: 5px;
+}
+.chatting-init-parameter-panel .prompt-function-div > div:hover,.prompt-card:hover{
   transform: scale(1.02);
+}
+.chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content{
+  padding-bottom: 50px;
+}
+.chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content .input-group{
+  margin-bottom: 0.4rem;
 }
 .chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content textarea{
   min-height: 15vh;
@@ -78,5 +92,55 @@
 }
 .chatting-init-parameter-panel .type-and-function-div > div >  i:hover{
   transform: rotate(30deg);
-  
 }
+
+.chatting-init-parameter-panel .modal .modal-body > .content > .form-group > .form-label{
+  position: relative;
+}
+.chatting-init-parameter-panel .modal .modal-body > .content > .form-group > .form-label .floating-work-counter{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: var(--chatting-init-parameter-fade-item-color);
+}
+.chatting-init-parameter-panel .modal-footer > .button-group{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: flex-end;
+}
+
+.prompt-container > .prompt-card > input ~ .prompt-card-prompt-content{
+  visibility: hidden;
+  max-height: 0;
+  transition: all 0.3s;
+  transform: translateY(300px);
+  opacity: 0;
+  display: none;
+}
+
+.prompt-container > .prompt-card > input{
+  position: absolute;
+  top: 16px;
+}
+
+.prompt-container > .prompt-card > input:checked ~ .prompt-card-prompt-content {
+  visibility: visible;
+  animation: collapse-animate 0.3s linear;
+  max-height: fit-content;
+  opacity: 1;
+  transform: translateY(0px);
+  display: block;
+}
+
+@keyframes collapse-animate {
+	from {
+    opacity: 0;
+		transform: translateY(300px);
+	}
+	to {
+    opacity: 0.6;
+		transform: translateY(0px);
+	}
+}
+
