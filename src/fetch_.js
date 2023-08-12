@@ -262,13 +262,13 @@ async function chatting_to_openai(body, stream_callback){
   
 }
 
-async function insertNewPrompt(type, title, prompt, callback){
-  const body = {body: JSON.stringify({type, title, prompt})};
+async function insertNewPrompt(type, title, prompt, linkslist, callback){
+  const body = {body: JSON.stringify({type, title, prompt, linkslist})};
   fetch_post(`${API}/prompt/new`, body, callback);
 }
 
 async function deletePrompt(prompt_id, callback){
-  fetch_delete(`${API}/prompt/`, callback);
+  fetch_delete(`${API}/prompt/${prompt_id}`, callback);
 }
 
 async function readPrompts(callback){
@@ -276,6 +276,7 @@ async function readPrompts(callback){
 }
 /////////////////////////////////////////////////
 const entry = { 
+  fetch_get_async,
   chatting_to_openai,
   checkLoginFunction, checkUserID, 
   UserRegister, UserLogin, UserLogout, checkLoginStatus,

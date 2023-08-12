@@ -4,6 +4,9 @@
   --chatting-content-pre-font-size: medium;
   --chatting-text-color: black;
   --chatting-error-text-color: red;
+  --chatting-init-parameter-outline-color: blue;
+  --chatting-init-parameter-fade-item-color: lightgray;
+
 }
 
 .chatting-container{
