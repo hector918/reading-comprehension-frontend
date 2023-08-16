@@ -4,10 +4,10 @@ import {addMessage} from './components/message-footer';
 ;
 const [file_list_prefix, moving_gallery_prefix, library_documents_prefix] = ["files", "moving_gallery_prefix", "library_documents_prefix"];
 
-const [chatting_list_index, chatting_messages] = ["chatting_lists", "chat_hash_prefix"];
+const [chatting_list_index, chatting_thread] = ["chatting_lists", "chat_hash_prefix"];
 
 function error_handle(error) {
-  console.error(error);
+  console.warn(error);
 }
 function check_string(){
   for(let item of arguments) if(typeof item !== 'string'){
@@ -381,11 +381,86 @@ function userToggleTextToExplainationShare(item, callback){
   }
 }
 ///for chatting//////////////////////////////
-const saveChat = (topicHash, question, json) => {
-
+const saveChat = (threadHash, model, question, messages, response) => {
+  //chatting_list_index, chatting_thread
+  const threadKeyName = chatting_thread + threadHash;
+  try {
+    const history = JSON.parse(localStorage.getItem(chatting_list_index));
+    if(history[threadHash] !== undefined){
+      //exists
+      try {
+        
+        //insert into chatting thread
+        const topic = JSON.parse(localStorage.getItem(threadKeyName));
+        topic.push(threadTemplate());
+        localStorage.setItem(threadKeyName, topic);
+      } catch (error) {
+        error_handle(error);
+        initThread();
+      }
+    }else{
+      //if not exists
+      updateList(history);
+      initThread();
+    }
+  } catch (error) {
+    error_handle(error);
+    updateList();
+    initThread();
+  }
+  //////////helper/////////////////////////
+  function updateList(history = undefined){
+    if(history !== undefined){
+      history[threadHash] ={
+        model,
+        threadHash, 
+        question, 
+        timestamp: new Date().getTime()
+      }
+    }else{
+      history = {[threadHash]: {
+        model,
+        threadHash, 
+        question, 
+        timestamp: new Date().getTime()
+      }};
+    }
+    
+    localStorage.setItem(chatting_list_index, JSON.stringify(history));
+  }
+  //
+  function initThread(){
+    localStorage.setItem(threadKeyName, JSON.stringify([threadTemplate()]));
+  }
+  //
+  function threadTemplate(){
+    return {
+      threadHash, 
+      question, 
+      messages,
+      response,
+      timestamp: new Date().getTime()
+    };
+  }
 }
-const readChat = (topic) => {
+const readThreadsAsArray = () => {
+  try {
+    const history = Object.values(JSON.parse(localStorage.getItem(chatting_list_index)));
+    return Array.isArray(history)? history: [];
+  } catch (error) {
+    error_handle(error);
+    return [];
+  }
+}
 
+const readThread = (threadHash) => {
+  try {
+    const thread = JSON.parse(localStorage.getItem(chatting_thread + threadHash));
+    return thread;
+  } catch (error) {
+    error_handle(error);
+    return [];
+  }
 }
 //////////////////////////////////////////
 const wrapper = {
@@ -401,7 +476,7 @@ const wrapper = {
   textToExplanation,
   userToggleTextToExplainationShare,
   //for chatting///////////////////
-  saveChat, readChat
+  saveChat, readThreadsAsArray, readThread
 }
 
 export default wrapper;

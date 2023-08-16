@@ -21,7 +21,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   const initForm = useRef(null);
   const formExtraField = useRef(null);
   const modalPromptForm = useRef(null);
-
+  const modalPromptTextareaWarning = useRef(null);
   const [searchInput, setSearchInput] = useState('');
   let promptListToDisplay = promptsList;
   // if searchInput is truthy (not empty string)
@@ -55,17 +55,28 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
     let type = modalTypeInput.current.value;
     let prompt = modalTypeTextarea.current.value;
     let title = modalTitleInput.current.value;
-    let form = modalPromptForm.current;
+    let form = modalPromptForm.current.elements;
     let linksList = [];
-    for(let i = 0; i < form.elements['link-name'].length; i++){
-      if(form.elements['link-name'][i].value.trim() === "") continue;
+    if(form['link-name']){
       linksList.push([
-        form.elements['link-name'][i].value,
-        form.elements['link-url'][i].value
+        form['link-name'].value, 
+        form['link-url'].value
       ])
-    } 
+    }
+    else if(form['link-name']?.length){
+      for(let i = 0; i < form['link-name'].length; i++){
+        if(form['link-name'][i].value.trim() === "") continue;
+        linksList.push([
+          form['link-name'][i].value,
+          form['link-url'][i].value
+        ]);
+      }
+    }
     /////////////////////////////////////
-    if(prompt.trim().length < 5) return;
+    if(prompt.trim().length < 5) {
+      modalPromptTextareaWarning.current.classList.remove("display-none");
+      return;
+    };
     fetch_.insertNewPrompt(type, title, prompt, linksList, (res) => {
       //
       if(res.error){
@@ -105,8 +116,9 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   const onResetClick = (evt) => {
     // console.log(initForm.current.prompt)
   }
-  const onPromptInputChange = (evt) => {
-    initParameter.prompt = initForm.current.prompt.value
+  const onPromptInputChange = ({content, json}) => {
+    initParameter.prompt = content;
+    initParameter.links = json.links;
   }
   const onModalAddField = (type = "link") => {
     const container = formExtraField.current;
@@ -125,21 +137,22 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   }
   /////////////////////////////////////////////////
   function renderModelSelector(el, idx){
+    const defaultCheck = idx === 0 ;
     return <label 
       key = {`model-selector-${gerneralIndex++}`} 
       className = "form-radio form-inline c-hand"
       onClick = {()=>{initParameter.model = el.index}}
     >
-    <input 
-      type = "radio" 
-      name = "model" 
-      defaultChecked
-    />
-    <i className="form-icon"></i> {el.name}
-  </label>
+      <input 
+        type = "radio" 
+        name = "model"
+        defaultChecked = {defaultCheck} 
+      />
+      <i className="form-icon"></i> {el.name}
+    </label>
   }
-  function renderCard({id, type, title, content}){
-    //create a regular card
+  function renderCard({id, type, title, content, json}){
+    //create a regular prompt card
     return <label 
       key = {`prompt-card-${gerneralIndex++}`} 
       className = 'prompt-card' 
@@ -147,8 +160,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       <input 
         type = "radio" 
         name = "prompt" 
-        onChange = {onPromptInputChange}
-        value = {content}
+        onChange = {() => {onPromptInputChange({content, json})}}
       />
       <div className='type-and-function-div'>
         <div>
@@ -159,7 +171,12 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
           <i className="fa-solid fa-trash"></i>
         </div>
       </div>
-      <div className='prompt-card-prompt-content'>{content}</div>
+      <div className='prompt-card-prompt-content'> 
+        <p>{content}</p>
+        {json?.links?.map(([el1, el2]) => <li key={`card-prompt-links-${gerneralIndex}`}>
+          <span>{el1}</span>: <sub>{el2}</sub>
+        </li>)}
+      </div>
     </label>
   }
   function modalFormReset(){
@@ -167,6 +184,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
     modalTypeTextarea.current.value = "";
     modalTitleInput.current.value = "";
     formExtraField.current.innerHTML = "";
+    modalPromptTextareaWarning.current.classList.add("display-none");
   }
   /////////////////////////////////////////////////
   return <div className='chatting-init-parameter-panel'>
@@ -223,6 +241,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
                   className = "form-input" 
                   type = "text" 
                   placeholder = {trans("Type", translation)}
+                  maxLength = {100}
                 />
               </label>
             </div>
@@ -234,6 +253,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
                   className = "form-input" 
                   type = "text" 
                   placeholder = {trans("Title", translation)}
+                  maxLength = {100}
                 />
               </label>
             </div>
@@ -252,7 +272,9 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               </label>
             </div>
             <div className='form-group'>
-              <span>{trans("Add", translation)}</span> <button onClick={(e) => {
+              <span>{trans("Add", translation)}</span>
+              {/* disable the link button */}
+              <button disabled onClick={(e) => {
                 e.preventDefault();
                 onModalAddField();
               }}>{trans("Link", translation)}</button>
@@ -260,7 +282,14 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
             <div ref={formExtraField}>
               
             </div>
+            <div>
+              <p 
+                ref = {modalPromptTextareaWarning} 
+                className = 'red display-none'
+              >prompt letter count must between 5 - 2000</p>
+            </div>
           </form>
+          
         </div>
         <div className="modal-footer">
           <div className='button-group'>

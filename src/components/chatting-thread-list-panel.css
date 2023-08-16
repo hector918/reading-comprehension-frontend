@@ -1,0 +1,44 @@
+.chat-history-topic-panel > .chatting-thread-list-panel{
+  display: grid;
+  grid-template-rows: 1fr 20fr 2fr 1fr;
+  width: inherit;
+  overflow: hidden;
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel > div{
+  width: inherit;
+  overflow: inherit;
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-function-div{
+  /* background-color: aqua; */
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card{
+  display: flex;
+  justify-content: space-around;
+  width: inherit;
+  overflow: inherit;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card:hover{
+  transform: scale(1.02);
+}
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card:active{
+  color: var(--chatting-active-text-color);
+}
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card > .title{
+  width: inherit;
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card > .title > p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 10px;
+  border-bottom: 1px solid var(--chatting-border-color);
+}

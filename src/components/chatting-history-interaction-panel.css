@@ -6,7 +6,7 @@
   display: grid;
   grid-template-rows: 1fr 18fr 4fr 1fr;
 }
-.chatting-container > .chatting-history-content-panel > .chatting-history-display{
+.chatting-container > .chatting-history-content-panel .chatting-history-display{
   background-color: var(--chatting-background-color);
   text-align: left;
   height: 100%;
@@ -19,6 +19,11 @@
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .input{
   width: 100%;
   height: 100%;
+}
+
+.chatting-container > .chatting-history-content-panel .chatting-display-container{
+  height: 100%;
+  overflow: hidden;
 }
 
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .input > textarea{
@@ -93,4 +98,8 @@
 .chatting-card > .anwser-div > .anwser-display{
   font-size: var(--chatting-content-pre-font-size);
   white-space: pre-wrap;
+}
+
+.display-none{
+  display: none;
 }
