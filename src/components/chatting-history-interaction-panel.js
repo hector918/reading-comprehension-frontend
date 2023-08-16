@@ -1,19 +1,54 @@
 import './chatting-history-interaction-panel.css'
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {trans, createElement, createHashFromStr} from '../general_';
 import LoadingIcon from './loading-icon';
 import fetch_ from '../fetch_';
 import lc_ from '../stroage_';
 import ChattingInitParameterPanel from "./chatting-init-parameter-panel";
+import { createRoot } from 'react-dom/client';
+import {createPortal} from 'react-dom';
+// import { compile, convert } from 'html-to-text';
+// import puppeteer from 'puppeteer';
+
 // for control the history page scrolling
 let continueScroll = true;
 ///////////////////////////////////////////
-export default function ChattingHistoryInteractionPanel({translation, isLogin}){
-  const [textValue, setTextValue] = useState("js json object and element obj how to tell, could make it bullet points, Provide your response in a markdown code block?");
+export default function ChattingHistoryInteractionPanel({translation, isLogin, topicHash, setTopichash, setThreadList}){
   const [isLoading, setIsLoading] = useState(false);
   const chattingDisplay = useRef(null);
-  let [topicHash, setTopichash] = useState(undefined);
+  const userInputTextarea = useRef(null);
   let initParameter = {};
+  ///////////////////////////////////////
+  useEffect(() => {
+    chattingDisplay.current.innerHTML = "";
+    if(topicHash !== undefined){
+      const threadHistory = lc_.readThread(topicHash);
+      for(let el of threadHistory){
+        chattingDisplay.current.append(renderChattingCard(el));
+      }
+    }
+  }, [topicHash])
+//
+  function renderChattingDisplay(){
+    console.log(topicHash)
+    return <div className='chatting-display-container'>
+      {(!topicHash && !isLoading) &&<ChattingInitParameterPanel 
+        translation = {translation} 
+        isLogin = {isLogin} 
+        initParameter = {initParameter}
+      />}
+      <div 
+        ref = {chattingDisplay}
+        className = 'chatting-history-display'
+        onTouchMove = {onHistoryPanelScroll}
+        onKeyDown = {onHistoryPanelScroll}
+        onMouseDown = {onHistoryPanelScroll}
+        onWheel = {onHistoryPanelScroll}
+        onLoadStart = {onDisplayLoad}
+      >
+      </div>
+    </div>
+  }
   //////////////////////////////////////////
   const createChattingCard = ({q}) => {
     const answerDisplay = createElement({tagname_: "pre", class: "anwser-display"});
@@ -38,26 +73,54 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin}){
     })
     return {card, answerDisplay, blinkingCursor};
   }
+  function renderChattingCard(threadRow){
+    const {card, answerDisplay, blinkingCursor} = createChattingCard({q: threadRow.question});
+    answerDisplay.innerHTML = threadRow.response;
+    blinkingCursor.parentElement.removeChild(blinkingCursor);
+    return card;
+  }
+  // async function readLink(url){
+  //   const iframe = document.createElement("iframe");
+  //   iframe.onload = (evt) => {
+  //     console.log("iframe loaded");
+  //     console.log(iframe.contentWindow.document.body.innerHTML)
+  //   }
+  //   iframe.src = url;
+  //   document.body.append(iframe)
+    
+
+  // }
   //////////////////////////////////////////
+  const onDisplayLoad = (evt) => {
+    console.log(evt)
+  }
   const onTextareaChange = (evt) => {
-    if(!isLoading) setTextValue(evt.target.value);
+    // if(!isLoading) setTextValue(evt.target.value);
   }
   const onHistoryPanelScroll = (evt) => {
     continueScroll = false;
   }
   const onSubmitClick = (evt) => {
-    console.log(initParameter)
-    return 
-    if(!isLoading && textValue.length > 4){
+    // readLink('https://docs.google.com/document/d/15d7uNDZjeaB0bWDoIrsDsWTIepmRqHjK/edit?usp=sharing&ouid=101705573460941531649&rtpof=true&sd=true');
+    if(!isLoading && userInputTextarea.current.value.length > 4){
       setIsLoading(true);
       //preparing data
-      const messages = [{
-        role : "user",
-        content : textValue
-      }];
+      //const = markdownResponse = "; Provide your response in a markdown code block.";
+      const {prompt, model, links} = initParameter;
+      const messages = [
+        {
+          role: "system",
+          content: `${prompt || ""}`
+        },
+        {
+          role : "user",
+          content : userInputTextarea.current.value
+        }
+      ];
+      
       var fullContent = "";
       //preparing html elements
-      const {card, answerDisplay, blinkingCursor} = createChattingCard({q: textValue});
+      const {card, answerDisplay, blinkingCursor} = createChattingCard({q: userInputTextarea.current.value});
       chattingDisplay.current.append(card);
       //reset panel scroll, if user scroll in the process, it will stop scrolling
       chattingDisplay.current.scrollTop = chattingDisplay.current.scrollHeight;
@@ -73,7 +136,9 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin}){
               // on end 
               blinkingCursor.parentElement.removeChild(blinkingCursor);
               setIsLoading(false);
-              requestOnEnd();
+              //call the end before clear the user input
+              requestOnEnd(model, messages, fullContent);
+              userInputTextarea.current.value = "";
             }else if(json.error){
               //on error
               throw new Error(json.error);
@@ -99,39 +164,30 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin}){
       }
     }
     ///on end helper///////////////////////////////////
-    function requestOnEnd(){
+    function requestOnEnd(model, messages, fullContent){
       if(topicHash === undefined){
+        //new topic
+        const textValue = userInputTextarea.current.value;
         topicHash = createHashFromStr(textValue + new Date().toLocaleString());
         setTopichash(topicHash);
+        lc_.saveChat(topicHash, model, textValue, messages, fullContent);
+        setThreadList(lc_.readThreadsAsArray());
+      }else{
+        //old topic
       }
-      // lc_.saveChat(topicHash, textValue, )
     }
   }
   //////////////////////////////////////////
   return <div className='chatting-history-content-panel'>
     <div></div>
-    <div 
-      ref = {chattingDisplay}
-      className = 'chatting-history-display'
-      onTouchMove = {onHistoryPanelScroll}
-      onKeyDown = {onHistoryPanelScroll}
-      onMouseDown = {onHistoryPanelScroll}
-      onWheel = {onHistoryPanelScroll}
-    >
-      {(topicHash === undefined && !isLoading) && <ChattingInitParameterPanel 
-        translation = {translation} 
-        isLogin = {isLogin} 
-        initParameter = {initParameter}
-      />}
-    </div>
+    {renderChattingDisplay()}
     <div className='chatting-question-input-panel'>
       <div className='input'>
         <textarea 
-          value = {textValue} 
-          onChange = {onTextareaChange}
           placeholder = {trans('type in you question in here.', translation)}
           readOnly = {isLoading}
           disabled = {isLoading}
+          ref = {userInputTextarea}
         />
       </div>
       <div className='submit-button'>

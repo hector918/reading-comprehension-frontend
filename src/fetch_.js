@@ -33,6 +33,7 @@ function fetch_post(url, fetchOptions, callback, method = 'POST'){
 function fetch_patch(url, fetchOptions, callback){
   fetch_post(url, fetchOptions, callback, 'PATCH');
 }
+
 function fetch_get(url, callback){
   const body = {
     method: "GET",
@@ -104,7 +105,24 @@ async function fetch_post_async(url, body){
     error_handle(error);
     return false;
   }
-  
+}
+async function fetch_get_async_without_credential(url){
+  try {
+    const fetch_options = {
+      method: 'GET',
+      headers:{
+        "Access-Control-Allow-Origin": "*" ,
+      },
+    }
+   
+    const response = await fetch(url, fetch_options);
+    if(response.status !== 200) throw new Error(response.statusText);
+    let text = await response.text();
+    return text;
+  } catch (error) {
+    error_handle(error);
+    return error;
+  }
 }
 //// login potion/////////////////////////////////////
 function checkLoginFunction(callback){
@@ -276,7 +294,7 @@ async function readPrompts(callback){
 }
 /////////////////////////////////////////////////
 const entry = { 
-  fetch_get_async,
+  fetch_get_async, fetch_get_async_without_credential,
   chatting_to_openai,
   checkLoginFunction, checkUserID, 
   UserRegister, UserLogin, UserLogout, checkLoginStatus,

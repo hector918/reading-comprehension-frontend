@@ -6,7 +6,7 @@
   --chatting-error-text-color: red;
   --chatting-init-parameter-outline-color: blue;
   --chatting-init-parameter-fade-item-color: lightgray;
-
+  --chatting-active-text-color: purple;
 }
 
 .chatting-container{
@@ -15,6 +15,8 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   color: var(--chatting-text-color);
+  gap: 10px;
+  background-color: var(--chatting-background-color);
 }
 
 .chatting-container > .chat-history-topic-panel{

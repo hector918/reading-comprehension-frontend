@@ -119,6 +119,10 @@
   display: none;
 }
 
+.prompt-container > .prompt-card > input ~ .prompt-card-prompt-content > li {
+  width: 100%;
+}
+
 .prompt-container > .prompt-card > input{
   position: absolute;
   top: 16px;
