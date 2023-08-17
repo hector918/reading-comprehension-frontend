@@ -11,6 +11,10 @@
   width: inherit;
   overflow: inherit;
 }
+.chat-history-topic-panel > .chatting-thread-list-panel div h3{
+  text-align: center;
+  opacity: 0.5;
+}
 
 .chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-function-div{
   display: flex;

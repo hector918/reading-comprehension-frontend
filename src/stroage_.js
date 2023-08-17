@@ -464,11 +464,18 @@ const readThread = (threadHash) => {
 const clearAllThreads = () => {
   const threads = readThreadsAsArray();
   threads.forEach(el => {
-    console.log(el)
+    removeThread(el.threadHash);
   })
+  localStorage.removeItem(chatting_list_index)
 }
-const removeThread = () => {
-  // chatting_list_index, chatting_thread
+const removeThread = (threadHash) => {
+  try {
+    localStorage.removeItem(chatting_thread + threadHash);
+    return true;
+  } catch (error) {
+    error_handle(error);
+    return false;
+  }
 }
 //////////////////////////////////////////
 const wrapper = {
@@ -485,8 +492,7 @@ const wrapper = {
   userToggleTextToExplainationShare,
   //for chatting///////////////////
   saveChat, readThreadsAsArray, readThread,
-  clearAllThreads
-
+  clearAllThreads, removeThread
 }
 
 export default wrapper;

@@ -143,7 +143,10 @@ export default function InteractionDisplay({translation, isLogin, fileHash, hist
   
   return <div className='interaction-Display'>
     <div ref={historyPanel} className='history-panel'>
-      {historyList.map(renderHistoryCard)}
+      {historyList.length === 0
+        ?<div><h3>{trans("no question history yet.", translation)}</h3></div>
+        :historyList.map(renderHistoryCard)
+      }
     </div>
     <div className='input-panel'>
       <div>
