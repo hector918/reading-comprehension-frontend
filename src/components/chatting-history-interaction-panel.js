@@ -30,7 +30,6 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
   }, [topicHash])
 //
   function renderChattingDisplay(){
-    console.log(topicHash)
     return <div className='chatting-display-container'>
       {(!topicHash && !isLoading) &&<ChattingInitParameterPanel 
         translation = {translation} 

@@ -10,18 +10,18 @@ import {MessageFooter, addMessage} from './components/message-footer';
 import MobileLandingPage from './pages/mobile-landing-page';
 import MobileNavbar from './mobile-only-components/mobile-navbar';
 import Chatting from './pages/chatting.js';
-const mobileDesttopTrigger = 750;
+const mobileDesttopScreenSizeTrigger = 750;
 /////////////////////
 function App() {
   let [translation, setTranslation] = useState({});
   let [language, setLanguage] = useState({availableList: [],currentLanguage: "english.json"});
   let [userInfo, setUserInfo] = useState({});
-  let [screenWidthMatch, setScreenWidthMatch] = useState(!window.matchMedia(`(max-width: ${mobileDesttopTrigger}px)`).matches);
+  let [screenWidthMatch, setScreenWidthMatch] = useState(!window.matchMedia(`(max-width: ${mobileDesttopScreenSizeTrigger}px)`).matches);
   const signInUpButton = useRef(null);
   //////////////////////////////////////////
   //check screen size, for keeping the cpu usage low, build a throttle to limit the Frequent.
   const throttleMoveFn = throttle(() => {
-    const ret = !window.matchMedia(`(max-width: ${mobileDesttopTrigger}px)`).matches;
+    const ret = !window.matchMedia(`(max-width: ${mobileDesttopScreenSizeTrigger}px)`).matches;
     if(screenWidthMatch !== ret) setScreenWidthMatch(ret);
   }, 100);
   window.addEventListener("resize", (evt) => {
@@ -109,7 +109,6 @@ function App() {
               <Route path='/' element={
                 <MobileLandingPage />
               }></Route>
-              
             </Routes>
           </main>
         </Router>

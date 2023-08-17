@@ -461,6 +461,15 @@ const readThread = (threadHash) => {
     return [];
   }
 }
+const clearAllThreads = () => {
+  const threads = readThreadsAsArray();
+  threads.forEach(el => {
+    console.log(el)
+  })
+}
+const removeThread = () => {
+  // chatting_list_index, chatting_thread
+}
 //////////////////////////////////////////
 const wrapper = {
   getFileDetail,
@@ -475,7 +484,9 @@ const wrapper = {
   textToExplanation,
   userToggleTextToExplainationShare,
   //for chatting///////////////////
-  saveChat, readThreadsAsArray, readThread
+  saveChat, readThreadsAsArray, readThread,
+  clearAllThreads
+
 }
 
 export default wrapper;

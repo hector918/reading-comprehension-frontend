@@ -55,6 +55,7 @@
   flex: 1 1 auto;
   height: 100%;
   overflow-y: scroll;
+  padding-bottom: 50px;
 }
 .chatting-init-parameter-panel .prompt-container{
   display: flex;
@@ -96,9 +97,7 @@
   text-align: left;
 }
 
-.chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content{
-  padding-bottom: 50px;
-}
+
 .chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content .input-group{
   margin-bottom: 0.4rem;
 }

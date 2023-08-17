@@ -41,7 +41,7 @@
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .submit-button{
   position: absolute;
   right: 18px;
-  bottom: 10px;
+  bottom: 12px;
 }
 
 .chatting-container button{
@@ -51,7 +51,7 @@
   border: 1px solid violet;
   opacity: 0.5;
   transition: all 0.3s;
-  padding: 3px 20px;
+  padding: 3px 18px;
 }
 
 .chatting-container button:hover{
