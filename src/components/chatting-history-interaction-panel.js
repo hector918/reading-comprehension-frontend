@@ -106,18 +106,30 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
       setIsLoading(true);
       //preparing data
       //const = markdownResponse = "; Provide your response in a markdown code block.";
+      console.log(lc_.readThread(topicHash));
+      const history = lc_.readThread(topicHash);
+
+      let messages = Array.isArray(history) ? history[history.length -1].messages : undefined;
       const {prompt, model, links} = initParameter;
-      const messages = [
-        {
-          role: "system",
-          content: `${prompt || ""}`
-        },
-        {
+      if(messages){
+        //if continue chat
+        messages.push({
           role : "user",
           content : userInputTextarea.current.value
-        }
-      ];
-      
+        })
+      }else{
+        //if new chat
+        messages = [
+          {
+            role: "system",
+            content: `${prompt || ""}`
+          },
+          {
+            role : "user",
+            content : userInputTextarea.current.value
+          }
+        ];
+      }
       var fullContent = "";
       //preparing html elements
       const {card, answerDisplay, blinkingCursor} = createChattingCard({q: userInputTextarea.current.value});
@@ -174,6 +186,8 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
         setThreadList(lc_.readThreadsAsArray());
       }else{
         //old topic
+        const textValue = userInputTextarea.current.value;
+        lc_.saveChat(topicHash, model, textValue, messages, fullContent);
       }
     }
   }

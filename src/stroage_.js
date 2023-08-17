@@ -389,11 +389,10 @@ const saveChat = (threadHash, model, question, messages, response) => {
     if(history[threadHash] !== undefined){
       //exists
       try {
-        
         //insert into chatting thread
         const topic = JSON.parse(localStorage.getItem(threadKeyName));
         topic.push(threadTemplate());
-        localStorage.setItem(threadKeyName, topic);
+        localStorage.setItem(threadKeyName, JSON.stringify(topic));
       } catch (error) {
         error_handle(error);
         initThread();

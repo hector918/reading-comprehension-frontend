@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 ///////////////////////////////////////
 export default function ChattingThreadListPanel({ setTopichash, threadList}){
   ///////////////////////////////////////////
-  
-  ///////////////////////////////////////////
   const renderThreadCard = (thread, idx) => {
     return <div 
       className = 'chatting-thread-card' 
@@ -18,7 +16,6 @@ export default function ChattingThreadListPanel({ setTopichash, threadList}){
   }
   ///////////////////////////////////////////
   function onCardClick(thread){
-    console.log(thread);
     setTopichash(thread.threadHash);
   }
   function onNewChatClick(){
@@ -31,7 +28,8 @@ export default function ChattingThreadListPanel({ setTopichash, threadList}){
       {threadList.map(renderThreadCard)}
     </div>
     <div className='chatting-thread-list-function-div'>
-      <button onClick={onNewChatClick}>new Chat</button>
+      <button className='c-hand' >Clear chat history</button>
+      <button className='c-hand' onClick={onNewChatClick}>New Chat</button>
     </div>
     <div></div>
   </div>

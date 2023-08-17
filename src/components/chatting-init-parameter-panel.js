@@ -195,7 +195,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
         </div>
       </div>
     </div>
-    <div>
+    <div  className='prompt-panel'>
       <div className='prompt-function-div'>
         <div 
           className = 'c-hand new-prompt-div' 

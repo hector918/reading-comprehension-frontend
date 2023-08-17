@@ -35,7 +35,27 @@
   overflow: hidden;
   transition: max-height .25s ease-in-out;
 }
+.chatting-init-parameter-panel{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
+.chatting-init-parameter-panel > .prompt-panel{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  text-align: left;
+  overflow-y: hidden;
+}
+.chatting-init-parameter-panel > .prompt-panel form{
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: scroll;
+}
 .chatting-init-parameter-panel .prompt-container{
   display: flex;
   flex-wrap: wrap;
@@ -66,10 +86,16 @@
 }
 .chatting-init-parameter-panel .filter-prompt-div > label > *{
   margin-left: 5px;
+  outline: 0;
 }
 .chatting-init-parameter-panel .prompt-function-div > div:hover,.prompt-card:hover{
   transform: scale(1.02);
 }
+
+.chatting-init-parameter-panel > .modal > .modal-container {
+  text-align: left;
+}
+
 .chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content{
   padding-bottom: 50px;
 }
@@ -126,6 +152,7 @@
 .prompt-container > .prompt-card > input{
   position: absolute;
   top: 16px;
+  left: 10px;
 }
 
 .prompt-container > .prompt-card > input:checked ~ .prompt-card-prompt-content {
