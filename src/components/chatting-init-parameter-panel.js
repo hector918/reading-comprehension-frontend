@@ -272,12 +272,11 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               </label>
             </div>
             <div className='form-group'>
-              <span>{trans("Add", translation)}</span>
               {/* disable the link button */}
               <button disabled onClick={(e) => {
                 e.preventDefault();
                 onModalAddField();
-              }}>{trans("Link", translation)}</button>
+              }}>{trans("Add link", translation)}</button>
             </div>
             <div ref={formExtraField}>
               

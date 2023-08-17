@@ -7,16 +7,17 @@
 }
 
 .chat-history-topic-panel > .chatting-thread-list-panel > div{
+  text-indent: 0.5rem;
   width: inherit;
   overflow: inherit;
 }
 
 .chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-function-div{
-  overflow-y: scroll;
-  overflow-x: hidden;
   display: flex;
   justify-content: space-around;
-  padding: 10px 0;
+  align-items: end;
+  padding-bottom: 12px;
+  overflow: visible;
 }
 
 .chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card{
