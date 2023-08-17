@@ -104,6 +104,8 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
 ////////////////////////////////////
   return <div className='document-display'>
     {renderContainer()}
-    <div ref={render_container} ></div>
+    <div ref={render_container} >
+      <div><h3>{trans("no document on display yet.", translation)}</h3></div>
+    </div>
   </div>
 }

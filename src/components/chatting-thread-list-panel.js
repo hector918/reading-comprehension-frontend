@@ -3,7 +3,7 @@ import './chatting-thread-list-panel.css';
 import React, { useState } from 'react';
 import lc_ from '../stroage_';
 ///////////////////////////////////////
-export default function ChattingThreadListPanel({ setTopichash, threadList, translation}){
+export default function ChattingThreadListPanel({ setTopichash, threadList, translation, setThreadList}){
   ///////////////////////////////////////////
   const renderThreadCard = (thread, idx) => {
     return <div 
@@ -25,6 +25,7 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
   }
   function onClearChatHistoryClick(){
     lc_.clearAllThreads();
+    setThreadList(lc_.readThreadsAsArray());
   }
   ///////////////////////////////////////////
   return <div className='chatting-thread-list-panel'>
@@ -32,7 +33,7 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     <div className='chatting-thread-list-div'>
       {threadList.length === 0
         ? <h3>{trans("no chatting history yet. add one?", translation)}</h3>
-        :threadList.map(renderThreadCard)
+        : threadList.map(renderThreadCard)
       }
     </div>
     <div className='chatting-thread-list-function-div'>

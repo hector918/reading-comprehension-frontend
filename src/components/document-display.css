@@ -5,6 +5,13 @@
   text-align: left;
   position: relative;
 }
+.document-display > div > div:has(h3){
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .document-display > div canvas{
   margin: auto;
   display: block;

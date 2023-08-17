@@ -13,6 +13,11 @@
   overflow-y: scroll;
   padding-bottom: 10px;
 }
+.reading-central-panel > .interaction-panel > .interaction-Display > .history-panel > div:has(h3){
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+}
 .reading-central-panel > .interaction-panel > .interaction-Display > .input-panel{
   display: block;
   width: 100%;
