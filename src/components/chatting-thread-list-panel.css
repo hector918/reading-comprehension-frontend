@@ -3,6 +3,7 @@
   grid-template-rows: 1fr 20fr 2fr 1fr;
   width: inherit;
   overflow: hidden;
+  text-align: left;
 }
 
 .chat-history-topic-panel > .chatting-thread-list-panel > div{
@@ -11,10 +12,11 @@
 }
 
 .chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-function-div{
-  /* background-color: aqua; */
   overflow-y: scroll;
   overflow-x: hidden;
-
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
 }
 
 .chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-div > .chatting-thread-card{
@@ -40,5 +42,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 10px;
+  /* border-right: 1px solid var(--chatting-border-color); */
   border-bottom: 1px solid var(--chatting-border-color);
+
 }

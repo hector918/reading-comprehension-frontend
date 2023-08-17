@@ -19,6 +19,17 @@ export default function Landing({translation, isLogin, signInUpButton}) {
       );
     } 
   }
+  const onChattingButtonClick = (evt) => {
+    if(isLogin()){
+      navigate("/chatting")
+    }else{
+      addMessage(
+        trans("Landing page", translation),
+        trans("You need to login first.", translation),
+        'error'
+      );
+    } 
+  }
   const onLoginButtonClick = (evt) => {
     signInUpButton.current.click();
   }
@@ -60,13 +71,14 @@ export default function Landing({translation, isLogin, signInUpButton}) {
           <p 
             className="major-button tooltip tooltip-right " 
             onClick = {onReadingButtonClick}
-            data-tooltip = {trans('go to next page', translation)}
+            data-tooltip = {trans('use AI to reading document \nand answer your question ', translation)}
           >
             {trans("Reading Comprehension", translation)}
           </p>
           <p 
             className = "major-button tooltip tooltip-right" 
-            data-tooltip = {trans('under construction', translation)}
+            onClick = {onChattingButtonClick}
+            data-tooltip = {trans('OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\'t keep any data ', translation)}
           >
             {trans("chatGPT", translation)}
           </p>

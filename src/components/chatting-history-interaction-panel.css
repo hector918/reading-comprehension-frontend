@@ -44,7 +44,7 @@
   bottom: 10px;
 }
 
-.chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .submit-button > button{
+.chatting-container button{
   background-color: #060644;
   color: white;
   border-radius: 4px;
@@ -54,8 +54,7 @@
   padding: 3px 20px;
 }
 
-.chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .submit-button > button:hover{
-  
+.chatting-container button:hover{
   box-shadow: 5px 2px 5px purple;
   opacity: 1;
 }
