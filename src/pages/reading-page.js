@@ -18,6 +18,7 @@ export default function ReadingPage({translation, isLogin}){
   const [isLoading, setIsLoading] = useState(false);
   const historyPanel = useRef(null);
   const textSelectionPopupDiv = useRef(null);
+  const pageNumberInput = useRef(null);
   //send globe setfilehash available
   change_setFileHash(setFileHash);
   /////////////////////////////////////
@@ -92,6 +93,7 @@ export default function ReadingPage({translation, isLogin}){
           translation = {translation} 
           isLogin = {isLogin} 
           pagesCount = {pagesCount}
+          pageNumberInput = {pageNumberInput}
         />
         <div></div>
         <InteractionMenuBar
@@ -113,6 +115,8 @@ export default function ReadingPage({translation, isLogin}){
             isLogin = {isLogin} 
             fileHash = {fileHash}
             setPagesCount = {setPagesCount}
+            pageNumberInput = {pageNumberInput}
+
           />
         </div>
         <div className='reading-page-central-gap'></div>

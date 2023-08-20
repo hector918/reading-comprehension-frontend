@@ -2,12 +2,12 @@ import { useEffect, useState, useRef } from 'react';
 import './document-display.css';
 import {extractTextAndImageFromPDF, init} from '../pdf-wrapper_';
 import fe_ from '../fetch_';
-import {trans} from '../general_';
+import {trans, throttle} from '../general_';
 import {addMessage} from './message-footer';
 import LoadingIcon from './loading-icon';
 ////////////////////////////////////
 
-export default function DocumentDisplay({translation, isLogin, fileHash, setPagesCount}){
+export default function DocumentDisplay({translation, isLogin, fileHash, setPagesCount, pageNumberInput}){
   const [isLoading, setIsLoading] = useState(false);
   const render_container = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,7 +43,7 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
         let pagesCount = 0;
         pdf_content.forEach((el, idx) => {
           pagesCount++;
-          const div = ce({id: `anchor-page-number-${idx + 1}`});
+          const div = ce({id: `anchor-page-number-${idx + 1}`, page_number: idx + 1});
           const p = ce({tagName: "p", innerHTML: `page: ${idx + 1}`,  class: "page-separator"})
           div.append(p);
           elements_list.push(div);
@@ -101,10 +101,46 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
       </div>
     }
   }
+  const onDocumentScolling = throttle((evt) => {
+    let {x, y} = evt.target.getBoundingClientRect();
+    x /= 2;
+    y /= 2;
+    const target = getElementFromParentXY(evt.target, x, y);
+    const pageNum = findPageNumber(target);
+    if(pageNum) if(pageNumberInput.current) pageNumberInput.current.value = pageNum;
+    function getElementFromParentXY(parent, x, y) {
+      // Get the bounding rectangle of the parent
+      const rect = parent.getBoundingClientRect();
+  
+      // Adjust x and y by the parent's coordinates to get viewport-relative coordinates
+      const adjustedX = rect.left + x;
+      const adjustedY = rect.top + y;
+  
+      // Use elementFromPoint to get the element at the adjusted coordinates
+      return document.elementFromPoint(adjustedX, adjustedY);
+    }
+    function findPageNumber(element){
+      for(let i = 0; i < 4; i++){
+        console.log(element);
+        try {
+          if(element.getAttribute !== undefined){
+            let pageNum = element.getAttribute("page_number");
+            if(pageNum) return pageNum;
+          }
+        } catch (error) {
+        }
+        element = element.parentNode;
+      }
+      return false;
+    }
+  }, 1000)
 ////////////////////////////////////
-  return <div className='document-display'>
+  return <div 
+    className='document-display' 
+    onScroll = {onDocumentScolling}
+  >
     {renderContainer()}
-    <div ref={render_container} >
+    <div ref = {render_container}>
       <div><h3>{trans("no document on display yet.", translation)}</h3></div>
     </div>
   </div>
