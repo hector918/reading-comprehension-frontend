@@ -87,13 +87,16 @@
   background-color: var(--chatting-background-color);
   margin: 0;
 }
+
 .chatting-history-display > .chatting-card .error{
   color: var(--chatting-error-text-color);
 }
+
 .chatting-history-display > .chatting-card:not(:last-child){
   border-bottom: var(--chatting-border-color) 1px solid;
 
 }
+
 .chatting-card > .anwser-div > .anwser-display{
   font-size: var(--chatting-content-pre-font-size);
   white-space: pre-wrap;

@@ -59,13 +59,11 @@
 }
 
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card:hover{
-
   scale: 1.05;
   /* border: 0.3rem solid purple; */
   box-shadow: 0.2rem 4px 9px 0px violet;
   border: 0.1rem solid purple;
   background-color: aliceblue;
-  
 }
 
 .document-menu-bar > div > .modal > .modal-container > .modal-body > .content > .library-content-card > .card-info-container:hover {
@@ -106,7 +104,6 @@
   transition: all 0.3s ease-in-out;
   margin-left: 10px;
   color: #333;
-  
   /* mix-blend-mode: difference; */
 }
 .library-content-card > .icon-container > div > i:hover{
@@ -123,15 +120,18 @@
 .document-menu-bar > .popover > .popover-container-for-recents{
   width: fit-content;
   min-width: 320px;
+  left: 150px;
 }
+
 .document-menu-bar > .popover > .more-than-five-hack{
 	left: 400%!important;
 }
 
 .document-menu-bar > .popover > .popover-container-for-recents > div >.user-recents-documents-container{
   display: flex;
-  gap: 5px;
+  gap: 15px;
   justify-content: center;
+  padding: 15px;
 }
 
 .popover-container-for-recents > div >.user-recents-documents-container > .library-content-card{
@@ -141,12 +141,11 @@
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   position: relative;
-  
 }
+
 .popover-container-for-recents > div >.user-recents-documents-container > .library-content-card:hover{
   transform: scale(1.05);
   box-shadow: 0.2rem 4px 9px 0px violet;
   border: 0.1rem solid purple;
- 
   background-color: #333;
 }

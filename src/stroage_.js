@@ -176,6 +176,26 @@ function getAllHistoryOrderByUnifyTime(fileHash) {
   return ret;
 }
 /////////////////////////////////////////////////
+function uploadPDF(file, callback){
+  try {
+    srv.uploadFile(file, (res) => {
+      console.log(res);
+      try {
+        //if readable from local storage, add to local storage
+        const libraryFromLC = JSON.parse(localStorage.getItem(library_documents_prefix));
+        libraryFromLC.data.push(res);
+        localStorage.setItem(library_documents_prefix, JSON.stringify(libraryFromLC));
+      } catch (error) {
+        //create a new set, and add to local storage
+        localStorage.setItem(library_documents_prefix, JSON.stringify({data: [res]}));
+      }
+      callback(res);
+    });
+  } catch (error) {
+    error_handle(error);
+    callback(false);
+  }
+}
 function getDocuments(callback){
   try {
     let oldDataFromLC = JSON.parse(localStorage.getItem(moving_gallery_prefix));
@@ -480,6 +500,7 @@ const removeThread = (threadHash) => {
 //////////////////////////////////////////
 const wrapper = {
   getFileDetail,
+  uploadPDF,
   getDocuments,
   getLibrary,
   UserLogout,
