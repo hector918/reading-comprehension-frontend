@@ -2,8 +2,12 @@ import { trans } from '../general_';
 import './chatting-thread-list-panel.css';
 import React, { useState } from 'react';
 import lc_ from '../stroage_';
+import { useNavigate } from "react-router-dom";
+import {addMessage} from '../components/message-footer';
 ///////////////////////////////////////
-export default function ChattingThreadListPanel({ setTopichash, threadList, translation, setThreadList}){
+export default function ChattingThreadListPanel({ setTopichash, threadList, translation, setThreadList, isLogin}){
+  const navigate = useNavigate();
+
   ///////////////////////////////////////////
   const renderThreadCard = (thread, idx) => {
     return <div 
@@ -21,6 +25,14 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     setTopichash(thread.threadHash);
   }
   function onNewChatClick(){
+    if(!isLogin()){
+      navigate("/");
+      addMessage(
+        trans("Chatting page", translation),
+        trans("You need to login first.", translation),
+        'error'
+      );
+    }
     setTopichash(undefined);
   }
   function onClearChatHistoryClick(){

@@ -8,13 +8,21 @@ import {addMessage} from '../components/message-footer';
 export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   const libraryModal = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
-  const uploadTips = isLogin() 
-  ?[trans("Click me to upload file...", translation)]
-  :[trans("You need to login first.", translation)];
-  const [uploadingStatus, setUploadingStatus] = useState(uploadTips);
+  const [uploadingStatus, setUploadingStatus] = useState([]);
   const [libraryData, setLibraryData] = useState([]);
   const [recentsData, setRecentsData] = useState([]);
   const fileInput = useRef(null);
+  //////////////////////////////////////
+  setTimeout(() => {
+    setUploadingStatus(defaultUploadTips());
+  }, 1000);
+  function defaultUploadTips(){
+    if(isLogin()){
+      return [trans("Click me to upload file...", translation)];
+    }else{
+      return [trans("You need to login first.", translation)];
+    }
+  }
   ///////////////////////////////////////
   const cardTemplete = (cardData, idx) => {
     return <div 
@@ -49,7 +57,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
     }else if(res.data){
       //if return data plug in to state
       setLibraryData(res.data);
-      setRecentsData(res.data.slice(0, 5));
+      setRecentsData(res.data.slice(-5));
       ////little bit hack here, if recent more than 5 move the container to the center////////
       const recentsContainer = document.querySelector(".popover-container-for-recents");
       if(res.data.length > 4){
@@ -79,14 +87,17 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
       const fileMeta = await fe_.uploadFileCheckExists(fileHash);
       setUploadingStatus(pv => [...pv, trans("File exists:", translation) + ` ${!fileMeta.error?"true":"false"}`]);
       if(fileMeta.error){
-        //if file not exists on the backend
-        fe_.uploadFile([evt.target.files[0]], (data) => {
-          if(data.error) addMessage(
+        //if file not exists on the backend, upload init
+        lc_.uploadPDF([evt.target.files[0]], (res) => {
+          console.log(res);
+          lc_.getLibrary(readLibrary);
+          if(res.error) addMessage(
             trans("In upload file", translation), 
-            trans(data.error, translation), 
+            trans(res.error, translation), 
             "error"
           );
         });
+      
       }else{
         //if file exists on the backend
         ///add document to user library
@@ -97,7 +108,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
       }
       //clear up after upload
       //clear file input value
-      setUploadingStatus(uploadTips);
+      setUploadingStatus(defaultUploadTips());
       evt.target.value = "";
       setIsUploading(false);
 
@@ -127,8 +138,8 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
   /////////////////////////////////
   return <div className='document-menu-bar'>
     <div 
-      className={`popover popover-bottom ${isUploading?"c-not-allowed":"c-hand"}`} 
-      onClick={onUploadClick}
+      className = {`popover popover-bottom ${isUploading?"c-not-allowed":"c-hand"}`} 
+      onClick = {onUploadClick}
     >
       <span><i className="fa-solid fa-upload"></i>{trans("Upload", translation)}</span>
       <input 

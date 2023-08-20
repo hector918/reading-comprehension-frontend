@@ -106,7 +106,7 @@ function App() {
           />
           <main>
             <Routes>
-              <Route path='/' element={
+              <Route path='*' element={
                 <MobileLandingPage />
               }></Route>
             </Routes>

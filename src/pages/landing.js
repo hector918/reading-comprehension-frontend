@@ -10,7 +10,7 @@ export default function Landing({translation, isLogin, signInUpButton}) {
   //////////////////////////////////////////
   const onReadingButtonClick = (evt) => {
     if(isLogin()){
-      navigate("/reading")
+      navigate("/reading");
     }else{
       addMessage(
         trans("Landing page", translation),
@@ -71,14 +71,14 @@ export default function Landing({translation, isLogin, signInUpButton}) {
           <p 
             className="major-button tooltip tooltip-right " 
             onClick = {onReadingButtonClick}
-            data-tooltip = {trans('use AI to reading document \nand answer your question ', translation)}
+            data-tooltip = {trans('use AI to reading document \nand answer your question.', translation)}
           >
             {trans("Reading Comprehension", translation)}
           </p>
           <p 
             className = "major-button tooltip tooltip-right" 
             onClick = {onChattingButtonClick}
-            data-tooltip = {trans('OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\'t keep any data ', translation)}
+            data-tooltip = {trans('OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\'t keep any data.', translation)}
           >
             {trans("chatGPT", translation)}
           </p>
