@@ -5,7 +5,7 @@ import fe_ from '../fetch_';
 import lc_ from '../stroage_';
 import {addMessage} from '../components/message-footer';
 /////////////////////////////////////////////////
-export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
+export default function DocumentMenuBar({translation, isLogin, pagesCount, pageNumberInput}) {
   const libraryModal = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingStatus, setUploadingStatus] = useState([]);
@@ -203,6 +203,7 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount}) {
         max = {pagesCount} 
         onBlur = {onDocPageControlConfirm} 
         defaultValue = {1}
+        ref = {pageNumberInput}
       />
     </div>
   </div>
