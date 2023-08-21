@@ -199,9 +199,9 @@ function uploadPDF(file, callback){
 function getDocuments(callback){
   try {
     let oldDataFromLC = JSON.parse(localStorage.getItem(moving_gallery_prefix));
-    if(oldDataFromLC?.data && oldDataFromLC.data.popular && oldDataFromLC.data.collection){
+    if(oldDataFromLC?.data){
       //if have old data
-      if(new Date(oldDataFromLC.data.timestamp).getDate() !== new Date().getDate()){
+      if(new Date(oldDataFromLC.timestamp).getDate() !== new Date().getDate()){
         //refreah moving gallery every day
         callFetch();
       }else callback(oldDataFromLC);
@@ -217,6 +217,7 @@ function getDocuments(callback){
     srv.getDocuments((res) => {
       try {
         if(res.error) throw res.error;
+        res.timestamp = new Date().getDate();
         localStorage.setItem(moving_gallery_prefix, JSON.stringify(res));
         callback(res);
       } catch (error) {

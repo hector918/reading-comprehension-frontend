@@ -121,7 +121,6 @@ export default function DocumentDisplay({translation, isLogin, fileHash, setPage
     }
     function findPageNumber(element){
       for(let i = 0; i < 4; i++){
-        console.log(element);
         try {
           if(element.getAttribute !== undefined){
             let pageNum = element.getAttribute("page_number");

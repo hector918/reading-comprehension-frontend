@@ -7,31 +7,29 @@ import {Link} from "react-router-dom";
 import LoadingIcon from "./loading-icon";
 //////////////////////////////////////
 export default function MovingGallery({translation}){
-  const [cards, setCards] = useState({
-    popular:{mainSerial:[], repeatSerial:[]}
-  });
-  const cardsRef = useRef(cards);
+  const [cards, setCards] = useState({});
   //////////////////////////////////////
   useEffect(()=>{
     stroage_.getDocuments(({data}) => {
+      console.log("call fetch")
       if(!data) return;
       //remove timestamp, timestamp only for storage to check data during.
       delete data.timestamp;
+      const ret = {}
       //check key and try to render it
       for(let key in data){
-        cardsRef.current[key] = {
+        ret[key] = {
           mainSerial: [],
           repeatSerial: []
         }
         data[key].forEach((document) => {
-          cardsRef.current[key].mainSerial.push(document);
-          cardsRef.current[key].repeatSerial.push(document);
+          ret[key].mainSerial.push(document);
+          ret[key].repeatSerial.push(document);
         })
       }
-      setCards({...cardsRef.current});
+      setCards({...ret});
     });
   }, [])
-  
   ///////////////////////////////////////////////
   function card_templete(json, idx){
     return <Link 
@@ -50,6 +48,7 @@ export default function MovingGallery({translation}){
       />
     </Link>
   }
+  
   ////////////////////////////////////////////////
   const backgroundImageOnLoad = (evt) => {
     const displayNone = 'is-not-visable-h';
@@ -60,45 +59,46 @@ export default function MovingGallery({translation}){
   return <div className="moving-gallery-div">
     <section className="">
       <div className="container-fluid px-0">
+        {/* {renderCardSubContainer(cards)} */}
         <div className="gap-h">
-          <span>{trans("Shared documents", translation)} &darr;</span>
+          <span>{trans("Random", translation)} &darr;</span>
         </div>
         <div className="row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_forward">
-              {cards.popular?.mainSerial.map(card_templete)}
+              {cards["Random"]?.mainSerial?.map(card_templete)}
               {/* <!--#### repeat ####--> */}
-              {cards.popular?.repeatSerial.map(card_templete)}
+              {cards["Random"]?.repeatSerial?.map(card_templete)}
             </div>
           </div>
         </div>
-        <div className="gap-h">
-          <span>{trans("Chat history", translation)} &darr;</span>
-        </div>
 
+        <div className="gap-h">
+          <span>{trans("Classic", translation)} &darr;</span>
+        </div>
         <div className="row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_backward">
-              {cards.collection?.mainSerial.map(card_templete)}
+              {cards["Classic"]?.mainSerial?.map(card_templete)}
               {/* <!--#### repeat ####--> */}
-              {cards.collection?.repeatSerial.map(card_templete)}
+              {cards["Classic"]?.repeatSerial?.map(card_templete)}
             </div>
           </div>
         </div>
+
         <div className="gap-h">
-          <span>{trans("Random", translation)} &darr;</span>
-
+          <span>{trans("History and Romance", translation)} &darr;</span>
         </div>
-
         <div className="row third-row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_forward">
-              {cards.favorite?.mainSerial.map(card_templete)}
+              {cards['History and Romance']?.mainSerial?.map(card_templete)}
               {/* <!--#### repeat ####--> */}
-              {cards.favorite?.repeatSerial.map(card_templete)}
+              {cards['History and Romance']?.repeatSerial?.map(card_templete)}
             </div>
           </div>
         </div>
+
       </div>
     </section>
   </div>
