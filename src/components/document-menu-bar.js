@@ -134,6 +134,10 @@ export default function DocumentMenuBar({translation, isLogin, pagesCount, pageN
     const page = evt.currentTarget.value;
     const element = document.querySelector(`#anchor-page-number-${page}`);
     element?.scrollIntoView({ behavior: 'smooth' });
+    //for replace the value update from scolling
+    setTimeout(() => {
+      pageNumberInput.current.value = page;
+    }, 100);
   }
   /////////////////////////////////
   return <div className='document-menu-bar'>

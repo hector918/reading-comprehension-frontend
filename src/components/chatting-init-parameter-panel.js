@@ -167,9 +167,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
           <span></span>
           <span>{type}</span> - <span>{title}</span>
         </div>
-        <div onClick={() => onDeletePromptClick(id)}>
-          <i className="fa-solid fa-trash"></i>
-        </div>
+        {id && <div onClick={() => onDeletePromptClick(id)}><i className="fa-solid fa-trash"></i></div>}
       </div>
       <div className='prompt-card-prompt-content'> 
         <p>{content}</p>
