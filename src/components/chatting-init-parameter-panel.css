@@ -93,7 +93,7 @@
   transform: scale(1.02);
 }
 
-.chatting-init-parameter-panel > .modal > .modal-container {
+.chatting-init-parameter-panel > .modal > .modal-container, .chatting-init-parameter-panel > div .form-group {
   text-align: left;
 }
 
@@ -111,6 +111,7 @@
 
 .chatting-init-parameter-panel .prompt-function-div{
   display: flex;
+  padding: 0 15px;
 }
 .chatting-init-parameter-panel .type-and-function-div > div >  i{
   transition: all 0.2s;
@@ -142,6 +143,10 @@
   transform: translateY(300px);
   opacity: 0;
   display: none;
+}
+.prompt-container > .prompt-card > input ~ .prompt-card-prompt-content > p{
+  font-size: small;
+  padding: 0 22px;
 }
 
 .prompt-container > .prompt-card > input ~ .prompt-card-prompt-content > li {

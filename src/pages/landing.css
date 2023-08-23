@@ -85,3 +85,9 @@ main > .landing-container{
     display: none;
   }
 }
+
+@media screen and (min-width: 1650px) {
+  .landing-container > .floating-panel{
+    display: none;
+  }
+}

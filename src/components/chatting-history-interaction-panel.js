@@ -5,10 +5,7 @@ import LoadingIcon from './loading-icon';
 import fetch_ from '../fetch_';
 import lc_ from '../stroage_';
 import ChattingInitParameterPanel from "./chatting-init-parameter-panel";
-import { createRoot } from 'react-dom/client';
-import {createPortal} from 'react-dom';
-// import { compile, convert } from 'html-to-text';
-// import puppeteer from 'puppeteer';
+import {addMessage} from './message-footer';
 
 // for control the history page scrolling
 let continueScroll = true;
@@ -17,7 +14,8 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
   const [isLoading, setIsLoading] = useState(false);
   const chattingDisplay = useRef(null);
   const userInputTextarea = useRef(null);
-  let initParameter = {};
+  const inputCounter = useRef(null);
+  let initParameter = {model: 1, temperature: 1};
   ///////////////////////////////////////
   useEffect(() => {
     chattingDisplay.current.innerHTML = "";
@@ -43,7 +41,6 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
         onKeyDown = {onHistoryPanelScroll}
         onMouseDown = {onHistoryPanelScroll}
         onWheel = {onHistoryPanelScroll}
-        onLoadStart = {onDisplayLoad}
       >
       </div>
     </div>
@@ -90,11 +87,8 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
 
   // }
   //////////////////////////////////////////
-  const onDisplayLoad = (evt) => {
-    console.log(evt)
-  }
   const onTextareaChange = (evt) => {
-    // if(!isLoading) setTextValue(evt.target.value);
+    inputCounter.current.innerText = evt.target.value.length;
   }
   const onHistoryPanelScroll = (evt) => {
     continueScroll = false;
@@ -102,15 +96,37 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
   const onSubmitClick = (evt) => {
     // readLink('https://docs.google.com/document/d/15d7uNDZjeaB0bWDoIrsDsWTIepmRqHjK/edit?usp=sharing&ouid=101705573460941531649&rtpof=true&sd=true');
     if(!isLoading && userInputTextarea.current.value.length > 4){
+      ///put a timeout count down to avoid freeze of the app, check the freeze time every second
+      let timeoutCountDown = new Date().getTime();
+      const controller = new AbortController();
+      const { signal } = controller;
+      const countDown = setInterval(() => {
+        //if the app freeze by 5 seconds, clean up the mess and set loading to false to ready another request
+        if(timeoutCountDown + 5000 < new Date().getTime()){
+          controller.abort();
+          setIsLoading(false);
+          clearInterval(countDown);
+        }
+      }, 1000);
+      //
       setIsLoading(true);
       //preparing data
       //const = markdownResponse = "; Provide your response in a markdown code block.";
-      console.log(lc_.readThread(topicHash));
       const history = lc_.readThread(topicHash);
-
-      let messages = Array.isArray(history) ? history[history.length -1].messages : undefined;
-      const {prompt, model, links} = initParameter;
-      if(messages){
+      let messages, prompt, model, temperature;
+      if(Array.isArray(history)){
+        //old chat
+        messages = history[history.length -1].messages;
+        model = history[history.length -1].model;
+        temperature = history[history.length -1].temperature;
+      }else{
+        //new chat
+        prompt = initParameter.prompt;
+        model = initParameter.model;
+        temperature = initParameter.temperature;
+      }
+      
+      if(messages !== undefined){
         //if continue chat
         messages.push({
           role : "user",
@@ -137,18 +153,20 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
       chattingDisplay.current.scrollTop = chattingDisplay.current.scrollHeight;
       continueScroll = true;
       //fetch init
-      fetch_.chatting_to_openai({messages}, onData);
+      fetch_.chatting_to_openai({messages, model, temperature}, onData, signal);
       ////helper on data
       function onData(res){
         try {
+          timeoutCountDown = new Date().getTime();
           for(let item of res){
             const json = JSON.parse(item);
             if(json.onEnd){
               // on end 
               blinkingCursor.parentElement.removeChild(blinkingCursor);
               setIsLoading(false);
+              clearInterval(countDown);
               //call the end before clear the user input
-              requestOnEnd(model, messages, fullContent);
+              requestOnEnd(model, messages, temperature, fullContent);
               userInputTextarea.current.value = "";
             }else if(json.error){
               //on error
@@ -157,7 +175,6 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
               //on data
               fullContent += json.data.content;
               answerDisplay.innerHTML += json.data.content;
-              
               if(continueScroll){
                 chattingDisplay.current.scrollTop = chattingDisplay.current.scrollHeight;
               } 
@@ -170,25 +187,35 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
             class: "error", 
             innerHTML: `${trans('error',translation)}: ${error.message}`
           }));
+          addMessage(
+            trans("Chatting Page"), 
+            error.message, 
+            "error"
+          );
           setIsLoading(false);
+          clearInterval(countDown);
+        }
+        ///on end helper///////////////////////////////////
+        function requestOnEnd(model, temperature, messages, fullContent){
+          if(topicHash === undefined){
+            //new topic
+            const textValue = userInputTextarea.current.value;
+            topicHash = createHashFromStr(textValue + new Date().toLocaleString());
+            setTopichash(topicHash);
+            lc_.saveChat(topicHash, model, temperature, textValue, messages, fullContent);
+            setThreadList(lc_.readThreadsAsArray());
+          }else{
+            //old topic
+            const textValue = userInputTextarea.current.value;
+            lc_.saveChat(topicHash, model, temperature, textValue, messages, fullContent);
+          }
         }
       }
     }
-    ///on end helper///////////////////////////////////
-    function requestOnEnd(model, messages, fullContent){
-      if(topicHash === undefined){
-        //new topic
-        const textValue = userInputTextarea.current.value;
-        topicHash = createHashFromStr(textValue + new Date().toLocaleString());
-        setTopichash(topicHash);
-        lc_.saveChat(topicHash, model, textValue, messages, fullContent);
-        setThreadList(lc_.readThreadsAsArray());
-      }else{
-        //old topic
-        const textValue = userInputTextarea.current.value;
-        lc_.saveChat(topicHash, model, textValue, messages, fullContent);
-      }
+    function onCancel(){
+
     }
+    
   }
   //////////////////////////////////////////
   return <div className='chatting-history-content-panel'>
@@ -201,9 +228,12 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
           readOnly = {isLoading}
           disabled = {isLoading}
           ref = {userInputTextarea}
+          maxLength = {10000}
+          onChange = {onTextareaChange}
         />
       </div>
       <div className='submit-button'>
+        <span><span ref={inputCounter}>0</span>/10000</span>
         <button className='c-hand btn' onClick={onSubmitClick}>
           {isLoading? <LoadingIcon />: trans("Send", translation)}
         </button>

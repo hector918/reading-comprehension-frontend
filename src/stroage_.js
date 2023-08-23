@@ -402,7 +402,7 @@ function userToggleTextToExplainationShare(item, callback){
   }
 }
 ///for chatting//////////////////////////////
-const saveChat = (threadHash, model, question, messages, response) => {
+const saveChat = (threadHash, model=1, temperature=1, question, messages, response) => {
   //chatting_list_index, chatting_thread
   const threadKeyName = chatting_thread + threadHash;
   try {
@@ -433,6 +433,7 @@ const saveChat = (threadHash, model, question, messages, response) => {
     if(history !== undefined){
       history[threadHash] ={
         model,
+        temperature,
         threadHash, 
         question, 
         timestamp: new Date().getTime()
@@ -440,6 +441,7 @@ const saveChat = (threadHash, model, question, messages, response) => {
     }else{
       history = {[threadHash]: {
         model,
+        temperature,
         threadHash, 
         question, 
         timestamp: new Date().getTime()
