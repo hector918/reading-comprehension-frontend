@@ -9,8 +9,8 @@ const promptLetterLimit = 2000;
 ////////////////////////////////////////
 export default function ChattingInitParameterPanel({translation, isLogin, initParameter}){
   const [modelList] = useState([
-    {index: "01", name: "chatGPT 3.5 - 16K"},
-    {index: "02", name: "GPT 4.0"}
+    {index: "01", name: "chatGPT 3.5 turbo 16k"},
+    {index: "02", name: "GPT 4.0 0613"}
   ]);
   const [promptsList, setPromptsList] = useState([]);
   const [modalPromptTextareaWordCount, setModalPromptTextareaWordCount] = useState(0);
@@ -151,6 +151,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       <i className="form-icon"></i> {el.name}
     </label>
   }
+  
   function renderCard({id, type, title, content, json}){
     //create a regular prompt card
     return <label 
@@ -191,8 +192,37 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
         <div className="form-group">
           {modelList.map(renderModelSelector)}
         </div>
+        <div className='form-group'>
+          <label className = "form-radio form-inline ">Response Leaning to</label>
+          <label className = "form-radio form-inline c-hand">
+            <input 
+              type = "radio" 
+              name = "temperature"
+              onClick = {()=>{initParameter.temperature = 0}}
+            />
+            <i className="form-icon"></i> Factual
+          </label>
+          <label className = "form-radio form-inline c-hand">
+            <input 
+              type = "radio" 
+              name = "temperature"
+              onClick = {()=>{initParameter.temperature = 1}}
+              defaultChecked
+            />
+            <i className="form-icon"></i> Creative
+          </label>
+          <label className = "form-radio form-inline c-hand">
+            <input 
+              type = "radio" 
+              name = "temperature"
+              onClick = {()=>{initParameter.temperature = 2}}
+            />
+            <i className="form-icon"></i> Stoned
+          </label>
+        </div>
       </div>
     </div>
+    <hr></hr>
     <div  className='prompt-panel'>
       <div className='prompt-function-div'>
         <div 

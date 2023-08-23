@@ -1,5 +1,3 @@
-/* global TextDecoderStream */
-
 const API = process.env.REACT_APP_API_URL;
 let default_fetch_options = { 
   "Access-Control-Allow-Origin": "*" ,
@@ -261,14 +259,16 @@ function question_to_reading_comprehension(fileHash, q, level, callback){
     }]}
   */
 }
-async function chatting_to_openai(body, stream_callback){
+async function chatting_to_openai(body, stream_callback, signal){
   try {
-    const response = await fetch_post_async(`${API}/cwo/openai/SSE`, {body: JSON.stringify(body)});
+    const response = await fetch_post_async(`${API}/cwo/openai/SSE`, {body: JSON.stringify(body), signal});
     if (!response.body) return;
+    //pick up server sent event
     const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    
     while (true) {
       var { value, done } = await reader.read();
-      if (done) break;
+      if (done){ return } 
       //some times the response from server will stack together, use \n on the server to separate each response and reduce it back to original data
       const parsed = value.split("\n").filter(el => el !== undefined && el !== "");
       stream_callback(parsed);
@@ -277,7 +277,6 @@ async function chatting_to_openai(body, stream_callback){
     console.error(error);
     stream_callback(error);
   }
-  
 }
 
 async function insertNewPrompt(type, title, prompt, linkslist, callback){

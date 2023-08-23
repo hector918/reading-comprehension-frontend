@@ -42,6 +42,11 @@
   position: absolute;
   right: 18px;
   bottom: 12px;
+  display: grid;
+  z-index: 100;
+}
+.chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .submit-button > span{
+  opacity: 0.5;
 }
 
 .chatting-container button{

@@ -77,7 +77,7 @@ export default function NavBar({language, setLanguage, translation, setTranslati
             </form>
           </ul>
         </div>
-        <Link to={"/about"} className="btn btn-link text-color nav-link-h c-hand">{trans("About", translation)}</Link>
+        {/* <Link to={"/about"} className="btn btn-link text-color nav-link-h c-hand">{trans("About", translation)}</Link> */}
         {isLogin()?
           <div className="dropdown dropdown-right">
           <span href="#" className="btn btn-link dropdown-toggle c-hand" tabIndex="0">

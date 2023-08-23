@@ -8,8 +8,6 @@
     "@testing-library/user-event": "^13.5.0",
     "crypto-js": "^4.1.1",
     "env-cmd": "^10.1.0",
-    "html-to-text": "^9.0.5",
-    "puppeteer": "^21.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.0",
