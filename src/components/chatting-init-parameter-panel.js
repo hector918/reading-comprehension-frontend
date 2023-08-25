@@ -1,11 +1,11 @@
-import './chatting-init-parameter-panel.css';
+import './chatting-init-parameter-panel.scss';
 import React, {useEffect, useRef, useState} from 'react';
 import fetch_ from "../fetch_";
 import {addMessage} from '../components/message-footer';
 import { trans, createElement } from '../general_';
 ////////////////////////////////////////
 let gerneralIndex = 0;
-const promptLetterLimit = 2000;
+const promptLetterLimit = 3000;
 ////////////////////////////////////////
 export default function ChattingInitParameterPanel({translation, isLogin, initParameter}){
   const [modelList] = useState([
@@ -93,7 +93,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
         //close modal, clean up data
         modalFormReset();
         newPromptModal.current.classList.remove("active");
-        initParameter.prompt = "";
+        clearinitParameterPrompt()
       }
     });
   }
@@ -109,16 +109,23 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       }else if(res.data){
         //on data
         setPromptsList(pv => pv.filter(el => el.id !== prompt_id));
-        initParameter.prompt = "";
+        clearinitParameterPrompt();
       }
     })
   }
   const onResetClick = (evt) => {
     // console.log(initForm.current.prompt)
   }
-  const onPromptInputChange = ({content, json}) => {
+  function clearinitParameterPrompt(){
+    initParameter.prompt = "";
+    initParameter.type = "";
+    initParameter.title = "";
+  }
+  const onPromptInputChange = ({content, json, type, title}) => {
     initParameter.prompt = content;
     initParameter.links = json.links;
+    initParameter.type = type;
+    initParameter.title = title;
   }
   const onModalAddField = (type = "link") => {
     const container = formExtraField.current;
@@ -161,29 +168,35 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       <input 
         type = "radio" 
         name = "prompt" 
-        onChange = {() => {onPromptInputChange({content, json})}}
+        onChange = {() => {onPromptInputChange({content, json, type, title})}}
       />
       <div className='type-and-function-div'>
         <div>
           <span></span>
           <span>{type}</span> - <span>{title}</span>
         </div>
-        {id && <div onClick={() => onDeletePromptClick(id)}><i className="fa-solid fa-trash"></i></div>}
+        {id && <div onClick={() => onDeletePromptClick(id)}><i className="fa-solid fa-trash-can"></i></div>}
       </div>
       <div className='prompt-card-prompt-content'> 
-        <p>{content}</p>
+        <pre>{content}</pre>
         {json?.links?.map(([el1, el2]) => <li key={`card-prompt-links-${gerneralIndex}`}>
           <span>{el1}</span>: <sub>{el2}</sub>
         </li>)}
       </div>
     </label>
   }
-  function modalFormReset(){
+  function modalFormReset(evt){
+    evt.preventDefault();
     modalTypeInput.current.value = "";
     modalTypeTextarea.current.value = "";
     modalTitleInput.current.value = "";
     formExtraField.current.innerHTML = "";
     modalPromptTextareaWarning.current.classList.add("display-none");
+  }
+  function modalFormCancel(evt){
+    evt.preventDefault();
+    modalFormReset(evt);
+    onNewPromptModalToggle();
   }
   /////////////////////////////////////////////////
   return <div className='chatting-init-parameter-panel'>
@@ -313,7 +326,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               <p 
                 ref = {modalPromptTextareaWarning} 
                 className = 'red display-none'
-              >prompt letter count must between 5 - 2000</p>
+              >prompt letter count must between 5 - 3000</p>
             </div>
           </form>
           
@@ -324,7 +337,10 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               className = 'btn btn-theme-border' 
               onClick = {modalFormReset}
             >{trans("Reset", translation)}</button>
-            <button className='btn btn-theme-border'>{trans("Cancel", translation)}</button>
+            <button 
+              className = 'btn btn-theme-border'
+              onClick = {modalFormCancel}
+            >{trans("Cancel", translation)}</button>
             <button 
               className = 'btn btn-theme-border' 
               onClick ={(e) => {

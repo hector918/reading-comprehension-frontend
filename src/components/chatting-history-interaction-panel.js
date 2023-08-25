@@ -75,17 +75,6 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
     blinkingCursor.parentElement.removeChild(blinkingCursor);
     return card;
   }
-  // async function readLink(url){
-  //   const iframe = document.createElement("iframe");
-  //   iframe.onload = (evt) => {
-  //     console.log("iframe loaded");
-  //     console.log(iframe.contentWindow.document.body.innerHTML)
-  //   }
-  //   iframe.src = url;
-  //   document.body.append(iframe)
-    
-
-  // }
   //////////////////////////////////////////
   const onTextareaChange = (evt) => {
     inputCounter.current.innerText = evt.target.value.length;
@@ -94,7 +83,6 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
     continueScroll = false;
   }
   const onSubmitClick = (evt) => {
-    // readLink('https://docs.google.com/document/d/15d7uNDZjeaB0bWDoIrsDsWTIepmRqHjK/edit?usp=sharing&ouid=101705573460941531649&rtpof=true&sd=true');
     if(!isLoading && userInputTextarea.current.value.length > 4){
       ///put a timeout count down to avoid freeze of the app, check the freeze time every second
       let timeoutCountDown = new Date().getTime();
@@ -108,22 +96,27 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
           clearInterval(countDown);
         }
       }, 1000);
-      //
+      //count down function finish
       setIsLoading(true);
       //preparing data
       //const = markdownResponse = "; Provide your response in a markdown code block.";
       const history = lc_.readThread(topicHash);
-      let messages, prompt, model, temperature;
+      let messages, prompt, model, temperature, title, type;
+      
       if(Array.isArray(history)){
         //old chat
         messages = history[history.length -1].messages;
         model = history[history.length -1].model;
         temperature = history[history.length -1].temperature;
+        type = history[history.length -1].type;
+        title = history[history.length -1].title;
       }else{
         //new chat
         prompt = initParameter.prompt;
         model = initParameter.model;
         temperature = initParameter.temperature;
+        type = initParameter.type;
+        title = initParameter.title;
       }
       
       if(messages !== undefined){
@@ -145,6 +138,7 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
           }
         ];
       }
+      
       var fullContent = "";
       //preparing html elements
       const {card, answerDisplay, blinkingCursor} = createChattingCard({q: userInputTextarea.current.value});
@@ -153,10 +147,14 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
       chattingDisplay.current.scrollTop = chattingDisplay.current.scrollHeight;
       continueScroll = true;
       //fetch init
+
       fetch_.chatting_to_openai({messages, model, temperature}, onData, signal);
+      
       ////helper on data
       function onData(res){
+        
         try {
+          //for timeout count time
           timeoutCountDown = new Date().getTime();
           for(let item of res){
             const json = JSON.parse(item);
@@ -166,7 +164,8 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
               setIsLoading(false);
               clearInterval(countDown);
               //call the end before clear the user input
-              requestOnEnd(model, messages, temperature, fullContent);
+              requestOnEnd(model, temperature, messages, fullContent);
+              
               userInputTextarea.current.value = "";
             }else if(json.error){
               //on error
@@ -195,27 +194,23 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
           setIsLoading(false);
           clearInterval(countDown);
         }
-        ///on end helper///////////////////////////////////
-        function requestOnEnd(model, temperature, messages, fullContent){
-          if(topicHash === undefined){
-            //new topic
-            const textValue = userInputTextarea.current.value;
-            topicHash = createHashFromStr(textValue + new Date().toLocaleString());
-            setTopichash(topicHash);
-            lc_.saveChat(topicHash, model, temperature, textValue, messages, fullContent);
-            setThreadList(lc_.readThreadsAsArray());
-          }else{
-            //old topic
-            const textValue = userInputTextarea.current.value;
-            lc_.saveChat(topicHash, model, temperature, textValue, messages, fullContent);
-          }
+        
+      }
+      function requestOnEnd(model, temperature, messages, fullContent){
+        if(topicHash === undefined){
+          //new topic
+          const textValue = userInputTextarea.current.value;
+          topicHash = createHashFromStr(textValue + new Date().toLocaleString());
+          setTopichash(topicHash);
+          lc_.saveChat(topicHash, {model, temperature, question: textValue, messages, response: fullContent, type, title});
+          setThreadList(lc_.readThreadsAsArray());
+        }else{
+          //old topic
+          const textValue = userInputTextarea.current.value;
+          lc_.saveChat(topicHash, {model, temperature, question: textValue, messages, response: fullContent, type, title});
         }
       }
     }
-    function onCancel(){
-
-    }
-    
   }
   //////////////////////////////////////////
   return <div className='chatting-history-content-panel'>

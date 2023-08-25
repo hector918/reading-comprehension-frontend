@@ -402,7 +402,7 @@ function userToggleTextToExplainationShare(item, callback){
   }
 }
 ///for chatting//////////////////////////////
-const saveChat = (threadHash, model=1, temperature=1, question, messages, response) => {
+const saveChat = (threadHash, { model, temperature, question, messages, response, type, title}) => {
   //chatting_list_index, chatting_thread
   const threadKeyName = chatting_thread + threadHash;
   try {
@@ -436,6 +436,8 @@ const saveChat = (threadHash, model=1, temperature=1, question, messages, respon
         temperature,
         threadHash, 
         question, 
+        type, 
+        title,
         timestamp: new Date().getTime()
       }
     }else{
@@ -444,10 +446,11 @@ const saveChat = (threadHash, model=1, temperature=1, question, messages, respon
         temperature,
         threadHash, 
         question, 
+        type, 
+        title,
         timestamp: new Date().getTime()
       }};
     }
-    
     localStorage.setItem(chatting_list_index, JSON.stringify(history));
   }
   //
@@ -461,6 +464,8 @@ const saveChat = (threadHash, model=1, temperature=1, question, messages, respon
       question, 
       messages,
       response,
+      type, 
+      title,
       timestamp: new Date().getTime()
     };
   }

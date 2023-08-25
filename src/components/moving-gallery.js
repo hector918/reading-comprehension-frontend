@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import './moving-gallery.css';
 import fe_ from '../fetch_';
 import stroage_ from '../stroage_';
