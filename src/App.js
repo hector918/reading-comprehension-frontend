@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from './pages/landing';
 import ReadingPage from './pages/reading-page';
 import NavBar from './components/navbar';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import fe_ from './fetch_';
 import {throttle} from './general_';
 import {MessageFooter, addMessage} from './components/message-footer';

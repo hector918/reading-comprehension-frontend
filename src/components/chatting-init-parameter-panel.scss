@@ -143,6 +143,10 @@
   transform: translateY(300px);
   opacity: 0;
   display: none;
+  & > pre{
+    font-size: var(--chatting-content-pre-font-size);
+    white-space: pre-wrap;
+  }
 }
 .prompt-container > .prompt-card > input ~ .prompt-card-prompt-content > p{
   font-size: small;
