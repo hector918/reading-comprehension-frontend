@@ -717,3 +717,32 @@ ol, ul {
 .red{
   color: red;
 }
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown .menu {
+  animation: slide-down .15s ease 1;
+  display: none;
+  left: 0;
+  max-height: 50vh;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+}
+
+.dropdown.dropdown-right .menu {
+  left: auto;
+  right: 0;
+}
+
+.dropdown .dropdown-toggle:focus+.menu,.dropdown .menu:hover,.dropdown.active .menu {
+  display: block;
+}
+
+.dropdown .btn-group .dropdown-toggle:nth-last-child(2) {
+  border-bottom-right-radius: .1rem;
+  border-top-right-radius: .1rem;
+}

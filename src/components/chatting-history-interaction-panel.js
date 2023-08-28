@@ -1,4 +1,4 @@
-import './chatting-history-interaction-panel.css'
+import './chatting-history-interaction-panel.scss'
 import React, { useState, useRef, useEffect } from 'react';
 import {trans, createElement, createHashFromStr} from '../general_';
 import LoadingIcon from './loading-icon';
@@ -57,11 +57,11 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
       class: "chatting-card animate-box animate-new-box",
       childs_: [
         {class: "question-div", childs_: [
-          {tagname_: "span", innerHTML: `${trans("Question", translation)}: `},
+          {tagname_: "span", class: "title", innerHTML: `${trans("Question", translation)}: `},
           {tagname_: "span", innerText: q}
         ]},
         {class: "anwser-div", childs_: [
-          {tagname_: "span", innerText: `${trans('Anwser',translation)}: `},
+          {tagname_: "span", class: "title", innerText: `${trans('Anwser',translation)}: `},
           answerDisplay,
           blinkingCursor
         ]},

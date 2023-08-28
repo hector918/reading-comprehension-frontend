@@ -25,10 +25,10 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
         <span>{thread.question.substring(0, 80)}</span>
       </div>
       <div className='icon-div'>
-        <div>
+        <div className='disable'>
           <i className="fa-solid fa-ellipsis"></i>
         </div>
-        <div>
+        <div onClick={()=>onThreadDeleteClick(thread.threadHash)}>
           <i className="fa-solid fa-trash-can"></i>
         </div>
       </div>
@@ -53,14 +53,83 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     lc_.clearAllThreads();
     setThreadList(lc_.readThreadsAsArray());
   }
+  function onThreadDeleteClick(threadHash){
+    lc_.removeThread(threadHash);
+    setTopichash(pv => {
+      if(pv === threadHash){
+        return undefined;
+      }
+    })
+    setThreadList(lc_.readThreadsAsArray());
+  }
+  function onLightModeClick(mode = "light"){
+    let root = document.querySelector(':root');
+    let rs = getComputedStyle(root);
+    //example for get property value = var tmp = rs.getPropertyValue('--chatting-background-color')
+    let json = {};
+    switch(mode){
+      case "dark":
+        json = darkMode();
+      break;
+      default:
+        json = defaultMode();
+    }
+    for(let key in json){
+      root.style.setProperty(key, json[key]);
+    }
+    function defaultMode(){
+      return {
+        "--chatting-background-color" : "white",
+        "--chatting-border-color": "darkgray",
+        "--chatting-content-pre-font-size": "medium",
+        "--chatting-text-color": "black",
+        "--chatting-error-text-color": "red",
+        "--chatting-init-parameter-outline-color": "blue",
+        "--chatting-init-parameter-fade-item-color": "lightgray",
+        "--chatting-active-text-color": "purple"
+      }
+    }
+    function darkMode(){
+      return {
+        "--chatting-background-color" : "#777",
+        "--chatting-border-color": "#999",
+        "--chatting-content-pre-font-size": "medium",
+        "--chatting-text-color": "white",
+        "--chatting-error-text-color": "red",
+        "--chatting-init-parameter-outline-color": "blue",
+        "--chatting-init-parameter-fade-item-color": "lightgray",
+        "--chatting-active-text-color": "purple"
+      }
+    }
+  }
   ///////////////////////////////////////////
   return <div className='chatting-thread-list-panel'>
     <div></div>
     <div className='chatting-function-and-list'>
       <div className='chatting-thread-function-div'>
         {/* <i className="fa-solid fa-moon"></i> */}
-        
-        <i className="fa-regular fa-sun"></i>
+        <div className="dropdown">
+          <span 
+            className = "dropdown-toggle c-hand" 
+            tabIndex = "0"
+          >
+            <i className="fa-solid fa-circle-half-stroke"></i>
+          </span>
+          <ul className="menu">
+            <li 
+              className = "menu-item c-hand"
+              onClick = {()=>onLightModeClick("light")}
+            >{trans("Light", translation)}</li>
+            <li 
+              className = "menu-item c-hand"
+              onClick = {()=>onLightModeClick("dark")}
+            >{trans("Dark", translation)}</li>
+            <li 
+              className = "menu-item c-hand"
+              onClick = {()=>onLightModeClick("custom")}
+            >{trans("Custom", translation)}</li>
+          </ul>
+        </div>
       </div>
       <div className='chatting-thread-list-div'>
         {threadList.length === 0
