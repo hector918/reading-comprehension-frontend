@@ -119,15 +119,15 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
             <li 
               className = "menu-item c-hand"
               onClick = {()=>onLightModeClick("light")}
-            >Light</li>
+            >{trans("Light", translation)}</li>
             <li 
               className = "menu-item c-hand"
               onClick = {()=>onLightModeClick("dark")}
-            >Dark</li>
+            >{trans("Dark", translation)}</li>
             <li 
               className = "menu-item c-hand"
               onClick = {()=>onLightModeClick("custom")}
-            >Custom</li>
+            >{trans("Custom", translation)}</li>
           </ul>
         </div>
       </div>
