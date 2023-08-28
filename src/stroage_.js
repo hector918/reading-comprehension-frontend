@@ -499,6 +499,10 @@ const clearAllThreads = () => {
 const removeThread = (threadHash) => {
   try {
     localStorage.removeItem(chatting_thread + threadHash);
+    //remove from index
+    const threadList = JSON.parse(localStorage.getItem(chatting_list_index));
+    delete threadList[threadHash];
+    localStorage.setItem(chatting_list_index, JSON.stringify(threadList));
     return true;
   } catch (error) {
     error_handle(error);

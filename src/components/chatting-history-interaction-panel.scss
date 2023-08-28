@@ -11,6 +11,7 @@
   text-align: left;
   height: 100%;
   overflow-y: scroll;
+  
 }
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel{
   background-color: var(--chatting-background-color);
@@ -109,4 +110,16 @@
 
 .display-none{
   display: none;
+}
+
+
+.chatting-history-display{
+  & .chatting-card{
+    & > div .title{
+      color: var(--chatting-active-text-color);
+    }
+    & .anwser-div{
+      margin-top: 10px;
+    }
+  }
 }
