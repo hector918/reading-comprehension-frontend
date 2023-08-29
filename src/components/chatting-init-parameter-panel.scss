@@ -91,6 +91,7 @@
 }
 .chatting-init-parameter-panel .prompt-function-div > div:hover,.prompt-card:hover{
   transform: scale(1.02);
+  color: var(--chatting-active-text-color);
 }
 
 .chatting-init-parameter-panel > .modal > .modal-container, .chatting-init-parameter-panel > div .form-group {
@@ -183,3 +184,11 @@
 	}
 }
 
+.chatting-init-parameter-panel{
+  & .form-group .c-hand{
+    transition: all .3s;
+  }
+  & .form-group .c-hand:hover{
+    color: var(--chatting-active-text-color);
+  }
+}

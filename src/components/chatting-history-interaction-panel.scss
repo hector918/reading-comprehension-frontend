@@ -27,16 +27,22 @@
   overflow: hidden;
 }
 
-.chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .input > textarea{
-  width: 100%;
-  height: 100%;
-  padding: 5px 15px;
-  resize: none;
-  outline: none;
-  border: none;
-  background-color: var(--chatting-background-color);
-  border-top: var(--chatting-border-color) 1px solid;
-  color: var(--chatting-text-color);
+.chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .input {
+  & textarea{
+    width: 100%;
+    height: 100%;
+    padding: 5px 15px;
+    resize: none;
+    outline: none;
+    border: none;
+    background-color: var(--chatting-background-color);
+    border-top: var(--chatting-border-color) 1px solid;
+    color: var(--chatting-text-color);
+  }
+  
+  & textarea::placeholder{
+    color: var(--chatting-init-parameter-fade-item-color);
+  }
 }
 
 .chatting-container > .chatting-history-content-panel > .chatting-question-input-panel > .submit-button{

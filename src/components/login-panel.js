@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './login-panel.css';
 import {createElement, trans, createPasswordHash, loadingIcon} from '../general_';
 import fe_ from '../fetch_';
+import lc_ from '../stroage_';
 ///////////////////////////////////////
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
   //define useref
@@ -76,7 +77,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
     setSignInLoading(true);
     const hintDiv = evt.target.querySelector('.sign-result-div');
     hintDiv.replaceChildren(createElement({tagname_: "p", class: "form-input-hint"}))
-    fe_.UserLogin({
+    lc_.UserLogin({
       userId: signInIdInput.current.value,
       password: createPasswordHash(signInPasswordInput.current.value),
     }, (res) => {

@@ -31,6 +31,9 @@ function fetch_post(url, fetchOptions, callback, method = 'POST'){
 function fetch_patch(url, fetchOptions, callback){
   fetch_post(url, fetchOptions, callback, 'PATCH');
 }
+function fetch_put(url, fetchOptions, callback){
+  fetch_post(url, fetchOptions, callback, 'PUT');
+}
 
 function fetch_get(url, callback){
   const body = {
@@ -166,6 +169,13 @@ function checkLoginStatus(callback){
     callback(data);
   })
 }
+
+function UpdateUserProfile(body, callback){
+  console.log(body)
+  fetch_put(`${API}/login/update_user_setting`, {body :JSON.stringify(body)}, (data) => {
+    callback(data);
+  })
+}
 ////language/////////////////////////////////////
 function getLanguages(callback){
   fetch_get(`${API}/languages/all_languages`, (data) => {
@@ -296,7 +306,8 @@ const entry = {
   fetch_get_async, fetch_get_async_without_credential,
   chatting_to_openai,
   checkLoginFunction, checkUserID, 
-  UserRegister, UserLogin, UserLogout, checkLoginStatus,
+  UserRegister, UserLogin, UserLogout, 
+  checkLoginStatus, UpdateUserProfile,
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,

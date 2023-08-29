@@ -70,6 +70,18 @@ function loadingIcon(){
 //   };
 //   reader.readAsArrayBuffer(file);
 // }
+
+function setDeepJsonValue(json, level, deepValue){
+  var ret = json;
+  for(let idx in level){
+    if(ret[level[idx]] === undefined) ret[level[idx]] = {};
+    if(Number(idx) === (level.length -1)){
+      ret[level[idx]] = deepValue;
+    } 
+    ret = ret[level[idx]];
+  }
+  return json;
+}
 function createPasswordHash(str){
   const hashDigest = CryptoJS.SHA256(str);
   return hashDigest.toString();
@@ -144,5 +156,6 @@ export {
   loadingIcon,
   change_setFileHash, setFileHash,
   createHashFromStr,
-  throttle
+  throttle,
+  setDeepJsonValue
 };

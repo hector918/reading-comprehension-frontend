@@ -11,7 +11,6 @@ export default function MovingGallery({translation}){
   //////////////////////////////////////
   useEffect(()=>{
     stroage_.getDocuments(({data}) => {
-      console.log("call fetch")
       if(!data) return;
       //remove timestamp, timestamp only for storage to check data during.
       delete data.timestamp;
