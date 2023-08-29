@@ -4,7 +4,7 @@ import lc_ from '../stroage_';
 import './chatting.css';
 import React, {useState} from 'react';
 ///////////////////////////////////////
-export default function Chatting({translation, isLogin}){
+export default function Chatting({translation, isLogin, userInfo, setUserInfo}){
   let [topicHash, setTopichash] = useState(undefined);
   const [threadList, setThreadList] = useState(lc_.readThreadsAsArray());
   return <div className='chatting-container'>
@@ -19,6 +19,8 @@ export default function Chatting({translation, isLogin}){
           setTopichash = {setTopichash}
           threadList = {threadList}
           setThreadList = {setThreadList}
+          userInfo = {userInfo}
+          setUserInfo = {setUserInfo}
         />
       </div>
       <ChattingHistoryInteractionPanel 

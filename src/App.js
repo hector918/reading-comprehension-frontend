@@ -83,6 +83,8 @@ function App() {
               <Route path="/chatting" element={<Chatting 
                 translation = {translation} 
                 isLogin = {isLogin}
+                userInfo = {userInfo}
+                setUserInfo = {setUserInfo}
               />} />
               <Route path="/" element={<Landing 
                 translation = {translation}

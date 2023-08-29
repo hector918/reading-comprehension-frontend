@@ -1,13 +1,17 @@
-import { trans } from '../general_';
+import { trans, setDeepJsonValue } from '../general_';
 import './chatting-thread-list-panel.scss';
-import React, { useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import lc_ from '../stroage_';
 import { useNavigate } from "react-router-dom";
 import {addMessage} from '../components/message-footer';
 ///////////////////////////////////////
-export default function ChattingThreadListPanel({ setTopichash, threadList, translation, setThreadList, isLogin}){
+export default function ChattingThreadListPanel({ setTopichash, threadList, translation, setThreadList, isLogin, userInfo, setUserInfo}){
   const navigate = useNavigate();
-
+  const themeCustomModal = useRef(null);
+  onLightModeClick();
+  useEffect(()=>{
+    
+  }, [])
   ///////////////////////////////////////////
   const renderThreadCard = (thread, idx) => {
     return <div 
@@ -30,6 +34,24 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
         </div>
         <div onClick={()=>onThreadDeleteClick(thread.threadHash)}>
           <i className="fa-solid fa-trash-can"></i>
+        </div>
+      </div>
+    </div>
+  }
+  const renderThemeCustomModal = () => {
+    return <div class="modal active" ref={themeCustomModal}>
+      <span href="#close" class="modal-overlay" aria-label="Close"></span>
+      <div class="modal-container">
+        <div class="modal-header">
+          <span href="#close" class="btn btn-clear float-right" aria-label="Close"></span>
+          <div class="modal-title h5">Modal title</div>
+        </div>
+        <div class="modal-body">
+          <div class="content">
+          </div>
+        </div>
+        <div class="modal-footer">
+          ...
         </div>
       </div>
     </div>
@@ -62,20 +84,32 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     })
     setThreadList(lc_.readThreadsAsArray());
   }
-  function onLightModeClick(mode = "light"){
+  function onLightModeClick(mode){
     let root = document.querySelector(':root');
-    let rs = getComputedStyle(root);
     //example for get property value = var tmp = rs.getPropertyValue('--chatting-background-color')
     let json = {};
     switch(mode){
       case "dark":
         json = darkMode();
+        saveMode();
+      break;
+      case undefined:
+        json = userInfo?.profile_setting?.setting?.chatting?.theme;
       break;
       default:
         json = defaultMode();
+        saveMode();
     }
     for(let key in json){
       root.style.setProperty(key, json[key]);
+    }
+    function saveMode(){
+      setUserInfo(pv => {
+        pv = setDeepJsonValue(pv, ["profile_setting",'setting','chatting','theme'], json);
+        lc_.UpdateUserProfile(pv["profile_setting"], (res) => {
+        });
+        return {...pv};
+      });
     }
     function defaultMode(){
       return {
@@ -91,14 +125,14 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     }
     function darkMode(){
       return {
-        "--chatting-background-color" : "#777",
+        "--chatting-background-color" : "#444",
         "--chatting-border-color": "#999",
         "--chatting-content-pre-font-size": "medium",
         "--chatting-text-color": "white",
         "--chatting-error-text-color": "red",
         "--chatting-init-parameter-outline-color": "blue",
         "--chatting-init-parameter-fade-item-color": "lightgray",
-        "--chatting-active-text-color": "purple"
+        "--chatting-active-text-color": "violet"
       }
     }
   }

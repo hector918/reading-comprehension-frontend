@@ -278,7 +278,28 @@ function addDocumentToUser(filehash, callback){
     callback(false);
   }
 }
-
+function UserLogin(form, callback){
+  try {
+    srv.UserLogin(form, res => {
+      if(res.data){
+        console.log(res.data);
+      }
+      callback(res);
+    })
+  } catch (error) {
+    error_handle(error);
+    callback(false);
+  }
+}
+function UpdateUserProfile(body, callback){
+  try {
+    srv.UpdateUserProfile(body, res => {
+      callback(res);
+    })
+  } catch (error) {
+    
+  }
+}
 function UserLogout(callback){
   try {
     srv.UserLogout((res) => {
@@ -515,7 +536,9 @@ const wrapper = {
   uploadPDF,
   getDocuments,
   getLibrary,
+  UserLogin,
   UserLogout,
+  UpdateUserProfile,
   addDocumentToUser,
   questionToReadingComprehension,
   getAllHistoryFromFileHash,
