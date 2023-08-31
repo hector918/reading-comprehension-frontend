@@ -155,8 +155,22 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
   }
   const onThirdPartyLoginClick = (evt, type = "google") => {
     ////////
-    const hintDiv = evt.currentTarget.querySelector('.password-hint-div');
     switch(type){
+      case "microsoft":fb_auth.authByMicrosoft( res => {
+        if(res.error){
+          //failed
+          addMessage(trans("Sign in with Microsoft", translation), trans(res.error, translation), "error");
+        }else{
+          //successed
+          setUserInfo(res.data);
+          addMessage(trans("Sign in with Microsoft", translation), trans("Successed login.", translation), "success");
+        }
+        on_sign_modal_close_click();
+        setSignInLoading(false);
+      })
+        //
+
+      break;
       default: fb_auth.authByGoogle(res => {
         if(res.error){
           //failed
@@ -170,7 +184,6 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
         setSignInLoading(false);
       })
     }
-    
     
   }
   /////////////////////////////////////////////////
@@ -267,9 +280,7 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
               </div>
             </div>
             </>
-            
             :trans("Login currently not available.", translation)}
-            
           </div>
         </div>
         <div className="modal-footer">
@@ -277,11 +288,15 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
             <button 
               className = "c-hand" 
               onClick = {evt => {onThirdPartyLoginClick(evt, "google")}}
-            >log in with Google <i className="fa-brands fa-google"></i></button>
+            >{trans("Sign in with Google", translation)} <i className="fa-brands fa-google"></i></button>
             <button 
               className = "c-hand" 
-              onClick = {fb_auth.authByMicrosoft}
-            >log in with Microsoft <i className="fa-brands fa-microsoft"></i></button>
+              onClick = {evt => {onThirdPartyLoginClick(evt, "microsoft")}}
+            >{trans("Sign in with Microsoft", translation)} <i className="fa-brands fa-microsoft"></i></button>
+            <button 
+              className = "c-hand" 
+              disabled
+            >{trans("Sign in with Apple", translation)} <i className="fa-brands fa-apple"></i></button>
           </div>
         </div>
       </div>
