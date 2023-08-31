@@ -3,6 +3,7 @@ import './login-panel.css';
 import {createElement, trans, createPasswordHash, loadingIcon} from '../general_';
 import fe_ from '../fetch_';
 import lc_ from '../stroage_';
+import fb_auth from './auth';
 ///////////////////////////////////////
 export default function Login({sign_modal, loginAvailable, loginRegex, translation, addMessage, userInfo, setUserInfo}){
   //define useref
@@ -152,6 +153,26 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
       return ret;
     }
   }
+  const onThirdPartyLoginClick = (evt, type = "google") => {
+    ////////
+    const hintDiv = evt.currentTarget.querySelector('.password-hint-div');
+    switch(type){
+      default: fb_auth.authByGoogle(res => {
+        if(res.error){
+          //failed
+          addMessage(trans(res.error, translation),"", "error");
+        }else{
+          //successed
+          setUserInfo(res.data);
+          addMessage(trans("Successed login.", translation),"", "success");
+        }
+        on_sign_modal_close_click();
+        setSignInLoading(false);
+      })
+    }
+    
+    
+  }
   /////////////////////////////////////////////////
   return <>
   <div ref={sign_modal} className="modal" >
@@ -252,7 +273,16 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
           </div>
         </div>
         <div className="modal-footer">
-          ...
+          <div style={{display:"flex",margin:"10px",gap:"10px",justifyContent:"space-evenly"}}>
+            <button 
+              className = "c-hand" 
+              onClick = {evt => {onThirdPartyLoginClick(evt, "google")}}
+            >log in with Google <i className="fa-brands fa-google"></i></button>
+            <button 
+              className = "c-hand" 
+              onClick = {fb_auth.authByMicrosoft}
+            >log in with Microsoft <i className="fa-brands fa-microsoft"></i></button>
+          </div>
         </div>
       </div>
     </div>
