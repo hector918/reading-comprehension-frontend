@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import fe_ from '../fetch_';
+import {addMessage} from './message-footer';
+import { trans } from "../general_";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBXc8M7SxXVJOBx5RGCUk_2e8PRSaIjgms",
@@ -11,41 +13,43 @@ const firebaseConfig = {
   messagingSenderId: "599627267696",
   appId: "1:599627267696:web:6d9b1b039a8092b9c43eb5"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth();
-
-
 const authByGoogle = (callback) => {
   // 使用弹出窗口方式登录
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth, provider).then((result) => {
     // 登录成功的处理
-    // var token = result.credential.accessToken;
     var user = result.user;
     const {accessToken, uid, displayName, email} = user;
-    console.log(user, accessToken, uid, displayName, email);
     fe_.userLoginWithThirdParty(accessToken, (res) => {
       callback(res);
     })
   }).catch(function(error) {
     // 错误处理
+    addMessage(trans("Sign in with Google"), error.message, "error");
     console.error(error);
   });
 }
-const authByMicrosoft = () => {
+const authByMicrosoft = (callback) => {
   const provider = new OAuthProvider('microsoft.com');
+  provider.setCustomParameters({
+    prompt: "consent",
+    tenant: "consumers",
+  });
   // 使用弹出窗口方式登录
   signInWithPopup(auth, provider).then((result) => {
     // 登录成功的处理
     // var token = result.credential.accessToken;
     var user = result.user;
     const {accessToken, uid, displayName, email} = user;
-    console.log(user, accessToken, uid, displayName, email);
+    fe_.userLoginWithThirdParty(accessToken, (res) => {
+      callback(res);
+    })
   }).catch(function(error) {
     // 错误处理
+    addMessage(trans("Sign in with Microsoft"), error.message, "error");
     console.error(error);
   });
 }
@@ -58,14 +62,12 @@ const authByApple = () => {
     // var token = result.credential.accessToken;
     var user = result.user;
     const {accessToken, uid, displayName, email} = user;
-    console.log(user, accessToken, uid, displayName, email);
     
   }).catch(function(error) {
     // 错误处理
     console.error(error);
   });
 }
-
 
 export default{
   authByGoogle, authByMicrosoft, authByApple
