@@ -171,10 +171,15 @@ function checkLoginStatus(callback){
 }
 
 function UpdateUserProfile(body, callback){
-  console.log(body)
   fetch_put(`${API}/login/update_user_setting`, {body :JSON.stringify(body)}, (data) => {
     callback(data);
   })
+}
+function userLoginWithThirdParty(idToken, callback){
+  const body = { body: JSON.stringify({ idToken }) };
+  fetch_post(`${API}/login/user_third_party_login`, body, (data) => {
+    callback(data);
+  });
 }
 ////language/////////////////////////////////////
 function getLanguages(callback){
@@ -308,6 +313,7 @@ const entry = {
   checkLoginFunction, checkUserID, 
   UserRegister, UserLogin, UserLogout, 
   checkLoginStatus, UpdateUserProfile,
+  userLoginWithThirdParty,
   getLanguages, getLanguageFile,
   getDocuments,
   pdfThumbnailPrefix:`${API}/pda/pdf_thumbnail`,
