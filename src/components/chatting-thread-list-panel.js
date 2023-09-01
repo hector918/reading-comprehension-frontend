@@ -1,17 +1,16 @@
 import { trans, setDeepJsonValue } from '../general_';
 import './chatting-thread-list-panel.scss';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import lc_ from '../stroage_';
 import { useNavigate } from "react-router-dom";
 import {addMessage} from '../components/message-footer';
 ///////////////////////////////////////
 export default function ChattingThreadListPanel({ setTopichash, threadList, translation, setThreadList, isLogin, userInfo, setUserInfo}){
   const navigate = useNavigate();
+  const themeForm = useRef(null);
   const themeCustomModal = useRef(null);
+  const [customModalShow, setCustomModalShow] = useState(false);
   onLightModeClick();
-  useEffect(()=>{
-    
-  }, [])
   ///////////////////////////////////////////
   const renderThreadCard = (thread, idx) => {
     return <div 
@@ -39,19 +38,150 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     </div>
   }
   const renderThemeCustomModal = () => {
-    return <div class="modal active" ref={themeCustomModal}>
-      <span href="#close" class="modal-overlay" aria-label="Close"></span>
-      <div class="modal-container">
-        <div class="modal-header">
-          <span href="#close" class="btn btn-clear float-right" aria-label="Close"></span>
-          <div class="modal-title h5">Modal title</div>
+    const cs = getComputedStyle(document.documentElement);
+    ////////////////////////////////
+    const onFormSubmit = (evt) => {
+      evt.preventDefault();
+      const fd = (new FormData(themeForm.current)).entries();
+      const customMode = {};
+      for(let [key, val] of fd){
+        console.log(key, val);
+        customMode[key] = val;
+      }
+      onLightModeClick("setCustom", customMode);
+      setCustomModalShow(false);
+    }
+    function colorNameToHex(color) {
+      var dummy = document.createElement("div");
+      dummy.style.color = color;
+      document.body.appendChild(dummy);
+      // 获取计算后的颜色值
+      var computedColor = window.getComputedStyle(dummy).color;
+      document.body.removeChild(dummy);
+      // 将RGB转换为HEX
+      var rgb = computedColor.match(/\d+/g); 
+      return "#" + ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1).toUpperCase();
+    }
+    ///////////////////
+    return <div className="modal modal-sm active" ref={themeCustomModal}>
+      <span href="#close" className="modal-overlay" aria-label="Close"></span>
+      <div className="modal-container">
+        <div className="modal-header">
+          <span href="#close" className="btn btn-clear float-right c-hand" aria-label="Close" onClick={()=>setCustomModalShow(false)}><i className="fa-solid fa-xmark close-button"></i></span>
+          <div className="modal-title h5">Custom Theme</div>
         </div>
-        <div class="modal-body">
-          <div class="content">
-          </div>
+        <div className="modal-body">
+          <div className="content"><form ref={themeForm} onSubmit={onFormSubmit}>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>background-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-background-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-background-color'))}
+                />
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>border-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-border-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-border-color'))}
+                />
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>pre-font-size</label>
+              </div>
+              <div className='col-9'>
+                <select className="form-select" defaultValue={cs.getPropertyValue('--chatting-content-pre-font-size')}>
+                  <option>Choose an option</option>
+                  <option>large</option>
+                  <option>medium</option>
+                  <option>small</option>
+                </select>
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>text-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-text-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-text-color'))}
+                />
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>error-text-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-error-text-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-error-text-color'))}
+                />
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>outline-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-init-parameter-outline-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-init-parameter-outline-color'))}
+                />
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>fade-item-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-init-parameter-fade-item-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-init-parameter-fade-item-color'))}
+                />
+              </div>
+            </div>
+            <div className='form-group'>
+              <div className='col-3'>
+                <label>active-text-color</label>
+              </div>
+              <div className='col-9'>
+                <input 
+                  name = '--chatting-active-text-color' 
+                  type = 'color' 
+                  defaultValue = {colorNameToHex(cs.getPropertyValue('--chatting-active-text-color'))}
+                />
+              </div>
+            </div>
+          </form></div>
         </div>
-        <div class="modal-footer">
-          ...
+        <div className="modal-footer">
+          <div className='button-group'>
+              <button 
+                className = 'btn c-hand' 
+                onClick = {() => {setCustomModalShow(false)}}
+              >Cancel</button>
+              <button 
+                className='btn c-hand'
+                onClick = {() => themeForm.current.requestSubmit()}
+              >Save</button>
+            </div>
         </div>
       </div>
     </div>
@@ -84,7 +214,7 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     })
     setThreadList(lc_.readThreadsAsArray());
   }
-  function onLightModeClick(mode){
+  function onLightModeClick(mode, theme = undefined){
     let root = document.querySelector(':root');
     //example for get property value = var tmp = rs.getPropertyValue('--chatting-background-color')
     let json = {};
@@ -95,6 +225,22 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
       break;
       case undefined:
         json = userInfo?.profile_setting?.setting?.chatting?.theme;
+      break;
+      case "custom":
+        setCustomModalShow(true);
+        const template = defaultMode();
+        console.log(root)
+        const cs = getComputedStyle(document.documentElement);
+        for(let itm in template){
+          template[itm] = cs.getPropertyValue(itm);
+        }
+      break;
+      case "setCustom":
+        //set theme and save
+        if(theme !== undefined){
+          json = theme;
+          saveMode();
+        }
       break;
       default:
         json = defaultMode();
@@ -152,15 +298,15 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
           <ul className="menu">
             <li 
               className = "menu-item c-hand"
-              onClick = {()=>onLightModeClick("light")}
+              onClick = {() => onLightModeClick("light")}
             >{trans("Light", translation)}</li>
             <li 
               className = "menu-item c-hand"
-              onClick = {()=>onLightModeClick("dark")}
+              onClick = {() => onLightModeClick("dark")}
             >{trans("Dark", translation)}</li>
             <li 
               className = "menu-item c-hand"
-              onClick = {()=>onLightModeClick("custom")}
+              onClick = {() => onLightModeClick("custom")}
             >{trans("Custom", translation)}</li>
           </ul>
         </div>
@@ -177,6 +323,6 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
       <button className='c-hand' onClick={onClearChatHistoryClick}>{trans("Clear chat history", translation)}</button>
       <button className='c-hand' onClick={onNewChatClick}>{trans("New Chat", translation)}</button>
     </div>
-    <div></div>
+    <div>{customModalShow && renderThemeCustomModal()}</div>
   </div>
 }
