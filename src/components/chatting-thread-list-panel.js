@@ -176,7 +176,7 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
               <button 
                 className = 'btn c-hand' 
                 onClick = {() => {setCustomModalShow(false)}}
-              ></button>
+              >{trans("Cancel", translation)}</button>
               <button 
                 className='btn c-hand'
                 onClick = {() => themeForm.current.requestSubmit()}
