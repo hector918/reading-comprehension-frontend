@@ -68,7 +68,7 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
       <div className="modal-container">
         <div className="modal-header">
           <span href="#close" className="btn btn-clear float-right c-hand" aria-label="Close" onClick={()=>setCustomModalShow(false)}><i className="fa-solid fa-xmark close-button"></i></span>
-          <div className="modal-title h5">Custom Theme</div>
+          <div className="modal-title h5">{trans("Custom Theme", translation)}</div>
         </div>
         <div className="modal-body">
           <div className="content"><form ref={themeForm} onSubmit={onFormSubmit}>
@@ -176,11 +176,11 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
               <button 
                 className = 'btn c-hand' 
                 onClick = {() => {setCustomModalShow(false)}}
-              >Cancel</button>
+              ></button>
               <button 
                 className='btn c-hand'
                 onClick = {() => themeForm.current.requestSubmit()}
-              >Save</button>
+              >{trans("Save", translation)}</button>
             </div>
         </div>
       </div>
