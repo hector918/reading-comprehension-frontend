@@ -94,6 +94,29 @@
   color: var(--chatting-active-text-color);
 }
 
+.chatting-init-parameter-panel .modal{
+  & > .modal-container{
+    background-color: var(--chatting-background-color);
+    color: var(--chatting-text-color);
+    & .modal-header > span{
+      color: var(--chatting-text-color);
+    }
+    & .modal-title{
+      color: var(--chatting-init-parameter-fade-item-color);
+    }
+    & .modal-footer{
+      margin: 10px;
+      & .button-group{
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+    }
+  }
+  & .form-group{
+    text-align: left;
+  }
+}
 .chatting-init-parameter-panel > .modal > .modal-container, .chatting-init-parameter-panel > div .form-group {
   text-align: left;
 }

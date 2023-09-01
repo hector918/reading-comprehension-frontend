@@ -145,3 +145,37 @@
 .chat-history-topic-panel > .chatting-thread-list-panel  .chatting-thread-list-div > .chatting-thread-card:active{
   color: var(--chatting-active-text-color);
 }
+
+.chatting-thread-list-panel .modal{
+  
+  & > .modal-container{
+    background-color: var(--chatting-background-color);
+    color: var(--chatting-text-color);
+    & .modal-header > span{
+      color: var(--chatting-text-color);
+    }
+    & .modal-title{
+      color: var(--chatting-init-parameter-fade-item-color);
+    }
+    & .modal-footer{
+      margin: 10px;
+      & .button-group{
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+    }
+  }
+  & .form-group{
+    display: flex;
+    & .col-3{
+      width: 25%;
+    }
+    & .col-9{
+      width: 75%;
+      & *{
+        width: 100%;
+      }
+    }
+  }
+}
