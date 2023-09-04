@@ -41,6 +41,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  & input{
+    accent-color: var(--chatting-init-parameter-outline-color);
+  }
 }
 
 .chatting-init-parameter-panel > .prompt-panel{
