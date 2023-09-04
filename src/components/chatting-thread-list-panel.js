@@ -42,13 +42,12 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     ////////////////////////////////
     const onFormSubmit = (evt) => {
       evt.preventDefault();
-      const fd = (new FormData(themeForm.current)).entries();
-      const customMode = {};
-      for(let [key, val] of fd){
-        console.log(key, val);
-        customMode[key] = val;
+      const formData = (new FormData(themeForm.current)).entries();
+      const customRet = {};
+      for(let [key, val] of formData){
+        customRet[key] = val;
       }
-      onLightModeClick("setCustom", customMode);
+      onLightModeClick("setCustom", customRet);
       setCustomModalShow(false);
     }
     function colorNameToHex(color) {
@@ -216,8 +215,8 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
   }
   function onLightModeClick(mode, theme = undefined){
     let root = document.querySelector(':root');
-    //example for get property value = var tmp = rs.getPropertyValue('--chatting-background-color')
     let json = {};
+
     switch(mode){
       case "dark":
         json = darkMode();
@@ -228,12 +227,6 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
       break;
       case "custom":
         setCustomModalShow(true);
-        const template = defaultMode();
-        console.log(root)
-        const cs = getComputedStyle(document.documentElement);
-        for(let itm in template){
-          template[itm] = cs.getPropertyValue(itm);
-        }
       break;
       case "setCustom":
         //set theme and save
@@ -252,8 +245,7 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     function saveMode(){
       setUserInfo(pv => {
         pv = setDeepJsonValue(pv, ["profile_setting",'setting','chatting','theme'], json);
-        lc_.UpdateUserProfile(pv["profile_setting"], (res) => {
-        });
+        lc_.UpdateUserProfile(pv["profile_setting"], (res) => { });
         return {...pv};
       });
     }
@@ -287,7 +279,6 @@ export default function ChattingThreadListPanel({ setTopichash, threadList, tran
     <div></div>
     <div className='chatting-function-and-list'>
       <div className='chatting-thread-function-div'>
-        {/* <i className="fa-solid fa-moon"></i> */}
         <div className="dropdown">
           <span 
             className = "dropdown-toggle c-hand" 
