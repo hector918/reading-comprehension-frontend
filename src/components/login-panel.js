@@ -280,24 +280,27 @@ export default function Login({sign_modal, loginAvailable, loginRegex, translati
               </div>
             </div>
             </>
-            :trans("Login currently not available.", translation)}
+            :trans("Login currently not available.", translation)
+          }
           </div>
         </div>
         <div className="modal-footer">
-          <div style={{display:"flex",margin:"10px",gap:"10px",justifyContent:"space-evenly"}}>
-            <button 
-              className = "c-hand" 
-              onClick = {evt => {onThirdPartyLoginClick(evt, "google")}}
-            >{trans("Sign in with Google", translation)} <i className="fa-brands fa-google"></i></button>
-            <button 
-              className = "c-hand" 
-              onClick = {evt => {onThirdPartyLoginClick(evt, "microsoft")}}
-            >{trans("Sign in with Microsoft", translation)} <i className="fa-brands fa-microsoft"></i></button>
-            <button 
-              className = "c-hand" 
-              disabled
-            >{trans("Sign in with Apple", translation)} <i className="fa-brands fa-apple"></i></button>
-          </div>
+          {loginAvailable &&
+            <div style={{display:"flex",margin:"10px",gap:"10px",justifyContent:"space-evenly"}}>
+              <button 
+                className = "c-hand" 
+                onClick = {evt => {onThirdPartyLoginClick(evt, "google")}}
+              >{trans("Sign in with Google", translation)} <i className="fa-brands fa-google"></i></button>
+              <button 
+                className = "c-hand" 
+                onClick = {evt => {onThirdPartyLoginClick(evt, "microsoft")}}
+              >{trans("Sign in with Microsoft", translation)} <i className="fa-brands fa-microsoft"></i></button>
+              <button 
+                className = "c-hand" 
+                disabled
+              >{trans("Sign in with Apple", translation)} <i className="fa-brands fa-apple"></i></button>
+            </div>
+          }
         </div>
       </div>
     </div>

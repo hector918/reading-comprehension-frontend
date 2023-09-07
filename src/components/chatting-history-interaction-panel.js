@@ -25,8 +25,15 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
         chattingDisplay.current.append(renderChattingCard(el));
       }
     }
+    
   }, [topicHash])
 //
+  function renderChattingCard(threadRow){
+    const {card, answerDisplay, blinkingCursor} = createChattingCard({q: threadRow.question});
+    answerDisplay.innerHTML = threadRow.response;
+    blinkingCursor.parentElement.removeChild(blinkingCursor);
+    return card;
+  }
   function renderChattingDisplay(){
     return <div className='chatting-display-container'>
       {(!topicHash && !isLoading) &&<ChattingInitParameterPanel 
@@ -69,12 +76,7 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
     })
     return {card, answerDisplay, blinkingCursor};
   }
-  function renderChattingCard(threadRow){
-    const {card, answerDisplay, blinkingCursor} = createChattingCard({q: threadRow.question});
-    answerDisplay.innerHTML = threadRow.response;
-    blinkingCursor.parentElement.removeChild(blinkingCursor);
-    return card;
-  }
+  
   //////////////////////////////////////////
   const onTextareaChange = (evt) => {
     inputCounter.current.innerText = evt.target.value.length;
@@ -96,6 +98,7 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
           clearInterval(countDown);
         }
       }, 1000);
+      
       //count down function finish
       setIsLoading(true);
       //preparing data
@@ -193,6 +196,7 @@ export default function ChattingHistoryInteractionPanel({translation, isLogin, t
           );
           setIsLoading(false);
           clearInterval(countDown);
+          controller.abort();
         }
         
       }
