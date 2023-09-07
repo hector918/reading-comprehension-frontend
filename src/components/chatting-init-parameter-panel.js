@@ -206,14 +206,14 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
           {modelList.map(renderModelSelector)}
         </div>
         <div className='form-group'>
-          <label className = "form-radio form-inline ">Response Leaning to</label>
+          <label className = "form-radio form-inline ">{trans("Response Leaning to", translation)}</label>
           <label className = "form-radio form-inline c-hand">
             <input 
               type = "radio" 
               name = "temperature"
               onClick = {()=>{initParameter.temperature = 0}}
             />
-            <i className="form-icon"></i> Factual
+            <i className="form-icon"></i> {trans("Factual", translation)}
           </label>
           <label className = "form-radio form-inline c-hand">
             <input 
@@ -222,7 +222,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               onClick = {()=>{initParameter.temperature = 1}}
               defaultChecked
             />
-            <i className="form-icon"></i> Creative
+            <i className="form-icon"></i> {trans("Creative", translation)}
           </label>
           <label className = "form-radio form-inline c-hand">
             <input 
@@ -230,7 +230,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               name = "temperature"
               onClick = {()=>{initParameter.temperature = 2}}
             />
-            <i className="form-icon"></i> Stoned
+            <i className="form-icon"></i> {trans("Stoned", translation)}
           </label>
         </div>
       </div>
@@ -345,6 +345,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               onClick ={(e) => {
                 e.preventDefault();
                 onSavePromptClick();
+                onNewPromptModalToggle();
               }}
             >{trans("Save", translation)}</button>
           </div>
