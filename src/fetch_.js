@@ -243,9 +243,9 @@ function get_all_history_from_fileHash(fileHash, callback){
   fetch_get(`${API}/pda/chathistory/${fileHash}`, callback);
 }
 /////////////////////////////////////////////////
-function text_to_explanation(fileHash, q, callback){
+function text_to_explanation(fileHash, q, language, callback){
   const fetch_options = {
-    body: JSON.stringify({q, fileHash})
+    body: JSON.stringify({q, fileHash, language})
   }
   fetch_post(`${API}/ra/text`, fetch_options, callback);
 }

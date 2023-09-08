@@ -94,7 +94,7 @@
   overflow-y: auto;
   position: absolute;
   top: 100%;
-  
+  text-align: left;
   background: #fff;
   border-radius: 0.1rem;
   box-shadow: 0 0.05rem 0.2rem rgba(48,55,66,.3);

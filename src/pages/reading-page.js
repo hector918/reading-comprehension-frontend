@@ -9,7 +9,7 @@ import InteractionDisplay from '../components/interaction-panel';
 import InteractionMenuBar from '../components/interactionMenuBar';
 import lc_ from '../stroage_';
 /////////////////////////////////////
-export default function ReadingPage({translation, isLogin}){
+export default function ReadingPage({translation, isLogin, language}){
   //filehash is from url just use it one time, fileHash is for react component Internal use and across pages
   const {filehash} = useParams();
   const [fileHash, setFileHash] = useState(filehash);
@@ -21,6 +21,7 @@ export default function ReadingPage({translation, isLogin}){
   const pageNumberInput = useRef(null);
   //send globe setfilehash available
   change_setFileHash(setFileHash);
+  
   /////////////////////////////////////
   const onExplainButtonClick = (evt) => {
     textSelectionPopupDiv.current.classList.add('is-not-visable-h');
@@ -29,7 +30,7 @@ export default function ReadingPage({translation, isLogin}){
     try {
       let q = selectedText.trim();
       if(fileHash === undefined) return;
-      lc_.textToExplanation(fileHash, q, (res) => {
+      lc_.textToExplanation(fileHash, q, language.currentLanguage.replace(".json", ""), (res) => {
         //
         if(res.error) addMessage(
           trans("Text to explaination", translation),

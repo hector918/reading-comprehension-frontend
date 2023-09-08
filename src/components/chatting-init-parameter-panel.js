@@ -88,7 +88,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
         //on error
       }else if(res.data){
         //on success
-        setPromptsList(pv => [...pv, res.data]);
+        setPromptsList(pv => [res.data, ...pv]);
         //needs to reflash the prompt card container
         //close modal, clean up data
         modalFormReset();
