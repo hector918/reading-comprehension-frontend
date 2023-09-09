@@ -113,6 +113,7 @@ function extractFromStructure(json, type){
     error_handle('history data template error.')
     return;
   }
+  
   try {
     for(let key in template){
       template[key] = readPosition(template[key]);
@@ -179,7 +180,6 @@ function getAllHistoryOrderByUnifyTime(fileHash) {
 function uploadPDF(file, callback){
   try {
     srv.uploadFile(file, (res) => {
-      console.log(res);
       try {
         //if readable from local storage, add to local storage
         const libraryFromLC = JSON.parse(localStorage.getItem(library_documents_prefix));
@@ -344,7 +344,7 @@ function questionToReadingComprehension(fileHash, q, level, callback){
     callback(false);
   }
 }
-function textToExplanation(fileHash, q, callback){
+function textToExplanation(fileHash, q, language, callback){
   try {
 
     const subKeyName = q;
@@ -355,7 +355,7 @@ function textToExplanation(fileHash, q, callback){
       return;
     }
     //read from server
-    srv.text_to_explanation(fileHash, q, (res) => {
+    srv.text_to_explanation(fileHash, q, language, (res) => {
       if(res.data) setHistory('text', fileHash, q, res.data);
       callback(res);
     })
@@ -493,7 +493,9 @@ const saveChat = (threadHash, { model, temperature, question, messages, response
 }
 const readThreadsAsArray = () => {
   try {
-    const history = Object.values(JSON.parse(localStorage.getItem(chatting_list_index)));
+    const chatting_list = localStorage.getItem(chatting_list_index);
+    if(chatting_list === null) return [];
+    const history = Object.values(JSON.parse(chatting_list));
     return Array.isArray(history)? history: [];
   } catch (error) {
     error_handle(error);

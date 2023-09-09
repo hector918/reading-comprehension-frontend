@@ -31,7 +31,9 @@ function App() {
   useEffect(()=>{
     try {
       fe_.getLanguages(({availableList, currentLanguage, translation}) => {
-        if(availableList && currentLanguage) setLanguage({availableList, currentLanguage});
+        if(availableList && currentLanguage){
+          setLanguage({availableList, currentLanguage});
+        } 
         if(translation) setTranslation(translation);
       });
     } catch (error) {
@@ -75,10 +77,12 @@ function App() {
               <Route path="/reading/:filehash" element={<ReadingPage 
                 translation = {translation} 
                 isLogin = {isLogin}
+                language = {language}
               />} />
               <Route path="/reading" element={<ReadingPage 
                 translation = {translation} 
                 isLogin = {isLogin}
+                language = {language}
               />} />
               <Route path="/chatting" element={<Chatting 
                 translation = {translation} 

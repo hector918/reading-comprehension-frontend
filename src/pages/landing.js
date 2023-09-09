@@ -1,5 +1,6 @@
 import React from "react";
-import './landing.css';
+import { Link } from "react-router-dom";
+import './landing.scss';
 import MovingGallery from "../components/moving-gallery";
 import {trans} from '../general_';
 import { useNavigate } from "react-router-dom";
@@ -43,27 +44,40 @@ export default function Landing({translation, isLogin, signInUpButton}) {
         <span className="title-h">{trans("Uses AI", translation)}</span>
       </div>
       <div>
-        <span className="title-h">{trans("read the document", translation)}</span>
+        <span className="title-h">{trans("Read the document", translation)}</span>
       </div>
       <div>
-        <span className="title-h">{trans("and anwser", translation)}</span>
+        <span className="title-h">{trans("And answer", translation)}</span>
       </div>
       <div>
-        <span className="title-h">{trans("questions.", translation)}</span>
+        <span className="title-h">{trans("Questions.", translation)}</span>
       </div>
       <div>
         <span className="subtitle-h">{trans("Discover the full story", translation)}</span>
       </div>
       <div>
-        <span className="subtitle-h">{trans("let AI guide you through every page.", translation)}</span>
+        <span className="subtitle-h">{trans("Let AI guide you through every page.", translation)}</span>
       </div>
       <div style={{display:"grid", textAlign:"center"}}>
-        <span className="guider">{trans("click on moving books to try", translation)} <span 
-          className = "tooltip tooltip-right guider-tooltip"
-          data-tooltip = {trans(`It's base on a document,\nwhen user ask a question,\nthe answer are sourcing from the document only.`, translation)}
-        >
-          {trans("Reading Comprehension", translation)} <i className="fa-solid fa-circle-question"></i>
-        </span> {trans("or", translation)}</span>
+        <span className="guider">
+          <div className="popover popover-right">
+            <span className="btn btn-primary">{trans("Hover me for video walkthrough.", translation)} <i className="fa-solid fa-circle-question"></i></span>
+            <div className="popover-container">
+              <div className="card">
+                <div className="card-header">{trans("click the link below to open a new windows for video walkthrough host on youtube (english)", translation)}
+                  
+                </div>
+                <div className="card-body">
+                  <div><Link target="_new" to={"https://youtube.com"}>{trans("Reading Comprehension", translation)}</Link></div>
+                  <div><Link target="_new" to={"https://youtube.com"}>{trans("chatGPT chat bot", translation)}</Link></div>
+                </div>
+                <div className="card-footer">
+                  ...
+                </div>
+              </div>
+            </div>
+          </div>
+          </span>
       </div>
       <div>
         {isLogin()
@@ -78,7 +92,7 @@ export default function Landing({translation, isLogin, signInUpButton}) {
           <p 
             className = "major-button tooltip tooltip-right" 
             onClick = {onChattingButtonClick}
-            data-tooltip = {trans('OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\'t keep any data.', translation)}
+            data-tooltip = {trans("OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\\'t keep any data.", translation)}
           >
             {trans("chatGPT", translation)}
           </p>

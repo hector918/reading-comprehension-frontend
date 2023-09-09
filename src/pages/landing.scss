@@ -53,13 +53,19 @@ main > .landing-container{
     color: white;
     background-color: #060644;
     font-size: 1.1vw;
+    & .popover-container{
+      font-size: large;
+      color: #777;
+      background-color: white;
+      text-align: left;
+      & .card{
+        padding: 0.8rem;
+      }
+      & .card-body{
+        display: block;
+      }
+    }
   }
-  .landing-container > .floating-panel > div > .guider > .guider-tooltip{
-    text-decoration: underline;
-    cursor: pointer;
-    text-align: left;
-  }
-
 
   .floating-panel > div  > .major-button{
     color: black;
