@@ -113,7 +113,7 @@ function extractFromStructure(json, type){
     error_handle('history data template error.')
     return;
   }
-  console.log(json, type)
+  
   try {
     for(let key in template){
       template[key] = readPosition(template[key]);
@@ -493,7 +493,9 @@ const saveChat = (threadHash, { model, temperature, question, messages, response
 }
 const readThreadsAsArray = () => {
   try {
-    const history = Object.values(JSON.parse(localStorage.getItem(chatting_list_index)));
+    const chatting_list = localStorage.getItem(chatting_list_index);
+    if(chatting_list === null) return [];
+    const history = Object.values(JSON.parse(chatting_list));
     return Array.isArray(history)? history: [];
   } catch (error) {
     error_handle(error);
