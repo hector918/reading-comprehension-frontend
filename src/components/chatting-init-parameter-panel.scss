@@ -98,9 +98,15 @@
 }
 
 .chatting-init-parameter-panel .modal{
+  & > .modal-overlay{
+    background-color: var(--chatting-background-color);
+    opacity: 0.9;
+  }
   & > .modal-container{
     background-color: var(--chatting-background-color);
     color: var(--chatting-text-color);
+    border: var(--chatting-border-color) solid 1px;
+    border-radius: 10%;
     & .modal-header > span{
       color: var(--chatting-text-color);
     }
