@@ -1,16 +1,16 @@
 import './chatting-init-parameter-panel.scss';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import fetch_ from "../fetch_";
-import {addMessage} from '../components/message-footer';
+import { addMessage } from '../components/message-footer';
 import { trans, createElement } from '../general_';
 ////////////////////////////////////////
 let gerneralIndex = 0;
 const promptLetterLimit = 3000;
 ////////////////////////////////////////
-export default function ChattingInitParameterPanel({translation, isLogin, initParameter}){
+export default function ChattingInitParameterPanel({ translation, isLogin, initParameter }) {
   const [modelList] = useState([
-    {index: "01", name: "chatGPT 3.5 turbo 16k"},
-    {index: "02", name: "GPT 4.0 0613"}
+    { index: "01", name: "chatGPT 3.5 turbo 16k" },
+    { index: "02", name: "GPT 4.0 0613" }
   ]);
   const [promptsList, setPromptsList] = useState([]);
   const [modalPromptTextareaWordCount, setModalPromptTextareaWordCount] = useState(0);
@@ -37,12 +37,12 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   /////////////////////////////////////////////////
   useEffect(() => {
     fetch_.readPrompts((res) => {
-      if(res.error){
+      if (res.error) {
         //on error
         console.error(res.error);
-      }else if(res.data){
+      } else if (res.data) {
         //on data
-        if(res.data.length > 0) setPromptsList(res.data);
+        if (res.data.length > 0) setPromptsList(res.data);
       }
     })
   }, [])
@@ -57,15 +57,15 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
     let title = modalTitleInput.current.value;
     let form = modalPromptForm.current.elements;
     let linksList = [];
-    if(form['link-name']){
+    if (form['link-name']) {
       linksList.push([
-        form['link-name'].value, 
+        form['link-name'].value,
         form['link-url'].value
       ])
     }
-    else if(form['link-name']?.length){
-      for(let i = 0; i < form['link-name'].length; i++){
-        if(form['link-name'][i].value.trim() === "") continue;
+    else if (form['link-name']?.length) {
+      for (let i = 0; i < form['link-name'].length; i++) {
+        if (form['link-name'][i].value.trim() === "") continue;
         linksList.push([
           form['link-name'][i].value,
           form['link-url'][i].value
@@ -73,20 +73,20 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       }
     }
     /////////////////////////////////////
-    if(prompt.trim().length < 5) {
+    if (prompt.trim().length < 5) {
       modalPromptTextareaWarning.current.classList.remove("display-none");
       return;
     };
     fetch_.insertNewPrompt(type, title, prompt, linksList, (res) => {
       //
-      if(res.error){
+      if (res.error) {
         addMessage(
           trans("On save prompt", translation),
           trans(res.error, translation),
           "error"
         );
         //on error
-      }else if(res.data){
+      } else if (res.data) {
         //on success
         setPromptsList(pv => [res.data, ...pv]);
         //needs to reflash the prompt card container
@@ -99,14 +99,14 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   }
   const onDeletePromptClick = (prompt_id) => {
     fetch_.deletePrompt(prompt_id, (res) => {
-      if(res.error){
+      if (res.error) {
         //on error
         addMessage(
           trans("On delete prompt", translation),
           trans(res.error, translation),
           "error"
         );
-      }else if(res.data){
+      } else if (res.data) {
         //on data
         setPromptsList(pv => pv.filter(el => el.id !== prompt_id));
         clearinitParameterPrompt();
@@ -116,12 +116,12 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   const onResetClick = (evt) => {
     // console.log(initForm.current.prompt)
   }
-  function clearinitParameterPrompt(){
+  function clearinitParameterPrompt() {
     initParameter.prompt = "";
     initParameter.type = "";
     initParameter.title = "";
   }
-  const onPromptInputChange = ({content, json, type, title}) => {
+  const onPromptInputChange = ({ content, json, type, title }) => {
     initParameter.prompt = content;
     initParameter.links = json.links;
     initParameter.type = type;
@@ -129,46 +129,46 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
   }
   const onModalAddField = (type = "link") => {
     const container = formExtraField.current;
-    if(container){
+    if (container) {
       container.append(returnFormGroup());
     }
-    function returnFormGroup(){
+    function returnFormGroup() {
       return createElement({
         class: 'input-group',
         childs_: [
-          {tagname_: "input", class: "form-input", type: "text", placeholder: trans("This row would'nt save, when this is empty.", translation), name: `${type}-name`},
-          {tagname_: "input", class: "form-input", type: "url", placeholder: trans("This row would'nt save, when this is empty.", translation), name: `${type}-url`}
+          { tagname_: "input", class: "form-input", type: "text", placeholder: trans("This row would'nt save, when this is empty.", translation), name: `${type}-name` },
+          { tagname_: "input", class: "form-input", type: "url", placeholder: trans("This row would'nt save, when this is empty.", translation), name: `${type}-url` }
         ]
       })
     }
   }
   /////////////////////////////////////////////////
-  function renderModelSelector(el, idx){
-    const defaultCheck = idx === 0 ;
-    return <label 
-      key = {`model-selector-${gerneralIndex++}`} 
-      className = "form-radio form-inline c-hand"
-      onClick = {()=>{initParameter.model = el.index}}
+  function renderModelSelector(el, idx) {
+    const defaultCheck = idx === 0;
+    return <label
+      key={`model-selector-${gerneralIndex++}`}
+      className="form-radio form-inline c-hand"
+      onClick={() => { initParameter.model = el.index }}
     >
-      <input 
-        type = "radio" 
-        name = "model"
-        defaultChecked = {defaultCheck} 
+      <input
+        type="radio"
+        name="model"
+        defaultChecked={defaultCheck}
       />
       <i className="form-icon"></i> {el.name}
     </label>
   }
-  
-  function renderCard({id, type, title, content, json}){
+
+  function renderCard({ id, type, title, content, json }) {
     //create a regular prompt card
-    return <label 
-      key = {`prompt-card-${gerneralIndex++}`} 
-      className = 'prompt-card' 
+    return <label
+      key={`prompt-card-${gerneralIndex++}`}
+      className='prompt-card'
     >
-      <input 
-        type = "radio" 
-        name = "prompt" 
-        onChange = {() => {onPromptInputChange({content, json, type, title})}}
+      <input
+        type="radio"
+        name="prompt"
+        onChange={() => { onPromptInputChange({ content, json, type, title }) }}
       />
       <div className='type-and-function-div'>
         <div>
@@ -177,7 +177,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
         </div>
         {id && <div onClick={() => onDeletePromptClick(id)}><i className="fa-solid fa-trash-can"></i></div>}
       </div>
-      <div className='prompt-card-prompt-content'> 
+      <div className='prompt-card-prompt-content'>
         <pre>{content}</pre>
         {json?.links?.map(([el1, el2]) => <li key={`card-prompt-links-${gerneralIndex}`}>
           <span>{el1}</span>: <sub>{el2}</sub>
@@ -185,7 +185,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       </div>
     </label>
   }
-  function modalFormReset(evt){
+  function modalFormReset(evt) {
     evt.preventDefault();
     modalTypeInput.current.value = "";
     modalTypeTextarea.current.value = "";
@@ -193,7 +193,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
     formExtraField.current.innerHTML = "";
     modalPromptTextareaWarning.current.classList.add("display-none");
   }
-  function modalFormCancel(evt){
+  function modalFormCancel(evt) {
     evt.preventDefault();
     modalFormReset(evt);
     onNewPromptModalToggle();
@@ -206,40 +206,40 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
           {modelList.map(renderModelSelector)}
         </div>
         <div className='form-group'>
-          <label className = "form-radio form-inline ">{trans("Response Leaning to", translation)}</label>
-          <label className = "form-radio form-inline c-hand">
-            <input 
-              type = "radio" 
-              name = "temperature"
-              onClick = {()=>{initParameter.temperature = 0}}
+          <label className="form-radio form-inline ">{trans("Response Leaning to", translation)}</label>
+          <label className="form-radio form-inline c-hand">
+            <input
+              type="radio"
+              name="temperature"
+              onClick={() => { initParameter.temperature = 0 }}
             />
             <i className="form-icon"></i> {trans("Factual", translation)}
           </label>
-          <label className = "form-radio form-inline c-hand">
-            <input 
-              type = "radio" 
-              name = "temperature"
-              onClick = {()=>{initParameter.temperature = 1}}
+          <label className="form-radio form-inline c-hand">
+            <input
+              type="radio"
+              name="temperature"
+              onClick={() => { initParameter.temperature = 1 }}
               defaultChecked
             />
             <i className="form-icon"></i> {trans("Creative", translation)}
           </label>
-          <label className = "form-radio form-inline c-hand">
-            <input 
-              type = "radio" 
-              name = "temperature"
-              onClick = {()=>{initParameter.temperature = 2}}
+          <label className="form-radio form-inline c-hand">
+            <input
+              type="radio"
+              name="temperature"
+              onClick={() => { initParameter.temperature = 2 }}
             />
             <i className="form-icon"></i> {trans("Stoned", translation)}
           </label>
         </div>
       </div>
     </div>
-    <div  className='prompt-panel'>
+    <div className='prompt-panel'>
       <div className='prompt-function-div'>
-        <div 
-          className = 'c-hand new-prompt-div' 
-          onClick = {onNewPromptModalToggle}
+        <div
+          className='c-hand new-prompt-div'
+          onClick={onNewPromptModalToggle}
         >
           <span>{trans("Create new Prompt", translation)}</span>
           <i className="fa-solid fa-file-circle-plus"></i>
@@ -248,10 +248,10 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
           <label className='c-hand'>
             <span>{trans("Filter", translation)}</span>
             <i className="fa-solid fa-filter"></i>
-            <input 
-              type = 'text' 
-              onChange = {(evt)=>setSearchInput(evt.target.value)} 
-              value = {searchInput} 
+            <input
+              type='text'
+              onChange={(evt) => setSearchInput(evt.target.value)}
+              value={searchInput}
             />
           </label>
         </div>
@@ -268,7 +268,7 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
       <span onClick={onNewPromptModalToggle} className="modal-overlay" aria-label="Close"></span>
       <div className="modal-container">
         <div className="modal-header">
-          <span className="btn btn-clear float-right c-hand"  aria-label="Close" onClick={onNewPromptModalToggle}><i className="fa-solid fa-xmark close-button"></i></span>
+          <span className="btn btn-clear float-right c-hand" aria-label="Close" onClick={onNewPromptModalToggle}><i className="fa-solid fa-xmark close-button"></i></span>
           <div className="modal-title h5">{trans("New Prompt", translation)}</div>
         </div>
         <div className="modal-body">
@@ -276,35 +276,35 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
             <div className="form-group">
               <label className="form-label">
                 <span>{trans("Type", translation)}</span>
-                <input 
-                  ref = {modalTypeInput} 
-                  className = "form-input" 
-                  type = "text" 
-                  placeholder = {trans("Type", translation)}
-                  maxLength = {100}
+                <input
+                  ref={modalTypeInput}
+                  className="form-input"
+                  type="text"
+                  placeholder={trans("Type", translation)}
+                  maxLength={100}
                 />
               </label>
             </div>
             <div className="form-group">
               <label className="form-label">
                 <span>{trans("Title", translation)}</span>
-                <input 
-                  ref = {modalTitleInput} 
-                  className = "form-input" 
-                  type = "text" 
-                  placeholder = {trans("Title", translation)}
-                  maxLength = {100}
+                <input
+                  ref={modalTitleInput}
+                  className="form-input"
+                  type="text"
+                  placeholder={trans("Title", translation)}
+                  maxLength={100}
                 />
               </label>
             </div>
             <div className="form-group">
               <label className="form-label" >
                 <span>{trans("Prompt", translation)}</span>
-                <textarea 
-                  ref = {modalTypeTextarea} 
-                  className = "form-input"  
-                  placeholder = {trans("Prompt", translation)}
-                  onChange = {(e) => {setModalPromptTextareaWordCount(e.target.value.length)}}
+                <textarea
+                  ref={modalTypeTextarea}
+                  className="form-input"
+                  placeholder={trans("Prompt", translation)}
+                  onChange={(e) => { setModalPromptTextareaWordCount(e.target.value.length) }}
                   maxLength={promptLetterLimit}
                 >
                 </textarea>
@@ -316,33 +316,33 @@ export default function ChattingInitParameterPanel({translation, isLogin, initPa
               <button disabled onClick={(e) => {
                 e.preventDefault();
                 onModalAddField();
-              }}>{trans("Add link", translation)}</button>
+              }} style={{ textDecoration: "line-through" }}>{trans("Add link", translation)}</button>
             </div>
             <div ref={formExtraField}>
-              
+
             </div>
             <div>
-              <p 
-                ref = {modalPromptTextareaWarning} 
-                className = 'red display-none'
+              <p
+                ref={modalPromptTextareaWarning}
+                className='red display-none'
               >prompt letter count must between 5 - 3000</p>
             </div>
           </form>
-          
+
         </div>
         <div className="modal-footer">
           <div className='button-group'>
-            <button 
-              className = 'btn btn-theme-border' 
-              onClick = {modalFormReset}
+            <button
+              className='btn btn-theme-border'
+              onClick={modalFormReset}
             >{trans("Reset", translation)}</button>
-            <button 
-              className = 'btn btn-theme-border'
-              onClick = {modalFormCancel}
+            <button
+              className='btn btn-theme-border'
+              onClick={modalFormCancel}
             >{trans("Cancel", translation)}</button>
-            <button 
-              className = 'btn btn-theme-border' 
-              onClick ={(e) => {
+            <button
+              className='btn btn-theme-border'
+              onClick={(e) => {
                 e.preventDefault();
                 onSavePromptClick();
                 onNewPromptModalToggle();
