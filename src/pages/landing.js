@@ -61,15 +61,16 @@ export default function Landing({ translation, isLogin, signInUpButton }) {
       <div style={{ display: "grid", textAlign: "center" }}>
         <span className="guider">
           <div className="popover popover-right">
-            <span className="btn btn-primary">{trans("Hover me for video walkthrough.", translation)} <i className="fa-solid fa-circle-question"></i></span>
+            <span className="btn btn-primary"><i className="fa-solid fa-arrow-right"></i> {trans("Hover me for video walkthrough.", translation)} <i className="fa-solid fa-circle-question"></i></span>
             <div className="popover-container">
               <div className="card">
+
                 <div className="card-header">{trans("click the link below to open a new windows for video walkthrough host on youtube (english)", translation)}
 
                 </div>
                 <div className="card-body">
                   <div><Link target="_new" to={"https://youtu.be/YkPKTqdOKbs"}>1. {trans("Reading Comprehension", translation)}</Link></div>
-                  <div><Link target="_new" to={"https://youtube.com"}>2. {trans("chatGPT chat bot", translation)}</Link></div>
+                  <div><Link target="_new" to={"https://youtu.be/FoLbWVdXwUE"}>2. {trans("chatGPT chat bot", translation)}</Link></div>
                 </div>
                 <div className="card-footer">
                   ...
