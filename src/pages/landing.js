@@ -2,34 +2,34 @@ import React from "react";
 import { Link } from "react-router-dom";
 import './landing.scss';
 import MovingGallery from "../components/moving-gallery";
-import {trans} from '../general_';
+import { trans } from '../general_';
 import { useNavigate } from "react-router-dom";
-import {addMessage} from '../components/message-footer';
+import { addMessage } from '../components/message-footer';
 //////////////////////////////////////////
-export default function Landing({translation, isLogin, signInUpButton}) {
+export default function Landing({ translation, isLogin, signInUpButton }) {
   const navigate = useNavigate();
   //////////////////////////////////////////
   const onReadingButtonClick = (evt) => {
-    if(isLogin()){
+    if (isLogin()) {
       navigate("/reading");
-    }else{
+    } else {
       addMessage(
         trans("Landing page", translation),
         trans("You need to login first.", translation),
         'error'
       );
-    } 
+    }
   }
   const onChattingButtonClick = (evt) => {
-    if(isLogin()){
+    if (isLogin()) {
       navigate("/chatting")
-    }else{
+    } else {
       addMessage(
         trans("Landing page", translation),
         trans("You need to login first.", translation),
         'error'
       );
-    } 
+    }
   }
   const onLoginButtonClick = (evt) => {
     signInUpButton.current.click();
@@ -58,18 +58,18 @@ export default function Landing({translation, isLogin, signInUpButton}) {
       <div>
         <span className="subtitle-h">{trans("Let AI guide you through every page.", translation)}</span>
       </div>
-      <div style={{display:"grid", textAlign:"center"}}>
+      <div style={{ display: "grid", textAlign: "center" }}>
         <span className="guider">
           <div className="popover popover-right">
             <span className="btn btn-primary">{trans("Hover me for video walkthrough.", translation)} <i className="fa-solid fa-circle-question"></i></span>
             <div className="popover-container">
               <div className="card">
                 <div className="card-header">{trans("click the link below to open a new windows for video walkthrough host on youtube (english)", translation)}
-                  
+
                 </div>
                 <div className="card-body">
-                  <div><Link target="_new" to={"https://youtube.com"}>{trans("Reading Comprehension", translation)}</Link></div>
-                  <div><Link target="_new" to={"https://youtube.com"}>{trans("chatGPT chat bot", translation)}</Link></div>
+                  <div><Link target="_new" to={"https://youtu.be/YkPKTqdOKbs"}>1. {trans("Reading Comprehension", translation)}</Link></div>
+                  <div><Link target="_new" to={"https://youtube.com"}>2. {trans("chatGPT chat bot", translation)}</Link></div>
                 </div>
                 <div className="card-footer">
                   ...
@@ -77,31 +77,31 @@ export default function Landing({translation, isLogin, signInUpButton}) {
               </div>
             </div>
           </div>
-          </span>
+        </span>
       </div>
       <div>
         {isLogin()
-        ?<>
-          <p 
-            className="major-button tooltip tooltip-right " 
-            onClick = {onReadingButtonClick}
-            data-tooltip = {trans('use AI to reading document \nand answer your question.', translation)}
-          >
-            {trans("Reading Comprehension", translation)}
-          </p>
-          <p 
-            className = "major-button tooltip tooltip-right" 
-            onClick = {onChattingButtonClick}
-            data-tooltip = {trans("OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\\'t keep any data.", translation)}
-          >
-            {trans("chatGPT", translation)}
-          </p>
-        </>
-        :
-          <p 
-            className = "major-button tooltip tooltip-right " 
-            data-tooltip = {trans('after sign in enabling upload file.', translation)}
-            onClick = {onLoginButtonClick}
+          ? <>
+            <p
+              className="major-button tooltip tooltip-right "
+              onClick={onReadingButtonClick}
+              data-tooltip={trans('use AI to reading document \nand answer your question.', translation)}
+            >
+              {trans("Reading Comprehension", translation)}
+            </p>
+            <p
+              className="major-button tooltip tooltip-right"
+              onClick={onChattingButtonClick}
+              data-tooltip={trans("OpenAI GPT AI \nwith presetable prompt \nchat history will storage in local \n we don\\'t keep any data.", translation)}
+            >
+              {trans("chatGPT", translation)}
+            </p>
+          </>
+          :
+          <p
+            className="major-button tooltip tooltip-right "
+            data-tooltip={trans('after sign in enabling upload file.', translation)}
+            onClick={onLoginButtonClick}
           >
             {trans("Sign Up/ In", translation)}
           </p>
