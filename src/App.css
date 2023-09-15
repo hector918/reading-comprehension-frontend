@@ -746,3 +746,8 @@ ol, ul {
   border-bottom-right-radius: .1rem;
   border-top-right-radius: .1rem;
 }
+.App{
+  /* 2k resolution max */
+  max-width: 2560px;
+  max-height: 1440px;
+}
