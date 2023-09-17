@@ -69,7 +69,7 @@ export default function Landing({ translation, isLogin, signInUpButton }) {
 
                 </div>
                 <div className="card-body">
-                  <div><Link target="_new" to={"https://youtu.be/YkPKTqdOKbs"}>1. {trans("Reading Comprehension", translation)}</Link></div>
+                  <div><Link target="_new" to={"https://youtu.be/HoeM9rm1nLU"}>1. {trans("Reading Comprehension", translation)}</Link></div>
                   <div><Link target="_new" to={"https://youtu.be/FoLbWVdXwUE"}>2. {trans("chatGPT chat bot", translation)}</Link></div>
                 </div>
                 <div className="card-footer">
