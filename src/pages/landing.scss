@@ -12,6 +12,19 @@ main > .landing-container{
 
 /* 如果大于 */
 @media screen and (min-width: 750px) {
+  .landing-container{
+    & .floating-panel{
+      & .popover{
+        & .popover-container{
+          padding: 0px;
+          box-shadow: purple 3px 3px 4px;
+          & .card-body{
+            margin-left: 15px;
+          }
+        }
+      }
+    }
+  }
   .landing-container > .floating-panel{
     z-index: 50;
     position: absolute;
