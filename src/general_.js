@@ -1,55 +1,52 @@
+import React from 'react';
 import CryptoJS from 'crypto-js';
 
 /////////////////////////////////////////////////
-function removeAllChild(node){
-  if(!node || !node.childNodes) return false;
-  for(let x of node.childNodes){
+function removeAllChild(node) {
+  if (!node || !node.childNodes) return false;
+  for (let x of node.childNodes) {
     node.removeChild(x);
   }
 }
 
-function createElement(json){
+function createElement(json) {
   const root = document.createElement(json['tagname_'] || "div");
-  for(var x in json)
-  {
-    switch(x)
-    {
+  for (var x in json) {
+    switch (x) {
       case "tagname_":
         //ignore 
-      break;
+        break;
       case "childs_":
-        for(var o in json[x])
-        {
+        for (var o in json[x]) {
           //if json[x][o] === json object than create element, else just append
-          if(json[x][o].constructor === ({}).constructor){
+          if (json[x][o].constructor === ({}).constructor) {
             var children = createElement(json[x][o]);
             root.append(children);
-          }else{
+          } else {
             root.append(json[x][o]);
-          } 
+          }
         }
-      break;
-      case "innerHTML":case "innerText":case "textContent":
-        root[x]=json[x];
-      break;
+        break;
+      case "innerHTML": case "innerText": case "textContent":
+        root[x] = json[x];
+        break;
       case "event_":
-        for(let ev in json[x])
-        {
-          root.addEventListener(ev,json[x][ev],true);
+        for (let ev in json[x]) {
+          root.addEventListener(ev, json[x][ev], true);
         }
-      break;
+        break;
       // case "export_":
       //   root.export[json[x]] = root['self'];
       // break;
-      default :
-        root.setAttribute(x,json[x]);
-      break;
+      default:
+        root.setAttribute(x, json[x]);
+        break;
     }
   }
   return root;
 }
 
-function loadingIcon(){
+function loadingIcon() {
   return <div className="fa-1x loading-icon-h"><i className="fas fa-circle-notch fa-pulse"></i></div>;
 }
 ////this is callback version of createFileHash//////////
@@ -71,23 +68,23 @@ function loadingIcon(){
 //   reader.readAsArrayBuffer(file);
 // }
 
-function setDeepJsonValue(json, level, deepValue){
+function setDeepJsonValue(json, level, deepValue) {
   var ret = json;
-  for(let idx in level){
-    if(ret[level[idx]] === undefined) ret[level[idx]] = {};
-    if(Number(idx) === (level.length -1)){
+  for (let idx in level) {
+    if (ret[level[idx]] === undefined) ret[level[idx]] = {};
+    if (Number(idx) === (level.length - 1)) {
       ret[level[idx]] = deepValue;
-    } 
+    }
     ret = ret[level[idx]];
   }
   return json;
 }
-function createPasswordHash(str){
+function createPasswordHash(str) {
   const hashDigest = CryptoJS.SHA256(str);
   return hashDigest.toString();
 }
 
-function createHashFromStr(str){
+function createHashFromStr(str) {
   return CryptoJS.MD5(str, { outputLength: 8 }).toString();
 }
 
@@ -117,7 +114,7 @@ function createFileHash(file) {
 ///////////////////////////////////
 function throttle(fn, wait) {
   let lastCall = Date.now() - wait;
-  return function() {
+  return function () {
     let now = Date.now();
     if (now - lastCall >= wait) {
       lastCall = now;
@@ -126,10 +123,10 @@ function throttle(fn, wait) {
   };
 }
 ///////////////////////////////////
-function trans(str, translation){
+function trans(str, translation) {
   try {
-    if(translation[str]) return translation[str];
-    
+    if (translation[str]) return translation[str];
+
   } catch (error) {
     return str;
   }
@@ -137,20 +134,20 @@ function trans(str, translation){
 }
 /////////////////////////////////////
 var setfileHash_ = undefined;
-function change_setFileHash(func){
+function change_setFileHash(func) {
   setfileHash_ = func;
 }
-function setFileHash(filehash){
-  if(setfileHash_){
+function setFileHash(filehash) {
+  if (setfileHash_) {
     setfileHash_(filehash);
-  } 
+  }
 }
 /////////////////////////////////////
 
 export {
-  removeAllChild, 
-  createElement, 
-  trans, 
+  removeAllChild,
+  createElement,
+  trans,
   createFileHash,
   createPasswordHash,
   loadingIcon,
