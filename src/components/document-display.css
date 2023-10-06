@@ -1,0 +1,36 @@
+.document-display{
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  text-align: left;
+  position: relative;
+}
+.document-display > div > div:has(h3){
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.document-display > div canvas{
+  margin: auto;
+  display: block;
+  max-width: 100%;
+  border-radius: 3%;
+}
+.document-display .page-separator{
+  font-size: 0.9rem;
+  text-align: right;
+  border-bottom: 2px solid #ccc;
+  padding: 5px;
+  margin: 15px;
+  color: darkgrey;
+}
+.document-display > .loging-icon-div{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  width: 100%;
+}

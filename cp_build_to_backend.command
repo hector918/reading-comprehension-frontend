@@ -1,1 +1,2 @@
-cp -rf build/* ../Capstone-backend/public/v0.02
+rm -rf ../Capstone-backend/public/static
+cp -rf build/* ../Capstone-backend/public/

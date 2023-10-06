@@ -1,0 +1,44 @@
+:root {
+  --chatting-background-color : white;
+  --chatting-border-color: darkgray;
+  --chatting-content-pre-font-size: medium;
+  --chatting-text-color: black;
+  --chatting-error-text-color: red;
+  --chatting-init-parameter-outline-color: blue;
+  --chatting-init-parameter-fade-item-color: lightgray;
+  --chatting-active-text-color: purple;
+}
+html {
+  scrollbar-color: var(--chatting-border-color) var(--chatting-background-color);
+  scrollbar-width: thin;
+}
+
+/* WebKit and Chromiums */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: var(--chatting-background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--chatting-border-color);
+  border-radius: 5px;
+}
+
+.chatting-container{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  color: var(--chatting-text-color);
+  gap: 10px;
+  background-color: var(--chatting-background-color);
+}
+
+.chatting-container > .chat-history-topic-panel{
+  background-color: var(--chatting-background-color);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+}

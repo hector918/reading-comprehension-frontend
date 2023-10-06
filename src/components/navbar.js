@@ -2,12 +2,18 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import './navbar.css';
 import Login from "./login-panel";
+import UserProfileContent from "./user-profile-dropdown";
 import fe_ from '../fetch_';
+import lc_ from '../stroage_';
 import {trans} from '../general_';
-export default function NavBar({ language, setLanguage, translation, setTranslation, addMessage }) {
+import { useNavigate } from "react-router-dom";
+
+export default function NavBar({language, setLanguage, translation, setTranslation, addMessage, userInfo, setUserInfo, isLogin, signInUpButton}) {
   const [sign_modal] = [useRef(null)];
   const [loginAvailable, SetLoginAvailable] = useState(false);
   const [loginRegex, SetLoginRegex] = useState({});
+  const navigation = useNavigate();
+
   ///////////////////////////////////////////
   const on_sign_modal_show_click = (evt) => {
     sign_modal.current.classList.add("active");
@@ -18,11 +24,23 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
   }
   const on_change_language = (evt) => {
     const currentLanguage = evt.currentTarget.getAttribute("filename");
-    fe_.getLanguageFile(currentLanguage, (data) => {
-      if(data){
+    fe_.getLanguageFile(currentLanguage, (res) => {
+      if(res){
         setLanguage(pv => ({...pv, currentLanguage}));
-        setTranslation(data);
+        setTranslation(res);
       } 
+    })
+  }
+
+  const on_user_logout_click = (evt) => {
+    lc_.UserLogout((res) => {
+      if(res.error){
+        addMessage(trans("Logout failed.", translation),"", "error");
+      }else{
+        addMessage(trans("Successed logout.", translation),"", "success");
+        setUserInfo({});
+        navigation('/');
+      }
     })
   }
   //////////////////////////////////////////////
@@ -30,38 +48,65 @@ export default function NavBar({ language, setLanguage, translation, setTranslat
     <header className="navbar navbar-h">
       <section className="navbar-section">
         <Link className="navbar-logo" to={"/"}>
-          <img src="./logo.png" width="44" height="44" alt="Logo" />
+          <img src={`${window.location.origin}/logo.svg`} width="60" height="45" alt="Logo" />
           <span className="unselectable text-color">Binary Mind</span>
         </Link>
 
         {/* <a href="..." className="btn btn-link">Docs</a>
       <a href="..." className="btn btn-link">GitHub</a> */}
       </section>
-      <section className="navbar-section">
+      <section className="navbar-section navbar-section-s">
         {/* <div className="input-group input-inline">
         <input className="form-input" type="text" placeholder="search"/>
         <button className="btn btn-primary input-group-btn">Search</button>
       </div> */}
-        <div className="dropdown">
-          <span className="btn btn-link dropdown-toggle" tabIndex="0">
-            Language <i className="icon icon-caret"></i>
+        <div className="dropdown dropdown-right">
+          <span className="btn btn-link dropdown-toggle c-hand" tabIndex="0">
+            Language <i className="fa-solid fa-caret-down"></i>
           </span>
           <ul className="menu">
-            {language.availableList.map(([key, val], idx)=> <li className={`menu-item ${language.currentLanguage === val ? "current_language" :""}`} filename={val} key={idx} onClick={on_change_language}>{key}</li>)}
+            <form>
+            {language.availableList.map(([key, val], idx)=>
+              <li className={`menu-item ${language.currentLanguage === val ? "current_language" :""}`} filename={val} key={idx} onClick={on_change_language}>
+                <label className="form-radio">
+                  <input type="radio" name="language" defaultChecked={language.currentLanguage === val} />
+                  <i className="form-icon"></i> {key}
+                </label>
+              </li>
+            )}
+            </form>
           </ul>
         </div>
-        <Link to={"/about"} className="btn btn-link text-color nav-link-h">{trans("About", translation)}</Link>
-        <Link className="btn btn-link text-color nav-link-h" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
+        {/* <Link to={"/about"} className="btn btn-link text-color nav-link-h c-hand">{trans("About", translation)}</Link> */}
+        {isLogin()?
+          <div className="dropdown dropdown-right">
+          <span href="#" className="btn btn-link dropdown-toggle c-hand" tabIndex="0">
+          {trans("Me", translation)} <i className="fa-solid fa-caret-down"></i>
+          </span>
+          <UserProfileContent
+            translation = {translation}
+            userInfo = {userInfo}
+            setUserInfo = {setUserInfo}
+            addMessage = {addMessage}
+            on_user_logout_click = {on_user_logout_click}
+          />
+        </div>
+        :
+          <Link ref={signInUpButton} className="btn btn-link text-color nav-link-h c-hand" onClick={on_sign_modal_show_click}>{trans("Sign Up/ In", translation)}</Link>
+        }
       </section>
     </header>
-    <Login 
-      sign_modal={sign_modal} 
-      loginAvailable={loginAvailable} 
-      loginRegex={loginRegex} 
-      translation={translation}
-      addMessage={addMessage}
-    />
-    
+    {isLogin()? ""
+      :<Login 
+        sign_modal = {sign_modal} 
+        loginAvailable = {loginAvailable} 
+        loginRegex = {loginRegex} 
+        translation = {translation}
+        addMessage = {addMessage}
+        userInfo = {userInfo}
+        setUserInfo = {setUserInfo}
+      />
+    }
   </>
   )
 }

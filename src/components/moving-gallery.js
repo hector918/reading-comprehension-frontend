@@ -1,75 +1,103 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import './moving-gallery.css';
-import fe from '../fetch_';
-export default function MovingGallery(){
-  const [cards, setCards] = useState({
-    popular:{mainSerial:[], repeatSerial:[]}
-  });
-  const cardsRef = useRef(cards);
+import fe_ from '../fetch_';
+import stroage_ from '../stroage_';
+import {trans} from '../general_';
+import {Link} from "react-router-dom";
+import LoadingIcon from "./loading-icon";
+//////////////////////////////////////
+export default function MovingGallery({translation}){
+  const [cards, setCards] = useState({});
+  //////////////////////////////////////
   useEffect(()=>{
-    checkDocumentList();
-    function checkDocumentList (){
-      fe.getDocuments({},(data)=>{
-        for(let key in data){
-          cardsRef.current[key] = {
-            mainSerial: [],
-            repeatSerial: []
-          }
-          data[key].forEach((document) => {
-            cardsRef.current[key].mainSerial.push(document);
-            cardsRef.current[key].repeatSerial.push(document);
-          })
+    stroage_.getDocuments(({data}) => {
+      if(!data) return;
+      //remove timestamp, timestamp only for storage to check data during.
+      delete data.timestamp;
+      const ret = {}
+      //check key and try to render it
+      for(let key in data){
+        ret[key] = {
+          mainSerial: [],
+          repeatSerial: []
         }
-        setCards({...cardsRef.current});
-      });
-    }
+        data[key].forEach((document) => {
+          ret[key].mainSerial.push(document);
+          ret[key].repeatSerial.push(document);
+        })
+      }
+      setCards({...ret});
+    });
   }, [])
-  
   ///////////////////////////////////////////////
   function card_templete(json, idx){
-    return <div className="carousel__slide carousel__slide_forward" key={idx} onClick={cardOnClick}>
-      <div className="carousel__image" style={{backgroundImage:`url(${fe.pdfThumbnailPrefix}/${json.fileHash})`}}></div>
-    </div>
+    return <Link 
+      className = "carousel__slide carousel__slide_forward" 
+      key = {`carousel-slide-${idx}`} 
+      to={`/reading/${json.fileHash}`}
+      filehash = {json.fileHash}
+    >
+      <div><LoadingIcon size={'fa-2xl'}/></div>
+      <img 
+        className = "carousel__image is-not-visable-h" 
+        src = {`${fe_.pdfThumbnailPrefix}/${json.fileHash}`}
+        onLoad = {backgroundImageOnLoad}
+        alt = {json.meta.name}
+        title = {json.meta.name}
+      />
+    </Link>
   }
+  
   ////////////////////////////////////////////////
-  const cardOnClick = (evt) => {
-    console.log(evt.currentTarget)
+  const backgroundImageOnLoad = (evt) => {
+    const displayNone = 'is-not-visable-h';
+    evt.currentTarget.previousElementSibling.classList.add(displayNone)
+    evt.currentTarget.classList.remove(displayNone);
   }
   ////////////////////////////////////////////////
   return <div className="moving-gallery-div">
-        
     <section className="">
-
       <div className="container-fluid px-0">
+        {/* {renderCardSubContainer(cards)} */}
+        <div className="gap-h">
+          <span>{trans("Random", translation)} &darr;</span>
+        </div>
         <div className="row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_forward">
-              {cards.popular?.mainSerial.map(card_templete)}
+              {cards["Random"]?.mainSerial?.map(card_templete)}
               {/* <!--#### repeat ####--> */}
-              {cards.popular?.repeatSerial.map(card_templete)}
+              {cards["Random"]?.repeatSerial?.map(card_templete)}
             </div>
           </div>
         </div>
 
+        <div className="gap-h">
+          <span>{trans("Classic", translation)} &darr;</span>
+        </div>
         <div className="row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_backward">
-              {cards.collection?.mainSerial.map(card_templete)}
+              {cards["Classic"]?.mainSerial?.map(card_templete)}
               {/* <!--#### repeat ####--> */}
-              {cards.collection?.repeatSerial.map(card_templete)}
+              {cards["Classic"]?.repeatSerial?.map(card_templete)}
             </div>
           </div>
         </div>
 
+        <div className="gap-h">
+          <span>{trans("History and Romance", translation)} &darr;</span>
+        </div>
         <div className="row third-row">
           <div className="col-12">
             <div className="carousel__wrapper carousel_forward">
-              {cards.favorite?.mainSerial.map(card_templete)}
+              {cards['History and Romance']?.mainSerial?.map(card_templete)}
               {/* <!--#### repeat ####--> */}
-              {cards.favorite?.repeatSerial.map(card_templete)}
+              {cards['History and Romance']?.repeatSerial?.map(card_templete)}
             </div>
           </div>
         </div>
+
       </div>
     </section>
   </div>

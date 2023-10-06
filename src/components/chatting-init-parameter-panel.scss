@@ -1,0 +1,226 @@
+.form-checkbox,.form-radio,.form-switch {
+  display: block;
+  line-height: 1.2rem;
+  margin: .2rem 0;
+  min-height: 1.4rem;
+  padding: .1rem .4rem .1rem 1.2rem;
+  position: relative;
+
+}
+
+.form-inline{
+  display: inline-block;
+}
+
+.accordion input:checked~.accordion-header>.icon:first-child,.accordion[open] .accordion-header>.icon:first-child {
+  transform: rotate(90deg);
+}
+
+.accordion input:checked~.accordion-body,.accordion[open] .accordion-body {
+  max-height:50rem;
+}
+
+.accordion .accordion-header {
+  display: block;
+  padding: .2rem .4rem;
+}
+
+.accordion .accordion-header .icon {
+  transition: transform .25s;
+}
+
+.accordion .accordion-body {
+  margin-bottom: .4rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+.chatting-init-parameter-panel{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  & input{
+    accent-color: var(--chatting-init-parameter-outline-color);
+  }
+}
+
+.chatting-init-parameter-panel > .prompt-panel{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  text-align: left;
+  overflow-y: hidden;
+}
+.chatting-init-parameter-panel > .prompt-panel form{
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 50px;
+}
+.chatting-init-parameter-panel .prompt-container{
+  display: flex;
+  flex-wrap: wrap;
+}
+.chatting-init-parameter-panel .prompt-card{
+  border: 1px solid var(--chatting-border-color);
+  margin: 1%;
+  padding: 10px 2% ;
+  width: 94%;
+  transition: all .3s;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+}
+.chatting-init-parameter-panel .prompt-container .prompt-card > .type-and-function-div{
+  margin-left: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.chatting-init-parameter-panel .new-prompt-div, .chatting-init-parameter-panel .filter-prompt-div{
+  transition: all 0.3s;
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.chatting-init-parameter-panel .filter-prompt-div > label > *{
+  margin-left: 5px;
+  outline: 0;
+}
+.chatting-init-parameter-panel .prompt-function-div > div:hover,.prompt-card:hover{
+  transform: scale(1.02);
+  color: var(--chatting-active-text-color);
+}
+
+.chatting-init-parameter-panel .modal{
+  & > .modal-overlay{
+    background-color: var(--chatting-background-color);
+    opacity: 0.9;
+  }
+  & > .modal-container{
+    background-color: var(--chatting-background-color);
+    color: var(--chatting-text-color);
+    border: var(--chatting-border-color) solid 1px;
+    border-radius: 10%;
+    & .modal-header > span{
+      color: var(--chatting-text-color);
+    }
+    & .modal-title{
+      color: var(--chatting-init-parameter-fade-item-color);
+    }
+    & .modal-footer{
+      margin: 10px;
+      & .button-group{
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+    }
+  }
+  & .form-group{
+    text-align: left;
+  }
+}
+.chatting-init-parameter-panel > .modal > .modal-container, .chatting-init-parameter-panel > div .form-group {
+  text-align: left;
+}
+
+
+.chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content .input-group{
+  margin-bottom: 0.4rem;
+}
+.chatting-init-parameter-panel > .modal > .modal-container > .modal-body > .content textarea{
+  min-height: 15vh;
+  max-height: 30vh;
+  /* resize:none; */
+  width: 100%;
+  min-width: 100%;
+}
+
+.chatting-init-parameter-panel .prompt-function-div{
+  display: flex;
+  padding: 0 15px;
+}
+.chatting-init-parameter-panel .type-and-function-div > div >  i{
+  transition: all 0.2s;
+}
+.chatting-init-parameter-panel .type-and-function-div > div >  i:hover{
+  transform: rotate(30deg);
+}
+
+.chatting-init-parameter-panel .modal .modal-body > .content > .form-group > .form-label{
+  position: relative;
+}
+.chatting-init-parameter-panel .modal .modal-body > .content > .form-group > .form-label .floating-work-counter{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: var(--chatting-init-parameter-fade-item-color);
+}
+.chatting-init-parameter-panel .modal-footer > .button-group{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: flex-end;
+}
+
+.prompt-container > .prompt-card > input ~ .prompt-card-prompt-content{
+  visibility: hidden;
+  max-height: 0;
+  transition: all 0.3s;
+  transform: translateY(300px);
+  opacity: 0;
+  display: none;
+  & > pre{
+    font-size: var(--chatting-content-pre-font-size);
+    white-space: pre-wrap;
+  }
+}
+.prompt-container > .prompt-card > input ~ .prompt-card-prompt-content > p{
+  font-size: small;
+  padding: 0 22px;
+}
+
+.prompt-container > .prompt-card > input ~ .prompt-card-prompt-content > li {
+  width: 100%;
+}
+
+.prompt-container > .prompt-card > input{
+  position: absolute;
+  top: 16px;
+  left: 10px;
+}
+
+.prompt-container > .prompt-card > input:checked ~ .prompt-card-prompt-content {
+  visibility: visible;
+  animation: collapse-animate 0.3s linear;
+  max-height: fit-content;
+  opacity: 1;
+  transform: translateY(0px);
+  display: block;
+}
+
+@keyframes collapse-animate {
+	from {
+    opacity: 0;
+		transform: translateY(300px);
+	}
+	to {
+    opacity: 0.6;
+		transform: translateY(0px);
+	}
+}
+
+.chatting-init-parameter-panel{
+  & .form-group .c-hand{
+    transition: all .3s;
+  }
+  & .form-group .c-hand:hover{
+    color: var(--chatting-active-text-color);
+  }
+}

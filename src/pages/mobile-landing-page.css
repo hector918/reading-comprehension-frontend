@@ -1,0 +1,27 @@
+main > .mobile-landing-page{
+  height: 100%;
+  width: 100%;
+}
+
+main > .mobile-landing-page > div{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+main > .mobile-landing-page > div > div{
+  width: 100%;
+}
+
+main > .mobile-landing-page > div > .guider{
+  height: auto;
+}
+
+.guider{
+  background-color: red;
+  color: white;
+}

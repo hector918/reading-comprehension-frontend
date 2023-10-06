@@ -1,0 +1,38 @@
+.absolute-main-container.animate.hide{
+  animation: .3s cubic-bezier(.25, 1, .30, 1) polygon-in-opposing-corners both;
+}
+.absolute-main-container.animate{
+  animation: .3s cubic-bezier(.25, 1, .30, 1) polygon-out-opposing-corners both;
+}
+.absolute-main-container:not(.animate){
+  visibility: hidden;
+}
+.absolute-main-container{
+  background-color: aqua;
+  position: absolute;
+  height: calc(100vh - var(--navbar-height));
+  width: 100vw;
+  top: var(--navbar-height);
+  left: 0;
+}
+@keyframes polygon-in-opposing-corners {
+  from {
+    visibility: hidden;
+    clip-path: polygon(0 0, 50% 50%, 100% 100%, 50% 50%);
+  }
+  to {
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+    visibility: visible;
+  }
+}
+@keyframes polygon-out-opposing-corners {
+  from {
+    visibility: visible;
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+  }
+  to {
+    clip-path: polygon(0 0, 50% 50%, 100% 100%, 50% 50%);
+    visibility: hidden;
+
+  }
+}

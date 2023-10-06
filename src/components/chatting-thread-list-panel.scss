@@ -1,0 +1,181 @@
+.chat-history-topic-panel > .chatting-thread-list-panel{
+  display: grid;
+  grid-template-rows: 1fr 20fr 2fr 1fr;
+  width: inherit;
+  overflow: hidden;
+  text-align: left;
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel > div{
+  text-indent: 0.5rem;
+  width: inherit;
+  overflow: inherit;
+  
+}
+.chat-history-topic-panel > .chatting-thread-list-panel div h3{
+  text-align: center;
+  opacity: 0.5;
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel > .chatting-thread-list-function-div{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding-bottom: 12px;
+  overflow: visible;
+  
+}
+.chatting-thread-list-panel .chatting-thread-function-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2px 8px;
+  overflow:visible;
+  & > i{
+    transition: all .3s;
+    width: 35px;
+    cursor: pointer;
+    &:hover{
+      transform: rotate(180deg);
+    }
+  }
+}
+.chatting-function-and-list{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  & > .chatting-thread-function-div{
+    & > .dropdown .dropdown-toggle:focus+.menu,.dropdown .menu:hover,.dropdown.active .menu {
+      display: inline-flex!important;
+    }
+    & > .dropdown{
+      & .menu{
+        min-width: 200px;
+        position: absolute;
+        top: 0px;
+        left: auto;
+        margin: 0;
+        & li{
+          list-style-type: none;
+        }
+      }
+    }
+  }
+}
+.chat-history-topic-panel > .chatting-thread-list-panel  .chatting-thread-list-div{
+  height: 100%;
+  flex-grow: 1;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-bottom: 30px;
+}
+.chat-history-topic-panel > .chatting-thread-list-panel  .chatting-thread-list-div > .chatting-thread-card{
+  display: flex;
+  justify-content:space-between;
+  width: inherit;
+  overflow: inherit;
+  transition: all 0.3s;
+  cursor: pointer;
+  border-bottom: 1px solid var(--chatting-border-color);
+
+  & > .title{
+    padding: 12px;
+    width: inherit;
+    overflow: hidden;
+  }
+  & > .title > p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0px;
+    text-transform: capitalize;
+  }
+  & > .title > span{
+    font-size: small;
+    text-indent:5%;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  & > .icon-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-right: 8px;
+    overflow: hidden;
+  }
+  & > .icon-div > div{
+    display: flex;
+    justify-content: center;
+    
+    & > i{
+      width: 35px;
+      transition: all .3s;
+    }
+    & > .fa-trash-can:hover{
+      transform: rotate(30deg);
+    }
+    & > .fa-ellipsis{
+      opacity: 0.3;
+    }
+    
+  }
+}
+
+.chatting-thread-list-panel > .chatting-function-and-list > .chatting-thread-function-div{
+  & .dropdown:hover .menu{
+    display: inline-flex;
+  }
+  & .dropdown{
+    & .menu-item:hover{
+      color: var(--chatting-active-text-color);
+    }
+  }
+}
+
+.chat-history-topic-panel > .chatting-thread-list-panel  .chatting-thread-list-div > .chatting-thread-card:hover{
+  transform: scale(1.02);
+  color: var(--chatting-active-text-color);
+
+}
+.chat-history-topic-panel > .chatting-thread-list-panel  .chatting-thread-list-div > .chatting-thread-card:active{
+  color: var(--chatting-active-text-color);
+}
+
+.chatting-thread-list-panel .modal{
+  
+  & > .modal-container{
+    background-color: var(--chatting-background-color);
+    color: var(--chatting-text-color);
+    & .modal-header > span{
+      color: var(--chatting-text-color);
+    }
+    & .modal-title{
+      color: var(--chatting-init-parameter-fade-item-color);
+    }
+    & .modal-footer{
+      margin: 10px;
+      & .button-group{
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+    }
+  }
+  & .form-group{
+    display: flex;
+    & .col-3{
+      width: 25%;
+    }
+    & .col-9{
+      width: 75%;
+      & *{
+        width: 100%;
+      }
+    }
+  }
+}

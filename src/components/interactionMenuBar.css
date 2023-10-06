@@ -1,0 +1,21 @@
+.interaction-menu-bar > .popover > .popover-container-for-questions-history{
+  text-align: left;
+  width: fit-content;
+  min-width: 33vw;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+.interaction-menu-bar > .popover > .popover-container-for-questions-history > div:not(:last-child){
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 5px;
+}
+.interaction-menu-bar > .popover > .popover-container-for-questions-history > div{
+  transition: all 0.3s ease-in-out;
+  border-radius: 5px;
+  padding: 5px;
+}
+.interaction-menu-bar > .popover > .popover-container-for-questions-history > div:hover{
+  background-color: white;
+  color: #666;
+}
