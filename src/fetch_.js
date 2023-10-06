@@ -279,17 +279,15 @@ async function chatting_to_openai(body, stream_callback, signal) {
     const response = await fetch_post_async(`${API}/cwo/openai/SSE`, { body: JSON.stringify(body), signal });
     if (!response.body) return;
     //pick up server sent event
-    console.log("dsads,", window.TextDecoderStream)
-    return;
-    // const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
 
-    // while (true) {
-    //   var { value, done } = await reader.read();
-    //   if (done) { return }
-    //   //some times the response from server will stack together, use \n on the server to separate each response and reduce it back to original data
-    //   const parsed = value.split("\n").filter(el => el !== undefined && el !== "");
-    //   stream_callback(parsed);
-    // }
+    while (true) {
+      var { value, done } = await reader.read();
+      if (done) { return }
+      //some times the response from server will stack together, use \n on the server to separate each response and reduce it back to original data
+      const parsed = value.split("\n").filter(el => el !== undefined && el !== "");
+      stream_callback(parsed);
+    }
   } catch (error) {
     console.error(error);
     stream_callback(error);
