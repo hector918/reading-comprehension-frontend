@@ -25,7 +25,7 @@ export default function ChattingHistoryInteractionPanel({ translation, isLogin, 
         chattingDisplay.current.append(renderChattingCard(el));
       }
     }
-  }, [topicHash, renderChattingCard])
+  }, [topicHash])
   //
   function renderChattingCard(threadRow) {
     const { card, answerDisplay, blinkingCursor } = createChattingCard({ q: threadRow.question });
